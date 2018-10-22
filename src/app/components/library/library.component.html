@@ -1,0 +1,8 @@
+<div class="container">
+  <app-upload></app-upload>
+  <app-sort></app-sort>
+  <app-thumbnail
+    *ngFor="let receipt of receipts$ | async"
+    [receipt]="receipt"
+  ></app-thumbnail>
+</div>

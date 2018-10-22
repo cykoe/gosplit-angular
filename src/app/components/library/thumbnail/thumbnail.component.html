@@ -1,0 +1,15 @@
+<div class="item">
+  <div class="item-image">
+    <div class="item-text-wrapper">
+      <p class="item-text-dek">{{ receipt.store }}</p>
+      <h2 class="item-text-title">{{ receipt.date | date: short }}</h2>
+    </div>
+  </div>
+  <div class="item-text">
+    <div class="item-text-wrapper">
+      <p class="item-text-dek">C, T, M, L, H</p>
+      <h2 class="item-text-title">{{ receipt.split }}</h2>
+    </div>
+  </div>
+  <a class="item-link" href="{{ receipt._id }}"></a>
+</div>

@@ -1,1 +1,82 @@
-/* You can add global styles to this file, and also import other style files */
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700)
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css")
+
+/* Red */
+$color: #f95e5e
+
+body
+  padding: 50px
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+  background: #e0e0e0
+  font-family: "Montserrat", sans-serif
+  -webkit-font-smoothing: antialiased
+  font-weight: 400
+  font-size: 16px
+  color: #555
+  letter-spacing: 0.02em
+  margin: 0 auto
+  width: 100%
+  max-width: 1000px
+
+#table
+  text-align: center
+
+.row
+  background: #fff
+  padding: 20px
+  position: relative
+  margin: 0 0 1px 0
+  display: table-row
+  &:hover
+    cursor: pointer
+  &.selected
+    background: #f3f3f3
+
+table label
+  cursor: pointer
+  &:before
+    display: inline-block
+    content: attr(data-name)
+    margin: 0 10px 0 0
+    width: 35px
+    height: 35px
+    border: 3px solid $color
+    border-radius: 100%
+    vertical-align: middle
+    color: $color
+    font-size: 30px
+    text-align: center
+    font-weight: 700
+    line-height: 0.9em
+    transition: transform 0.2s ease-in-out
+
+.item-grid
+  max-width: 900px
+  margin: 10px auto
+  position: relative
+  //box-shadow: 0 5px 10px 0 rgba(0, 0, 0, .3)
+  overflow: hidden
+
+input[type=checkbox]:checked + label:before
+  background: #007f2c
+  color: #fff
+  transform: rotate(360deg)
+  transform-origin: center center
+
+input[type=checkbox]
+  visibility: hidden
+
+footer
+  border-top: 0.0625em solid #0d1a26
+  bottom: 0
+  color: #000000
+  height: 5em
+  p
+    padding: 1.25em
+    text-align: center
+
+h2
+  text-align: center
+
+.btn
+  margin: 1rem 0
