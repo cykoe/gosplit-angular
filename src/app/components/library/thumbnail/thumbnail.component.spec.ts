@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { ThumbnailComponent } from './thumbnail.component';
+import { Receipt } from '../../../models/receipt';
 
 describe('ThumbnailComponent', () => {
   let component: ThumbnailComponent;
@@ -17,8 +18,11 @@ describe('ThumbnailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ThumbnailComponent);
     component = fixture.componentInstance;
-    const expectedThumbnail = {store: 'Walmart', date: Date.now(), split: 'split'};
-    component.receipt = expectedThumbnail;
+    const receipt = new Receipt();
+    receipt.store = 'Walmart';
+    receipt.date = new Date();
+    receipt.split = [1,2,3];
+    component.receipt = receipt;
     fixture.detectChanges();
   });
 
