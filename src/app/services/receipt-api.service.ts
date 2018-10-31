@@ -20,7 +20,7 @@ export class ReceiptApiService {
   }
 
   readonly url: string = environment.api_url;
-  readonly endpoint: string = '';
+  readonly endpoint: string = 'store';
 
   create(item: Receipt): Observable<Receipt> {
     return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, this.receiptSerializer.toJson(item))

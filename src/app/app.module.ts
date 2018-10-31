@@ -10,6 +10,7 @@ import { LibraryComponent } from './components/library/library.component';
 import { ThumbnailComponent } from './components/library/thumbnail/thumbnail.component';
 import { UploadComponent } from './components/library/upload/upload.component';
 import { SortComponent } from './components/library/sort/sort.component';
+import { ReceiptDetailComponent } from './components/receipt-detail/receipt-detail.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SortComponent } from './components/library/sort/sort.component';
     LibraryComponent,
     ThumbnailComponent,
     UploadComponent,
-    SortComponent
+    SortComponent,
+    ReceiptDetailComponent
   ],
   imports: [
     BrowserModule,

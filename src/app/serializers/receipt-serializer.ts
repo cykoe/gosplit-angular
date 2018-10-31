@@ -7,7 +7,7 @@ import { Receipt } from '../models/receipt';
 export class ReceiptSerializer {
   fromJson(json: any): Receipt {
     const receipt = new Receipt();
-    receipt.id = json.id;
+    receipt.id = json._id;
     receipt.subtotal = json.subtotal;
     receipt.total = json.total;
     receipt.tax = json.tax;

@@ -11,5 +11,5 @@
       <h2 class="item-text-title">{{ receipt.split }}</h2>
     </div>
   </div>
-  <a class="item-link" href="{{ receipt._id }}"></a>
+  <a class="item-link" [routerLink]="['/library', receipt.id]"></a>
 </div>
