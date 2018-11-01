@@ -15,7 +15,7 @@ import { ReceiptApiService } from '../../../../core/services/receipt-api.service
 export class ReceiptDetailPage implements OnInit {
 
   receipt$: Observable<Receipt>;
-  receipt: <Receipt>;
+  receipt: Receipt;
   // a list of people
   PEOPLE = ['Charlie', 'Takumu', 'Lawrence', 'Mohan', 'Haowei'];
   // 2D array maps to each user's selection on individual item
@@ -33,9 +33,9 @@ export class ReceiptDetailPage implements OnInit {
   // 0 is non-driver, 1 is passenger, 2 is driver
   driverList: number[] = [0, 0, 0, 0, 0];
   // payment for driver
-  driverFee: Number = 10;
+  driverFee = 10;
   // payment for passenger
-  passengerFee: Number = 5;
+  passengerFee = 5;
 
   constructor(
     private receiptApiService: ReceiptApiService,
@@ -56,11 +56,13 @@ export class ReceiptDetailPage implements OnInit {
         this.booleanChart[i] = [];
         this.numberChart[i] = [];
         this.selectAllPrice[i] = false;
-        this.split[i] = this.taxPP;
         for (let j = 0; j < this.PEOPLE.length; j++) {
           this.booleanChart[i][j] = false;
           this.numberChart[i][j] = 0.00;
         }
+      }
+      for (let i = 0; i < this.PEOPLE.length; i++) {
+        this.split[i] = this.taxPP;
       }
     });
   }
@@ -114,19 +116,24 @@ export class ReceiptDetailPage implements OnInit {
     const driverFees = [];
 
     for (let i = 0; i < this.PEOPLE.length; i++) {
-      driverFees[i] = 0.00
+      driverFees[i] = 0.00;
     }
-
     for (let i = 0; i < this.PEOPLE.length; i++) {
       if (this.driverList[i] === 1) {
         driverFees[i] += this.passengerFee;
-        for (let j = 0; i < this.PEOPLE.length && j !== i; j++) {
+        for (let j = 0; j < this.PEOPLE.length; j++) {
+          if (j === i) {
+            continue;
+          }
           driverFees[j] -= this.passengerFee / (this.PEOPLE.length - 1);
         }
       }
       if (this.driverList[i] === 2) {
         driverFees[i] += this.driverFee;
-        for (let j = 0; i < this.PEOPLE.length && j !== i; j++) {
+        for (let j = 0; j < this.PEOPLE.length; j++) {
+          if (j === i) {
+            continue;
+          }
           driverFees[j] -= this.driverFee / (this.PEOPLE.length - 1);
         }
       }
@@ -135,16 +142,20 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   saveReceipt() {
-    receipt.driverList = this.driverList;
-    receipt.split = this.split;
-    receipt.numberChart = this.numberChart;
-    receipt.booleanChart = this.booleanChart;
+    this.receipt.driverList = this.driverList;
+    this.receipt.split = this.split;
+    this.receipt.numberChart = this.numberChart;
+    this.receipt.booleanChart = this.booleanChart;
+    this.receiptApiService.update(this.receipt)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   private calculateFinalPrice(...drivers) {
     for (let i = 0; i < this.split.length; i++) {
-      if(drivers[i]) {
-        this.split[i] = this.taxPP - drivers[i];
+      if (drivers[0]) {
+        this.split[i] = this.taxPP - drivers[0][i];
       } else {
         this.split[i] = this.taxPP;
       }

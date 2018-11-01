@@ -8,7 +8,7 @@ export class Receipt {
   store?: string;
   length?: number;
   split?: number[];
-  driverList?: [];
+  driverList?: number[];
   numberChart?: number[][];
   booleanChart?: boolean[][];
 }

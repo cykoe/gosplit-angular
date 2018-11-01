@@ -46,7 +46,7 @@
         (click)="isDriver(i)">{{ name }}</td>
     </tr>
     <tr class="row">
-      <td class="table-success" *ngFor="let price of finalPrice">{{ price | number:'1.2-2' | currency}}</td>
+      <td class="table-success" *ngFor="let price of split">{{ price | number:'1.2-2' | currency}}</td>
     </tr>
     </tfoot>
   </table>

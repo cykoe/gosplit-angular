@@ -16,8 +16,9 @@ export class ReceiptSerializer {
     receipt.store = json.store;
     receipt.length = json.length;
     receipt.split = json.split;
-    receipt.driving = json.driving;
-    receipt.image = json.image;
+    receipt.driverList = json.driverList;
+    receipt.numberChart = json.numberChart;
+    receipt.booleanChart = json.booleanChart;
 
     return receipt;
   }
@@ -33,8 +34,9 @@ export class ReceiptSerializer {
       store: receipt.store,
       length: receipt.length,
       split: receipt.split,
-      driving: receipt.driving,
-      image: receipt.image,
+      driverList: receipt.driverList,
+      numberChart: receipt.numberChart,
+      booleanChart: receipt.booleanChart,
     };
   }
 }
