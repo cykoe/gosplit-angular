@@ -1,15 +1,21 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ReceiptDetailComponent } from './components/receipt-detail/receipt-detail.component';
-import { LibraryComponent } from './components/library/library.component';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {path: 'library/:id', component: ReceiptDetailComponent},
-  {path: '', component: LibraryComponent},
+  {
+    path: '',
+    redirectTo: '/library',
+    pathMatch: 'full'
+  },
+  {
+    path: 'library',
+    loadChildren: './modules/receipt/receipt.module#ReceiptModule'
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
