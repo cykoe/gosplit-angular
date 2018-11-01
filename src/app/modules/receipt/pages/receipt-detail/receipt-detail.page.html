@@ -1,0 +1,50 @@
+<div *ngIf="receipt$ | async as receipt">
+  <h2>{{ receipt.store }}</h2>
+  <h3>{{ receipt.date | date:'short' }}</h3>
+  <table id="table" class="table table-bordered">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col" style="width: 15%">Name</th>
+      <th scope="col" style="width: 15%">Picture</th>
+      <th scope="col" style="width: 15%">Price</th>
+      <th scope="col" *ngFor="let name of PEOPLE" style="width: 11%">{{name}}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="row" *ngFor="let row of receipt.list; let i = index">
+      <td><strong>{{ i + 1 }}. </strong><i>{{ row.name | titlecase }}</i></td>
+      <td class="object"><img src="{{row.image}}" width="100px"></td>
+      <td class="price" (click)="selectAll(i)">${{ row.price | number:'1.2-2'}}
+        <button
+          type="button"
+          class="btn btn-block"
+          [class.btn-primary] = "!selectAllPrice[i]"
+          [class.btn-danger] = "selectAllPrice[i]">
+          {{ selectAllPrice[i] ? 'Remove All' : 'Select All'}}
+        </button>
+      </td>
+      <td
+        *ngFor="let name of PEOPLE; let j = index"
+        (click)="changeRowPrice(i, j)"><input type="checkbox" [checked]="booleanChart[i][j]"><label
+        [attr.data-name]="name.substring(0,1)"></label></td>
+    </tr>
+    </tbody>
+    <tfoot id="footer">
+    <tr class="row">
+      <td colspan="1" class="table-info">Items: <span id="items">{{ receipt.length }}</span></td>
+      <td colspan="2" class="table-info">Subtotal: {{ receipt.subtotal | currency}}</td>
+      <td colspan="2" id="tax" class="table-info">Tax: {{ receipt.tax | number:'1.2-2' | currency}}</td>
+      <td colspan="3" class="table-info"><strong>Total: $<span id="total">{{ receipt.total }}</span></strong></td>
+    </tr>
+    <tr class="row">
+      <td colspan="3" rowspan="2" class="table-dark">Per Person<br>(plus tax)</td>
+      <td class="table-dark driver-fees" *ngFor="let name of PEOPLE; let i = index" (click)="isDriver(i)">{{ name }}</td>
+    </tr>
+    <tr class="row">
+      <td class="table-success" *ngFor="let price of finalPrice">{{ price | number:'1.2-2' | currency}}</td>
+    </tr>
+    </tfoot>
+  </table>
+  <button type="button" class="btn btn-primary btn-lg btn-block">SAVE</button>
+</div>
+

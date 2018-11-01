@@ -4,9 +4,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Receipt } from '../models/receipt';
-import { ReceiptSerializer } from '../serializers/receipt-serializer';
-import { environment } from '../../environments/environment';
+import { Receipt } from '../../shared/models/receipt';
+import { ReceiptSerializer } from '../../shared/serializers/receipt-serializer';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

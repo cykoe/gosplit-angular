@@ -16,4 +16,5 @@ class List {
   id: number;
   name: string;
   price: number;
+  image: string;
 }

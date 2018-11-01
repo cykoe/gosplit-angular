@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Receipt } from '../../../models/receipt';
+import { Receipt } from '../../../../shared/models/receipt';
 
 @Component({
   selector: 'app-thumbnail',
