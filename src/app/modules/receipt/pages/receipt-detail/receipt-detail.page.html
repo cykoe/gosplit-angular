@@ -38,13 +38,17 @@
     </tr>
     <tr class="row">
       <td colspan="3" rowspan="2" class="table-dark">Per Person<br>(plus tax)</td>
-      <td class="table-dark driver-fees" *ngFor="let name of PEOPLE; let i = index" (click)="isDriver(i)">{{ name }}</td>
+      <td
+        *ngFor="let name of PEOPLE; let i = index"
+        [class.table-dark]="driverList[i] == 0"
+        [class.table-success]="driverList[i] == 1"
+        [class.table-light]="driverList[i] == 2"
+        (click)="isDriver(i)">{{ name }}</td>
     </tr>
     <tr class="row">
       <td class="table-success" *ngFor="let price of finalPrice">{{ price | number:'1.2-2' | currency}}</td>
     </tr>
     </tfoot>
   </table>
-  <button type="button" class="btn btn-primary btn-lg btn-block">SAVE</button>
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="saveReceipt()">SAVE</button>
 </div>
-
