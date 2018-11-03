@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Routes } from '@angular/router';
+import { ActivatedRoute, Routes, Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ export class ReceiptDetailPage implements OnInit {
   receipt$: Observable<Receipt>;
   receipt: Receipt;
   // a list of people
-  PEOPLE = ['Charlie', 'Takumu', 'Lawrence', 'Mohan', 'Haowei'];
+  PEOPLE = ['Charlie', 'Takumi', 'Lawrence', 'Mohan', 'Haowei'];
   // 2D array maps to each user's selection on individual item
   booleanChart: boolean[][] = [];
   // 2D array map to each user's split on his selected item
@@ -39,7 +39,8 @@ export class ReceiptDetailPage implements OnInit {
 
   constructor(
     private receiptApiService: ReceiptApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
@@ -52,18 +53,10 @@ export class ReceiptDetailPage implements OnInit {
       this.receipt = receipt;
       this.receiptPrice = receipt.list.map(item => Number(item.price));
       this.taxPP = Number(receipt.tax) / this.PEOPLE.length;
-      for (let i = 0; i < Number(receipt.length); i++) {
-        this.booleanChart[i] = [];
-        this.numberChart[i] = [];
-        this.selectAllPrice[i] = false;
-        for (let j = 0; j < this.PEOPLE.length; j++) {
-          this.booleanChart[i][j] = false;
-          this.numberChart[i][j] = 0.00;
-        }
-      }
-      for (let i = 0; i < this.PEOPLE.length; i++) {
-        this.split[i] = this.taxPP;
-      }
+      this.booleanChart = this.initializeChart(this.booleanChart, Number(receipt.length), this.PEOPLE.length, false, receipt.booleanChart);
+      this.numberChart = this.initializeChart(this.numberChart, Number(receipt.length), this.PEOPLE.length, 0, receipt.numberChart);
+      this.split = this.initializeList(this.split, this.PEOPLE.length, this.taxPP, receipt.split);
+      this.selectAllPrice = this.initializeList(this.selectAllPrice, Number(receipt.length), false, receipt.selectAllPrice);
     });
   }
 
@@ -75,7 +68,7 @@ export class ReceiptDetailPage implements OnInit {
         size++;
       }
     }
-    if (size === this.PEOPLE.length) {
+    if (size === this.PEOPLE.length || size === 0) {
       this.selectAllPrice[itemIndex] = !this.selectAllPrice[itemIndex];
     }
     for (let i = 0; i < this.PEOPLE.length; i++) {
@@ -146,9 +139,10 @@ export class ReceiptDetailPage implements OnInit {
     this.receipt.split = this.split;
     this.receipt.numberChart = this.numberChart;
     this.receipt.booleanChart = this.booleanChart;
+    this.receipt.selectAllPrice = this.selectAllPrice;
     this.receiptApiService.update(this.receipt)
       .subscribe(res => {
-        console.log(res);
+        this.router.navigate(['/']);
       });
   }
 
@@ -164,6 +158,31 @@ export class ReceiptDetailPage implements OnInit {
       for (let j = 0; j < this.booleanChart.length; j++) {
         this.split[i] += this.numberChart[j][i];
       }
+    }
+  }
+
+  private initializeChart(chart, rowLength, colLength, value, newChart) {
+    if (newChart.length === 0) {
+      for (let i = 0; i < rowLength; i++) {
+        chart[i] = [];
+        for (let j = 0; j < colLength; j++) {
+          chart[i][j] = value;
+        }
+      }
+      return chart;
+    } else {
+      return newChart;
+    }
+  }
+
+  private initializeList(list, length, value, newList) {
+    if (newList.length === 0) {
+      for (let i = 0; i < length; i++) {
+        list[i] = value;
+      }
+      return list;
+    } else {
+      return newList;
     }
   }
 }

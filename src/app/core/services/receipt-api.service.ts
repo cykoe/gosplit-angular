@@ -23,7 +23,7 @@ export class ReceiptApiService {
   readonly endpoint: string = 'store';
 
   create(item: Receipt): Observable<Receipt> {
-    return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, this.receiptSerializer.toJson(item))
+    return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
         map(data => this.receiptSerializer.fromJson(data) as Receipt)
       );

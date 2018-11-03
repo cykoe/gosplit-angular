@@ -10,6 +10,7 @@ import { Receipt } from '../../../../shared/models/receipt';
 export class ThumbnailComponent implements OnInit {
 
   @Input() receipt: Receipt;
+  PEOPLE = ['Charlie', 'Takumi', 'Lawrence', 'Mohan', 'Haowei'];
 
   constructor() { }
 

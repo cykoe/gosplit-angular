@@ -9,6 +9,7 @@ export class Receipt {
   length?: number;
   split?: number[];
   driverList?: number[];
+  selectAllPrice?: boolean[];
   numberChart?: number[][];
   booleanChart?: boolean[][];
 }

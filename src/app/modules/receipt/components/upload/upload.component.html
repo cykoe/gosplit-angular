@@ -1,7 +1,8 @@
-<form action="/" method="post" enctype="multipart/form-data">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">
   <div class="form-group">
-    <label for="exampleFormControlFile1">Example file input</label>
-    <input type="file" class="form-control-file" id="exampleFormControlFile1" name="receipt">
+    <input type="file" id="receipt" (change)="onFileChange($event)" #fileInput>
+    <button type="button" class="btn btn-danger" (click)="clearFile()">clear file</button>
+    <button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit</button>
   </div>
-  <button class="btn btn-primary" type="submit">Submit form</button>
 </form>
+<app-loading-bar *ngIf="loading"></app-loading-bar>

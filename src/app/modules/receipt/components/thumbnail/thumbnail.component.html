@@ -2,13 +2,19 @@
   <div class="item-image">
     <div class="item-text-wrapper">
       <p class="item-text-dek">{{ receipt.store }}</p>
-      <h2 class="item-text-title">{{ receipt.date | date: short }}</h2>
+      <h2 class="item-text-title">{{ receipt.date | date: 'short' }}</h2>
     </div>
   </div>
   <div class="item-text">
     <div class="item-text-wrapper">
-      <p class="item-text-dek">C, T, M, L, H</p>
-      <h2 class="item-text-title">{{ receipt.split }}</h2>
+      <table class="item-text-dek table table-bordered">
+        <tr *ngFor="let split of receipt.split; let i = index">
+          <th>{{PEOPLE[i] | titlecase}}</th>
+          <th>{{split | number:'1.2-2' | currency}}</th>
+        </tr>
+    </table>
+      <!-- <p class="item-text-dek">C, T, M, L, H</p> -->
+      <!-- <h2 class="item-text-title">{{ receipt.split }}</h2> -->
     </div>
   </div>
   <a class="item-link" routerLink="/library/{{receipt.id}}"></a>

@@ -6,6 +6,8 @@ import { Receipt } from '../models/receipt';
 })
 export class ReceiptSerializer {
   fromJson(json: any): Receipt {
+    if (json.status)
+      return json;
     const receipt = new Receipt();
     receipt.id = json._id;
     receipt.subtotal = json.subtotal;
@@ -19,6 +21,7 @@ export class ReceiptSerializer {
     receipt.driverList = json.driverList;
     receipt.numberChart = json.numberChart;
     receipt.booleanChart = json.booleanChart;
+    receipt.selectAllPrice = json.selectAllPrice;
 
     return receipt;
   }
@@ -37,6 +40,7 @@ export class ReceiptSerializer {
       driverList: receipt.driverList,
       numberChart: receipt.numberChart,
       booleanChart: receipt.booleanChart,
+      selectAllPrice: receipt.selectAllPrice,
     };
   }
 }
