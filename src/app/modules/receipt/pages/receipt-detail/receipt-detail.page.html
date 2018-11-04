@@ -1,6 +1,5 @@
 <div *ngIf="receipt$ | async as receipt">
-  <h2>{{ receipt.store }}</h2>
-  <h3>{{ receipt.date | date:'short' }}</h3>
+  <h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>
   <table id="table" class="table table-bordered">
     <thead class="thead-dark">
     <tr>
@@ -37,18 +36,21 @@
       <td colspan="3" class="table-info"><strong>Total: $<span id="total">{{ receipt.total }}</span></strong></td>
     </tr>
     <tr class="row">
-      <td colspan="3" rowspan="2" class="table-dark">Per Person<br>(plus tax)</td>
+      <td colspan="3" rowspan="2" class="table-dark">Per Person(plus tax)<br><strong>Click on person<br>for driver/passenger rewards</strong></td>
       <td
         *ngFor="let name of PEOPLE; let i = index"
-        [class.table-dark]="driverList[i] == 0"
-        [class.table-success]="driverList[i] == 1"
-        [class.table-light]="driverList[i] == 2"
-        (click)="isDriver(i)">{{ name }}</td>
+        class="table-secondary"
+        (click)="isDriver(i)">
+        <button mat-raised-button color="primary"
+                matBadge="{{DRIVER[driverList[i]]}}" matBadgeColor="accent">
+          {{ name }}
+        </button>
+      </td>
     </tr>
     <tr class="row">
-      <td class="table-success" *ngFor="let price of split">{{ price | number:'1.2-2' | currency}}</td>
+      <td class="table-success" *ngFor="let price of split"><strong style="font-size: 1.2rem">{{ price | number:'1.2-2' | currency}}</strong></td>
     </tr>
     </tfoot>
   </table>
-  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="saveReceipt()">SAVE</button>
+  <button type="button" class="btn btn-primary btn-block" (click)="saveReceipt()">SAVE</button>
 </div>

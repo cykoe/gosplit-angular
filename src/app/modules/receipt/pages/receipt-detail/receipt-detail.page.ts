@@ -18,6 +18,7 @@ export class ReceiptDetailPage implements OnInit {
   receipt: Receipt;
   // a list of people
   PEOPLE = ['Charlie', 'Takumi', 'Lawrence', 'Mohan', 'Haowei'];
+  DRIVER = ['', '-5', '-10'];
   // 2D array maps to each user's selection on individual item
   booleanChart: boolean[][] = [];
   // 2D array map to each user's split on his selected item
@@ -57,6 +58,9 @@ export class ReceiptDetailPage implements OnInit {
       this.numberChart = this.initializeChart(this.numberChart, Number(receipt.length), this.PEOPLE.length, 0, receipt.numberChart);
       this.split = this.initializeList(this.split, this.PEOPLE.length, this.taxPP, receipt.split);
       this.selectAllPrice = this.initializeList(this.selectAllPrice, Number(receipt.length), false, receipt.selectAllPrice);
+      this.driverList = this.initializeList(this.driverList, Number(this.PEOPLE.length), 0, receipt.driverList);
+
+      console.log(receipt);
     });
   }
 
