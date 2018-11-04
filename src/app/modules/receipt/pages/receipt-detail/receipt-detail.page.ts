@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Routes, Router } from '@angular/router';
+import { ActivatedRoute, Router, Routes } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -59,8 +59,6 @@ export class ReceiptDetailPage implements OnInit {
       this.split = this.initializeList(this.split, this.PEOPLE.length, this.taxPP, receipt.split);
       this.selectAllPrice = this.initializeList(this.selectAllPrice, Number(receipt.length), false, receipt.selectAllPrice);
       this.driverList = this.initializeList(this.driverList, Number(this.PEOPLE.length), 0, receipt.driverList);
-
-      console.log(receipt);
     });
   }
 
