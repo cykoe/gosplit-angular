@@ -2,7 +2,8 @@ h2, h3
   text-align: center
 
 input[type=checkbox]:checked + label:before
-  background: #007f2c
+  background: #dc3545
+  border-color: #dc3545
   color: #fff
   transform: rotate(360deg)
   transform-origin: center center
@@ -15,20 +16,28 @@ input[type=checkbox]
 
 table label
   cursor: pointer
+  display: flex
+  justify-content: center
+  align-items: center
+  position: relative
+  top: 20px
   &:before
     display: inline-block
     content: attr(data-name)
-    margin: 0 10px 0 0
-    width: 35px
-    height: 35px
-    border: 3px solid #f95e5e
+    margin: 0
+    padding: 0
+    width: 50px
+    height: 50px
+    border: 3px solid #007bff
+    background-color: #007bff
+    color: white
     border-radius: 100%
     vertical-align: middle
-    color: #f95e5e
-    font-size: 30px
+    //color: #f95e5e
+    font-size: 35px
     text-align: center
-    font-weight: 700
-    line-height: 0.9em
+    font-weight: 500
+    line-height: 1.2em
     transition: transform 0.2s ease-in-out
 
 #table
@@ -44,3 +53,10 @@ table label
     cursor: pointer
   &.selected
     background: #f3f3f3
+
+.row
+  .name
+    font-size: 1.2em
+    font-style: italic
+  .price
+    font-weight: bold

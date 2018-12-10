@@ -18,6 +18,13 @@ export class ReceiptDetailPage implements OnInit {
   receipt: Receipt;
   // a list of people
   PEOPLE = ['Charlie', 'Takumi', 'Lawrence', 'Mohan', 'Haowei'];
+  CHINESE = {
+    'C': '查',
+    'T': '黎',
+    'L': '劳',
+    'M': '寒',
+    'H': '伟'
+  };
   DRIVER = ['', '-5', '-10'];
   // 2D array maps to each user's selection on individual item
   booleanChart: boolean[][] = [];
