@@ -25,7 +25,7 @@
       <td
         *ngFor="let name of PEOPLE; let j = index"
         (click)="changeRowPrice(i, j)"><input type="checkbox" [checked]="booleanChart[i][j]"><label
-        [attr.data-name]="CHINESE[name.substring(0,1)]"></label></td>
+        [attr.data-name]="name.substring(0,1)"></label></td>
     </tr>
     </tbody>
     <tfoot id="footer">
