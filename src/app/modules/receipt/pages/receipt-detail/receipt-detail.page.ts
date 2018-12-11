@@ -77,7 +77,7 @@ export class ReceiptDetailPage implements OnInit {
         size++;
       }
     }
-    if (size === this.PEOPLE.length || size === 0) {
+    if (size === this.PEOPLE.length) {
       this.selectAllPrice[itemIndex] = !this.selectAllPrice[itemIndex];
     }
     for (let i = 0; i < this.PEOPLE.length; i++) {

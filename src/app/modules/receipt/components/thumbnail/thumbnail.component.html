@@ -7,7 +7,7 @@
   </div>
   <div class="item-text">
     <div class="item-text-wrapper">
-      <table class="item-text-dek table table-bordered">
+      <table class="item-text-dek table table-sm">
         <tr *ngFor="let split of receipt.split; let i = index">
           <th>{{PEOPLE[i] | titlecase}}</th>
           <th>{{split | number:'1.2-2' | currency}}</th>
