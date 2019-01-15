@@ -1,8 +1,7 @@
-<!--<form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">-->
-  <!--<div class="form-group">-->
-    <!--<input type="file" id="receipt" (change)="onFileChange($event)" #fileInput>-->
-    <!--<button type="button" class="btn btn-danger" (click)="clearFile()">clear file</button>-->
-    <!--<button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit</button>-->
-  <!--</div>-->
-<!--</form>-->
-<!--<app-loading-bar *ngIf="loading"></app-loading-bar>-->
+<form [formGroup]="form">
+  <div class="form-group">
+    <input type="file" id="receipt" (change)="onFileChange($event)" #fileInput>
+    <input type="text" id="payer" placeholder="Who paid?" #payer>
+    <button (click)="onSubmit()" mat-raised-button color="primary" [disabled]="form.invalid || loading">Submit</button>
+  </div>
+</form>

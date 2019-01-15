@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReceiptApiService } from '../../../../core/services/receipt-api.service';
 import { Router } from '@angular/router';
 
@@ -11,9 +11,12 @@ import { Router } from '@angular/router';
 export class UploadComponent {
 
   form: FormGroup;
-  loading: boolean = false;
+  loading = false;
+  @Output() isError = new EventEmitter<boolean>();
+  @Output() isUploading = new EventEmitter<boolean>();
 
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('payer') payer: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -25,34 +28,39 @@ export class UploadComponent {
 
   createForm() {
     this.form = this.fb.group({
-      receipt: null
+      receipt: null,
+      payer: null,
     });
   }
 
   onFileChange(event) {
-    if(event.target.files.length > 0) {
-      let file = event.target.files[0];
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
       this.form.get('receipt').setValue(file);
     }
   }
 
   private prepareSave(): any {
-    let input = new FormData();
+    const input = new FormData();
     input.append('receipt', this.form.get('receipt').value);
+    input.append('payer', this.payer.nativeElement.value);
+
     return input;
   }
 
   onSubmit() {
     const formModel = this.prepareSave();
     this.loading = true;
+    this.isUploading.emit(this.loading);
     this.receiptApiService.create(formModel)
       .subscribe(res => {
         this.loading = false;
-      })
-  }
-
-  clearFile() {
-    this.form.get('receipt').setValue(null);
-    this.fileInput.nativeElement.value = '';
+        this.isUploading.emit(this.loading);
+        location.reload();
+      }, err => {
+        this.loading = false;
+        this.isUploading.emit(this.loading);
+        this.isError.emit(err);
+      });
   }
 }

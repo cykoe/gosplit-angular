@@ -1,8 +1,5 @@
-<div class="container">
-  <app-upload></app-upload>
-  <app-sort></app-sort>
-  <app-thumbnail
-    *ngFor="let receipt of receipts$ | async"
-    [receipt]="receipt"
-  ></app-thumbnail>
+<div class="example-container mat-elevation-z8">
+  <app-upload (isError)="onErrors($event)" (isUploading)="onUploading($event)"></app-upload>
+  <app-loading-bar [isLoadingResults]="isLoadingResults" [isUploadingErrors]="isUploadingErrors"></app-loading-bar>
+  <app-list></app-list>
 </div>

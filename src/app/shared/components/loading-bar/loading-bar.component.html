@@ -1,1 +1,5 @@
-<div class="spinner"></div>
+<div class="example-loading-shade" *ngIf="isLoadingResults || isUploadingErrors">
+  <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  <div class="example-rate-limit-reached" *ngIf="isUploadingErrors">Error: {{isUploadingErrors.message}}
+  </div>
+</div>

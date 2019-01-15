@@ -17,10 +17,10 @@ export class ReceiptDetailPage implements OnInit {
   receipt$: Observable<Receipt>;
   receipt: Receipt;
   // a list of people
-  PEOPLE = ['Charlie', 'Takumi', 'Lawrence', 'Mohan', 'Haowei'];
+  PEOPLE = ['Charlie', 'Xinghan', 'Lawrence', 'Mohan', 'Haowei'];
   CHINESE = {
     'C': '查',
-    'T': '黎',
+    'X': '黎',
     'L': '劳',
     'M': '寒',
     'H': '伟'

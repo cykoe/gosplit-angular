@@ -6,24 +6,27 @@ import { Receipt } from '../models/receipt';
 })
 export class ReceiptSerializer {
   fromJson(json: any): Receipt {
-    if (json.status)
+    if (json.success) {
       return json;
+    } else {
     const receipt = new Receipt();
-    receipt.id = json._id;
-    receipt.subtotal = json.subtotal;
-    receipt.total = json.total;
-    receipt.tax = json.tax;
-    receipt.date = json.date;
-    receipt.list = json.list;
-    receipt.store = json.store;
-    receipt.length = json.length;
-    receipt.split = json.split;
-    receipt.driverList = json.driverList;
-    receipt.numberChart = json.numberChart;
-    receipt.booleanChart = json.booleanChart;
-    receipt.selectAllPrice = json.selectAllPrice;
+      receipt.id = json._id;
+      receipt.subtotal = json.subtotal;
+      receipt.total = json.total;
+      receipt.tax = json.tax;
+      receipt.date = json.date;
+      receipt.list = json.list;
+      receipt.store = json.store;
+      receipt.length = json.length;
+      receipt.split = json.split;
+      receipt.driverList = json.driverList;
+      receipt.numberChart = json.numberChart;
+      receipt.booleanChart = json.booleanChart;
+      receipt.selectAllPrice = json.selectAllPrice;
+      receipt.payer = json.payer;
 
-    return receipt;
+      return receipt;
+    }
   }
 
   toJson(receipt: Receipt): any {

@@ -12,6 +12,7 @@ export class Receipt {
   selectAllPrice?: boolean[];
   numberChart?: number[][];
   booleanChart?: boolean[][];
+  payer: string;
 }
 
 class List {

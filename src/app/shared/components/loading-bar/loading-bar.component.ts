@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-loading-bar',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./loading-bar.component.sass']
 })
 export class LoadingBarComponent implements OnInit {
+
+  @Input() isLoadingResults: boolean;
+  @Input() isUploadingErrors: string;
 
   constructor() { }
 

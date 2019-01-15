@@ -3,14 +3,18 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatIconModule} from '@angular/material/icon';
 
 import { ReceiptRoutingModule } from './receipt-routing.module';
 import { ReceiptListPage } from './pages/receipt-list/receipt-list.page';
 import { ReceiptDetailPage } from './pages/receipt-detail/receipt-detail.page';
-import { SortComponent } from './components/sort/sort.component';
 import { ThumbnailComponent } from './components/thumbnail/thumbnail.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { LoadingBarComponent } from '../../shared/components/loading-bar/loading-bar.component';
+import { ListComponent } from './components/list/list.component';
 
 @NgModule({
   imports: [
@@ -18,15 +22,19 @@ import { LoadingBarComponent } from '../../shared/components/loading-bar/loading
     ReceiptRoutingModule,
     ReactiveFormsModule,
     MatBadgeModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatIconModule
   ],
   declarations: [
     ReceiptListPage,
     ReceiptDetailPage,
-    SortComponent,
     ThumbnailComponent,
     UploadComponent,
-    LoadingBarComponent
+    LoadingBarComponent,
+    ListComponent
   ]
 })
 export class ReceiptModule {
