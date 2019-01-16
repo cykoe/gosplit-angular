@@ -7,6 +7,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material';
 
 import { ReceiptRoutingModule } from './receipt-routing.module';
 import { ReceiptListPage } from './pages/receipt-list/receipt-list.page';
@@ -26,7 +28,9 @@ import { ListComponent } from './components/list/list.component';
     MatTableModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [
     ReceiptListPage,

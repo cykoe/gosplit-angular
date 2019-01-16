@@ -38,4 +38,9 @@ export class ListComponent implements OnInit {
     this.router.navigate([`/library/${row.id}`]);
   }
 
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.totalCost = this.dataSource.filteredData.map(t => t.split).reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
+  }
+
 }
