@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { LoginService } from '../core/services/login.service';
-import { Observable, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { AuthService } from '../core/services/auth.service';
+import { UsernameValidator } from '../core/validators/username.validator';
 
 @Component({
   selector: 'app-login',
@@ -11,34 +10,22 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
   styleUrls: ['./login.component.sass'],
 })
 export class LoginComponent implements OnInit {
-  addressForm = this.fb.group({
-    company: null,
-    username: [null, Validators.required],
-    password: [null, Validators.required],
-  });
-  cUsername$: Observable<any>;
-  private vUsername$ = new Subject<string>();
-  private vPassword$ = new Subject<string>();
+  loginForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
-    private auth: LoginService) {
+    private usernameValidator: UsernameValidator,
+    private auth: AuthService) {
   }
 
-  ngOnInit() {
-    console.log('hi');
-    this.cUsername$ = this.vUsername$.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(username => this.auth.checkUsername({username}))
-    );
-  }
-
-  verifyUsername(username: string) {
-    this.vUsername$.next(username);
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: [null, [Validators.required], [this.usernameValidator.validate.bind(this)]],
+      password: [null, [Validators.required]],
+    }, {updateOn: 'blur'});
   }
 
   verifyPassword(password: string) {
-    this.vPassword$.next(password);
+    this.auth.login({username: this.loginForm.get('username').value, password});
   }
 }

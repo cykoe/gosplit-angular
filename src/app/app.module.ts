@@ -10,6 +10,7 @@ import { FooterComponent } from './core/footer/footer.component';
 import { LoginComponent } from './login/login.component';
 import { MatInputModule, MatButtonModule, MatSelectModule, MatRadioModule, MatCardModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { httpInterceptorProviders } from './core/interceptors';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

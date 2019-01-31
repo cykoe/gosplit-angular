@@ -1,22 +1,23 @@
-<form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+<form [formGroup]="loginForm" novalidate autocomplete="off">
   <mat-card class="shipping-card">
     <mat-card-content>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Username" formControlName="username" (keyup)="verifyUsername($event.target.value)">
-            <div *ngIf="cUsername$ | async as username">{{ username.message }}</div>
-
-            <mat-error *ngIf="addressForm.controls['username'].hasError('required')">
+            <input matInput placeholder="Username" formControlName="username">
+            <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
               First name is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="loginForm.controls['username'].hasError('usernameWrong')">
+              Username is <strong>incorrect</strong>
             </mat-error>
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Password" formControlName="password" (keyup)="verifyPassword($event.target.value)">
-            <mat-error *ngIf="addressForm.controls['password'].hasError('required')">
-              Last name is <strong>required</strong>
+            <input matInput placeholder="Password" formControlName="password" (keyup.enter)="verifyPassword($event.target.value)">
+            <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+              Password is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
