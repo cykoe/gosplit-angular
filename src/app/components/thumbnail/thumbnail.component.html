@@ -9,8 +9,8 @@
     <div class="item-text-wrapper">
       <table class="item-text-dek table table-sm">
         <tr *ngFor="let split of receipt.split; let i = index">
-          <th>{{PEOPLE[i] | titlecase}}</th>
-          <th>{{split | number:'1.2-2' | currency}}</th>
+          <th>{{ PEOPLE[i] | titlecase }}</th>
+          <th>{{ split | number:'1.2-2' | currency }}</th>
         </tr>
     </table>
       <!-- <p class="item-text-dek">C, T, M, L, H</p> -->

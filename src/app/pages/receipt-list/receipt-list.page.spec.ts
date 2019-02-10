@@ -1,11 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { ReceiptListPage } from './receipt-list.page';
-import { UploadComponent } from '../../components/upload/upload.component';
 import { SortComponent } from '../../components/sort/sort.component';
 import { ThumbnailComponent } from '../../components/thumbnail/thumbnail.component';
+import { UploadComponent } from '../../components/upload/upload.component';
+import { ReceiptListPage } from './receipt-list.page';
 
 describe('LibraryComponent', () => {
   let component: ReceiptListPage;
@@ -17,12 +17,12 @@ describe('LibraryComponent', () => {
         ReceiptListPage,
         UploadComponent,
         SortComponent,
-        ThumbnailComponent
+        ThumbnailComponent,
       ],
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
-      ]
+        RouterTestingModule,
+      ],
     })
     .compileComponents();
   }));

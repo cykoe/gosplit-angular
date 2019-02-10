@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 import { Observable, of, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { environment } from '../../../environments/environment';
 import { Receipt } from '../../shared/models/receipt';
 import { ReceiptSerializer } from '../../shared/serializers/receipt-serializer';
-import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ReceiptApiService {
 
@@ -25,28 +25,28 @@ export class ReceiptApiService {
   create(item: Receipt): Observable<Receipt> {
     return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
-        map(data => this.receiptSerializer.fromJson(data) as Receipt)
+        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
       );
   }
 
   read(id: string): Observable<Receipt> {
     return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${id}`)
       .pipe(
-        map(data => this.receiptSerializer.fromJson(data) as Receipt)
+        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
       );
   }
 
   list(): Observable<Receipt[]> {
     return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`)
       .pipe(
-        map(data => this.convertData(data))
+        map((data) => this.convertData(data)),
       );
   }
 
   update(item: Receipt): Observable<Receipt> {
     return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, this.receiptSerializer.toJson(item))
       .pipe(
-        map(data => this.receiptSerializer.fromJson(data) as Receipt)
+        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
       );
   }
 

@@ -7,44 +7,44 @@
     <!-- Date Column -->
     <ng-container matColumnDef="Date">
       <th mat-header-cell *matHeaderCellDef> Date</th>
-      <td mat-cell *matCellDef="let element" class="date-column"> {{element.date | date: 'shortDate'}}</td>
+      <td mat-cell *matCellDef="let element" class="date-column"> {{ element.date | date: 'shortDate' }}</td>
       <td mat-footer-cell *matFooterCellDef> Total</td>
     </ng-container>
 
     <ng-container matColumnDef="Charlie">
       <th mat-header-cell *matHeaderCellDef> Charlie</th>
-      <td mat-cell *matCellDef="let element"> {{element.split[0] | number:'1.2-2' | currency}}
+      <td mat-cell *matCellDef="let element"> {{ element.split[0] | number:'1.2-2' | currency }}
         <mat-icon *ngIf="element.payer=='Charlie'">attach_money</mat-icon>
       </td>
-      <td mat-footer-cell *matFooterCellDef> {{totalCost[0] | currency}}</td>
+      <td mat-footer-cell *matFooterCellDef> {{ totalCost[0] | currency }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Xinghan">
       <th mat-header-cell *matHeaderCellDef> Xinghan</th>
-      <td mat-cell *matCellDef="let element"> {{element.split[1] | number:'1.2-2' | currency}}
+      <td mat-cell *matCellDef="let element"> {{ element.split[1] | number:'1.2-2' | currency }}
         <mat-icon *ngIf="element.payer=='Xinghan'">attach_money</mat-icon></td>
-      <td mat-footer-cell *matFooterCellDef> {{totalCost[1] | currency}}</td>
+      <td mat-footer-cell *matFooterCellDef> {{ totalCost[1] | currency }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Lawrence">
       <th mat-header-cell *matHeaderCellDef> Lawrence</th>
-      <td mat-cell *matCellDef="let element"> {{element.split[2] | number:'1.2-2' | currency}}
+      <td mat-cell *matCellDef="let element"> {{ element.split[2] | number:'1.2-2' | currency }}
         <mat-icon *ngIf="element.payer=='Lawrence'">attach_money</mat-icon></td>
-      <td mat-footer-cell *matFooterCellDef> {{totalCost[2] | currency}}</td>
+      <td mat-footer-cell *matFooterCellDef> {{ totalCost[2] | currency }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Mohan">
       <th mat-header-cell *matHeaderCellDef> Mohan</th>
-      <td mat-cell *matCellDef="let element"> {{element.split[3] | number:'1.2-2' | currency}}
+      <td mat-cell *matCellDef="let element"> {{ element.split[3] | number:'1.2-2' | currency }}
         <mat-icon *ngIf="element.payer=='Mohan'">attach_money</mat-icon></td>
-      <td mat-footer-cell *matFooterCellDef> {{totalCost[3] | currency}}</td>
+      <td mat-footer-cell *matFooterCellDef> {{ totalCost[3] | currency }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Haowei">
       <th mat-header-cell *matHeaderCellDef> Haowei</th>
-      <td mat-cell *matCellDef="let element"> {{element.split[4] | number:'1.2-2' | currency}}
+      <td mat-cell *matCellDef="let element"> {{ element.split[4] | number:'1.2-2' | currency }}
         <mat-icon *ngIf="element.payer=='Haowei'">attach_money</mat-icon></td>
-      <td mat-footer-cell *matFooterCellDef> {{totalCost[4] | currency}}</td>
+      <td mat-footer-cell *matFooterCellDef> {{ totalCost[4] | currency }}</td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

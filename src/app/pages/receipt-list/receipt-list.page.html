@@ -1,5 +1,5 @@
 <div class="example-container mat-elevation-z8">
-  <app-upload (isError)="onErrors($event)" (isUploading)="onUploading($event)"></app-upload>
+  <app-upload *ngIf="isLoggedIn()" (isError)="onErrors($event)" (isUploading)="onUploading($event)"></app-upload>
   <app-loading-bar [isLoadingResults]="isLoadingResults" [isUploadingErrors]="isUploadingErrors"></app-loading-bar>
   <app-list></app-list>
 </div>

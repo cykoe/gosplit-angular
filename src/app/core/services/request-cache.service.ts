@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 export interface RequestCacheEntry {
   url: string;
@@ -41,7 +41,7 @@ export class RequestCacheService implements RequestCache {
     this.cache.set(url, entry);
 
     const expired = Date.now() - maxAge;
-    this.cache.forEach(e => {
+    this.cache.forEach((e) => {
       if (e.lastRead < expired) {
         this.cache.delete(e.url);
       }

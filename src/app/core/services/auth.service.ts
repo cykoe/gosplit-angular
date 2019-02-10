@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
@@ -16,7 +16,7 @@ interface LoginRes {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
@@ -39,7 +39,7 @@ export class AuthService {
           this.router.navigate(['/library']);
         }
       },
-      (err) => console.error(err)
+      (err) => console.error(err),
     );
   }
 

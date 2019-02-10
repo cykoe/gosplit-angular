@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { Receipt } from '../../../../shared/models/receipt';
-import { ReceiptApiService } from '../../../../core/services/receipt-api.service';
+import { ReceiptApiService } from '../../core/services/receipt-api.service';
+import { Receipt } from '../../shared/models/receipt';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.sass']
+  styleUrls: ['./list.component.sass'],
 })
 export class ListComponent implements OnInit {
 
@@ -20,17 +20,17 @@ export class ListComponent implements OnInit {
 
   constructor(
     private receiptApiService: ReceiptApiService,
-    private router: Router
+    private router: Router,
   ) {
   }
 
   ngOnInit() {
     this.receipts$ = this.receiptApiService.list();
-    this.receipts$.subscribe(receipts => {
+    this.receipts$.subscribe((receipts) => {
       receipts.sort((val1, val2) => +new Date(val2.date) - +new
       Date(val1.date));
       this.dataSource = new MatTableDataSource<Receipt>(receipts);
-      this.totalCost = receipts.map(t => t.split).reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
+      this.totalCost = receipts.map((t) => t.split).reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
     });
   }
 
@@ -40,7 +40,8 @@ export class ListComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.totalCost = this.dataSource.filteredData.map(t => t.split).reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
+    this.totalCost = this.dataSource.filteredData.map(
+      (t) => t.split).reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
   }
 
 }

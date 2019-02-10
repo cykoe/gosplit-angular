@@ -4,13 +4,13 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Receipt } from '../../../../shared/models/receipt';
-import { ReceiptApiService } from '../../../../core/services/receipt-api.service';
+import { ReceiptApiService } from '../../core/services/receipt-api.service';
+import { Receipt } from '../../shared/models/receipt';
 
 @Component({
   selector: 'app-receipt-detail',
   templateUrl: './receipt-detail.page.html',
-  styleUrls: ['./receipt-detail.page.sass']
+  styleUrls: ['./receipt-detail.page.sass'],
 })
 export class ReceiptDetailPage implements OnInit {
 
@@ -19,11 +19,11 @@ export class ReceiptDetailPage implements OnInit {
   // a list of people
   PEOPLE = ['Charlie', 'Xinghan', 'Lawrence', 'Mohan', 'Haowei'];
   CHINESE = {
-    'C': '查',
-    'X': '黎',
-    'L': '劳',
-    'M': '寒',
-    'H': '伟'
+    C: '查',
+    X: '黎',
+    L: '劳',
+    M: '寒',
+    H: '伟',
   };
   DRIVER = ['', '-5', '-10'];
   // 2D array maps to each user's selection on individual item
@@ -48,18 +48,18 @@ export class ReceiptDetailPage implements OnInit {
   constructor(
     private receiptApiService: ReceiptApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
   }
 
   ngOnInit() {
     this.receipt$ = this.route.paramMap.pipe(
-      switchMap(params => this.receipt$ = this.receiptApiService.read(params.get('receiptId')))
+      switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
     );
     // Initialize 2D array
-    this.receipt$.subscribe(receipt => {
+    this.receipt$.subscribe((receipt) => {
       this.receipt = receipt;
-      this.receiptPrice = receipt.list.map(item => Number(item.price));
+      this.receiptPrice = receipt.list.map((item) => Number(item.price));
       this.taxPP = Number(receipt.tax) / this.PEOPLE.length;
       this.booleanChart = this.initializeChart(this.booleanChart, Number(receipt.length), this.PEOPLE.length, false, receipt.booleanChart);
       this.numberChart = this.initializeChart(this.numberChart, Number(receipt.length), this.PEOPLE.length, 0, receipt.numberChart);
@@ -81,11 +81,7 @@ export class ReceiptDetailPage implements OnInit {
       this.selectAllPrice[itemIndex] = !this.selectAllPrice[itemIndex];
     }
     for (let i = 0; i < this.PEOPLE.length; i++) {
-      if (this.booleanChart[itemIndex][i]) {
-        this.numberChart[itemIndex][i] = this.receiptPrice[itemIndex] / size;
-      } else {
-        this.numberChart[itemIndex][i] = 0.00;
-      }
+      this.numberChart[itemIndex][i] = (this.booleanChart[itemIndex][i]) ? this.receiptPrice[itemIndex] / size : 0.00;
     }
     this.calculateFinalPrice();
   }
@@ -150,18 +146,14 @@ export class ReceiptDetailPage implements OnInit {
     this.receipt.booleanChart = this.booleanChart;
     this.receipt.selectAllPrice = this.selectAllPrice;
     this.receiptApiService.update(this.receipt)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.router.navigate(['/']);
       });
   }
 
   private calculateFinalPrice(...drivers) {
     for (let i = 0; i < this.split.length; i++) {
-      if (drivers[0]) {
-        this.split[i] = this.taxPP - drivers[0][i];
-      } else {
-        this.split[i] = this.taxPP;
-      }
+      this.split[i] = (drivers[0]) ? this.taxPP - drivers[0][i] : this.taxPP;
     }
     for (let i = 0; i < this.PEOPLE.length; i++) {
       for (let j = 0; j < this.booleanChart.length; j++) {

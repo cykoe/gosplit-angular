@@ -1,19 +1,19 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ReceiptApiService } from '../../../../core/services/receipt-api.service';
 import { Router } from '@angular/router';
+import { ReceiptApiService } from '../../core/services/receipt-api.service';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.sass']
+  styleUrls: ['./upload.component.sass'],
 })
 export class UploadComponent {
 
   form: FormGroup;
   loading = false;
-  @Output() isError = new EventEmitter<boolean>();
-  @Output() isUploading = new EventEmitter<boolean>();
+  @Output() readonly isError = new EventEmitter<boolean>();
+  @Output() readonly isUploading = new EventEmitter<boolean>();
 
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('payer') payer: ElementRef;
@@ -21,7 +21,7 @@ export class UploadComponent {
   constructor(
     private fb: FormBuilder,
     private receiptApiService: ReceiptApiService,
-    private router: Router
+    private router: Router,
   ) {
     this.createForm();
   }
@@ -53,11 +53,11 @@ export class UploadComponent {
     this.loading = true;
     this.isUploading.emit(this.loading);
     this.receiptApiService.create(formModel)
-      .subscribe(res => {
+      .subscribe((res) => {
         this.loading = false;
         this.isUploading.emit(this.loading);
         location.reload();
-      }, err => {
+      }, (err) => {
         this.loading = false;
         this.isUploading.emit(this.loading);
         this.isError.emit(err);

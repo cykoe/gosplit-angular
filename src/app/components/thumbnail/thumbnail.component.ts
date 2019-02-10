@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { Receipt } from '../../../../shared/models/receipt';
+import { Receipt } from '../../shared/models/receipt';
 
 @Component({
   selector: 'app-thumbnail',
   templateUrl: './thumbnail.component.html',
-  styleUrls: ['./thumbnail.component.sass']
+  styleUrls: ['./thumbnail.component.sass'],
 })
 export class ThumbnailComponent implements OnInit {
 

@@ -13,17 +13,17 @@ interface CheckedUsername {
 @Injectable({ providedIn: 'root' })
 export class UsernameValidator implements AsyncValidator {
   constructor(
-    private auth: AuthService
+    private auth: AuthService,
   ) {
   }
 
   validate(
-    ctrl: AbstractControl
+    ctrl: AbstractControl,
   ): Observable<ValidationErrors | null> |
     Promise<ValidationErrors | null> {
     return this.auth.checkUsername({username: ctrl.value}).pipe(
       map((isChecked: CheckedUsername) => isChecked.success ? null : {usernameWrong: true}),
-      catchError(() => null)
+      catchError(() => null),
     );
   }
 }

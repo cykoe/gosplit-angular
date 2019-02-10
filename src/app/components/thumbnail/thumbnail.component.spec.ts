@@ -1,14 +1,15 @@
+/* tslint:disable */
+import { DebugElement, Directive, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement, Directive, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { Receipt } from '../../shared/models/receipt';
 import { ThumbnailComponent } from './thumbnail.component';
-import { Receipt } from '../../../../shared/models/receipt';
 
 @Directive({
   selector: '[routerLink]',
-  host: {'(click)': 'onClick()'}
+  host: {'(click)': 'onClick()'},
 })
 class RouterLinkDirectiveStub {
   @Input('routerLink') linkParams: any;
@@ -28,7 +29,7 @@ describe('ThumbnailComponent', () => {
       imports: [
         RouterTestingModule,
       ],
-      declarations: [ThumbnailComponent]
+      declarations: [ThumbnailComponent],
     });
     fixture = TestBed.createComponent(ThumbnailComponent);
     component = fixture.componentInstance;
@@ -52,4 +53,3 @@ describe('ThumbnailComponent', () => {
     expect(p.textContent).toEqual('store');
   });
 });
-
