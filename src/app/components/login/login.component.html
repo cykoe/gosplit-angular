@@ -1,7 +1,7 @@
 <form [formGroup]="loginForm" novalidate autocomplete="off">
   <mat-card class="shipping-card">
     <mat-card-content>
-      <div class="row">
+      <div class="row" *ngIf="!isLoggedIn()">
         <div class="col">
           <mat-form-field class="full-width">
             <input matInput placeholder="Username" formControlName="username">
@@ -21,6 +21,9 @@
             </mat-error>
           </mat-form-field>
         </div>
+      </div>
+      <div *ngIf="isLoggedIn()">
+        <button mat-raised-button (click)="logout()">Logout</button>
       </div>
     </mat-card-content>
   </mat-card>

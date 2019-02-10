@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material';
+import { HeaderService } from '../services/header.service';
+
+const TABS = {
+  Home: 0,
+  Upload: 1,
+  About: 2,
+};
 
 @Component({
   selector: 'app-header',
@@ -7,9 +15,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  selectedTab: number;
+
+  constructor(
+    private headerService: HeaderService,
+  ) { }
 
   ngOnInit() {
+    this.selectedTab = TABS.Home;
+  }
+
+  changeTab(tabChangeEvent: MatTabChangeEvent): void {
+    this.headerService.changeTab(tabChangeEvent.tab.textLabel);
+    this.selectedTab = TABS[tabChangeEvent.tab.textLabel];
   }
 
 }

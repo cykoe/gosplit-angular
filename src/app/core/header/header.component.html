@@ -6,22 +6,25 @@
       GoSplit@Online
     </div>
   </div>
-  <mat-tab-group mat-align-tabs="center">
-    <mat-tab label="First">
+  <mat-tab-group
+    mat-align-tabs="center"
+    (selectedTabChange)="changeTab($event)"
+    [selectedIndex]="selectedTab">
+    <mat-tab label="Home">
       <ng-template mat-tab-label>
         <div class="header-label">
           Home
         </div>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Second">
+    <mat-tab label="Upload">
       <ng-template mat-tab-label>
         <div class="header-label">
           Upload
         </div>
       </ng-template>
     </mat-tab>
-    <mat-tab label="Third">
+    <mat-tab label="About">
       <ng-template mat-tab-label>
         <div class="header-label">
           About

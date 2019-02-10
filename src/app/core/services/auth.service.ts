@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
+import { HeaderService } from './header.service';
 
 interface LoginInfo {
   username?: string;
@@ -22,6 +23,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
+    private headerService: HeaderService,
     private router: Router) {
   }
 
@@ -36,7 +38,7 @@ export class AuthService {
       (res: LoginRes) => {
         if (res.success) {
           localStorage.setItem('token', res.token);
-          this.router.navigate(['/library']);
+          this.headerService.changeTab('Home');
         }
       },
       (err) => console.error(err),
@@ -45,5 +47,9 @@ export class AuthService {
 
   get token() {
     return localStorage.getItem('token');
+  }
+
+  logout() {
+    return localStorage.clear();
   }
 }

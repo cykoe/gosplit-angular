@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { ReceiptApiService } from '../../core/services/receipt-api.service';
 import { Receipt } from '../../shared/models/receipt';
 
+import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -21,6 +22,7 @@ export class ListComponent implements OnInit {
   constructor(
     private receiptApiService: ReceiptApiService,
     private router: Router,
+    private auth: AuthService,
   ) {
   }
 
@@ -35,7 +37,9 @@ export class ListComponent implements OnInit {
   }
 
   gotoReceipt(row) {
-    this.router.navigate([`/library/${row.id}`]);
+    if (!!this.auth.token) {
+      this.router.navigate([`/library/${row.id}`]);
+    }
   }
 
   applyFilter(filterValue: string) {
