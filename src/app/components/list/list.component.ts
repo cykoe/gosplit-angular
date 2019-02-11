@@ -39,7 +39,6 @@ export class ListComponent implements OnInit {
   gotoReceipt(row) {
     if (!!this.auth.token) {
       this.router.navigate([`/library/${row.id}`]);
-      this.receiptApiService.getReceipt(row.id);
     }
   }
 

@@ -1,4 +1,4 @@
-export class Receipt {
+export interface Receipt {
   id?: string;
   subtotal?: number;
   total?: number;
@@ -12,12 +12,13 @@ export class Receipt {
   selectAllPrice?: boolean[];
   numberChart?: number[][];
   booleanChart?: boolean[][];
-  payer: string;
+  payer?: string;
+  people?: string[];
 }
 
-class List {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
+interface List {
+  id?: number;
+  name?: string;
+  price?: number;
+  image?: string;
 }

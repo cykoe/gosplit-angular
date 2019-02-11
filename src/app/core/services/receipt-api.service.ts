@@ -28,14 +28,14 @@ export class ReceiptApiService {
   create(item: Receipt): Observable<Receipt> {
     return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
   }
 
   read(id: string): Observable<Receipt> {
     return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${id}`)
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
   }
 
@@ -49,7 +49,7 @@ export class ReceiptApiService {
   update(item: Receipt): Observable<Receipt> {
     return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, this.receiptSerializer.toJson(item))
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
   }
 
@@ -58,7 +58,7 @@ export class ReceiptApiService {
   }
 
   protected convertData(data: any): Receipt[] {
-    return data.map((item: any) => this.receiptSerializer.fromJson(item));
+    return data.map((item: any) => ReceiptSerializer.fromJson(item));
   }
 
   getReceipt(id: string) {

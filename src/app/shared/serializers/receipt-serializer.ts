@@ -5,11 +5,8 @@ import { Receipt } from '../models/receipt';
   providedIn: 'root',
 })
 export class ReceiptSerializer {
-  fromJson(json: any): Receipt {
-    if (json.success) {
-      return json;
-    } else {
-    const receipt = new Receipt();
+  static fromJson(json: any): Receipt | object {
+    const receipt: Receipt = {};
     receipt.id = json._id;
     receipt.subtotal = json.subtotal;
     receipt.total = json.total;
@@ -24,12 +21,12 @@ export class ReceiptSerializer {
     receipt.booleanChart = json.booleanChart;
     receipt.selectAllPrice = json.selectAllPrice;
     receipt.payer = json.payer;
+    receipt.people = json.people;
 
     return receipt;
-    }
   }
 
-  toJson(receipt: Receipt): any {
+  static toJson(receipt: Receipt): object {
     return {
       id: receipt.id,
       subtotal: receipt.subtotal,
@@ -44,6 +41,8 @@ export class ReceiptSerializer {
       numberChart: receipt.numberChart,
       booleanChart: receipt.booleanChart,
       selectAllPrice: receipt.selectAllPrice,
+      payer: receipt.payer,
+      people: receipt.people,
     };
   }
 }
