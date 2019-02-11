@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
+import { Router } from '@angular/router';
+
+import { Location } from '@angular/common';
 import { HeaderService } from '../services/header.service';
 
 const TABS = {
@@ -19,6 +22,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private headerService: HeaderService,
+    private _location: Location,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -28,6 +33,14 @@ export class HeaderComponent implements OnInit {
   changeTab(tabChangeEvent: MatTabChangeEvent): void {
     this.headerService.changeTab(tabChangeEvent.tab.textLabel);
     this.selectedTab = TABS[tabChangeEvent.tab.textLabel];
+  }
+
+  returnClicked() {
+    this._location.back();
+  }
+
+  cancelClicked() {
+    this.router.navigate([`/`]);
   }
 
 }

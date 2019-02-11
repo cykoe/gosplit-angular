@@ -2,20 +2,15 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule } from '@angular/material';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSortModule } from '@angular/material/sort';
-import { MatTableModule } from '@angular/material/table';
-import {MatTabsModule} from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
+import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from './shared/shared.module';
 
 import { httpInterceptorProviders } from './core/interceptors';
 
-import { AppRoutingModule } from './app-routing.module';
+import {environment} from '../environments/environment';
 import { AppComponent } from './app.component';
 import { ListComponent} from './components/list/list.component';
 import { LoginComponent } from './components/login/login.component';
@@ -26,6 +21,8 @@ import { HeaderComponent } from './core/header/header.component';
 import { ReceiptDetailPage } from './pages/receipt-detail/receipt-detail.page';
 import { ReceiptListPage } from './pages/receipt-list/receipt-list.page';
 import { LoadingBarComponent } from './shared/components/loading-bar/loading-bar.component';
+
+const config: SocketIoConfig = { url: environment.api_url, options: {} };
 
 @NgModule({
   declarations: [
@@ -45,20 +42,10 @@ import { LoadingBarComponent } from './shared/components/loading-bar/loading-bar
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    MatInputModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatCardModule,
     CommonModule,
     ReactiveFormsModule,
-    MatBadgeModule,
-    MatButtonModule,
-    MatTableModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTabsModule,
+    SharedModule,
+    SocketIoModule.forRoot(config),
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent],

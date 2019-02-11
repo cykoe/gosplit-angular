@@ -1,11 +1,11 @@
-<div *ngIf="receipt$ | async as receipt">
-  <h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>
+<div *ngIf="receipt$ | async as receipt" class="container">
+  <!--<h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>-->
   <table id="table" class="table table-bordered">
     <thead class="thead-dark">
     <tr>
       <th scope="col" style="width: 15%">Picture</th>
       <th scope="col" style="width: 15%">Price</th>
-      <th scope="col" *ngFor="let name of PEOPLE" style="width: 1%">{{ name }}</th>
+      <th scope="col" *ngFor="let name of PEOPLE">{{ name }}</th>
     </tr>
     </thead>
     <tbody>

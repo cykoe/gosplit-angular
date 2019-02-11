@@ -18,13 +18,7 @@ export class ReceiptDetailPage implements OnInit {
   receipt: Receipt;
   // a list of people
   PEOPLE = ['Charlie', 'Xinghan', 'Lawrence', 'Mohan', 'Haowei'];
-  CHINESE = {
-    C: '查',
-    X: '黎',
-    L: '劳',
-    M: '寒',
-    H: '伟',
-  };
+
   DRIVER = ['', '-5', '-10'];
   // 2D array maps to each user's selection on individual item
   booleanChart: boolean[][] = [];
@@ -84,6 +78,7 @@ export class ReceiptDetailPage implements OnInit {
       this.numberChart[itemIndex][i] = (this.booleanChart[itemIndex][i]) ? this.receiptPrice[itemIndex] / size : 0.00;
     }
     this.calculateFinalPrice();
+    this.receiptApiService.editReceipt(this.receipt);
   }
 
   selectAll(itemIndex) {

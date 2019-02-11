@@ -1,9 +1,11 @@
 <div class="header">
   <div>
     <div class="navbar-wrap">
-      <a href="#">
-        <img src="assets/baby.png" class="d-inline-block align-top" width="30" height="30"></a>
-      GoSplit@Online
+      <div class="navbar-wrap__return" (click)="returnClicked()"></div>
+      <div class="navbar-wrap__cancel" (click)="cancelClicked()"></div>
+      <div class="navbar-wrap__text"><img src="assets/baby.png" width="30" height="30" style="position: relative; top: -5px; left: -5px">
+        GoSplit
+      </div>
     </div>
   </div>
   <mat-tab-group

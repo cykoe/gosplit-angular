@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
 
 import { Observable, of, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -12,10 +13,12 @@ import { ReceiptSerializer } from '../../shared/serializers/receipt-serializer';
   providedIn: 'root',
 })
 export class ReceiptApiService {
+  currentReceipt = this.socket.fromEvent<Receipt>('receipt');
 
   constructor(
     private http: HttpClient,
     private receiptSerializer: ReceiptSerializer,
+    private socket: Socket,
   ) {
   }
 
@@ -56,5 +59,13 @@ export class ReceiptApiService {
 
   protected convertData(data: any): Receipt[] {
     return data.map((item: any) => this.receiptSerializer.fromJson(item));
+  }
+
+  getReceipt(id: string) {
+    this.socket.emit('getRec', id);
+  }
+
+  editReceipt(receipt: Receipt) {
+    this.socket.emit('editRec', receipt);
   }
 }
