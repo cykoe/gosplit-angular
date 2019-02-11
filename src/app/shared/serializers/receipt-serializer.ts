@@ -1,9 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Receipt } from '../models/receipt';
 
-@Injectable({
-  providedIn: 'root',
-})
 export class ReceiptSerializer {
   static fromJson(json: any): Receipt | object {
     const receipt: Receipt = {};

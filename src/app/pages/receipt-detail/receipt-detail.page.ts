@@ -47,27 +47,17 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.receiptApiService.currentReceipt.subscribe((rec) => {
-    //   console.log(rec);
-      // this.receiptSub.next(rec);
-    // });
-
-    this.receipt$ = this.route.paramMap.pipe(
-      tap((params) => this.receiptApiService.getReceipt(params.get('receiptId'))),
-      switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
-    );
-
-    this.receipt$ = combineLatest(this.receipt$, this.receiptApiService.currentReceipt).pipe(
-      map(([org, soc]) => {
-        // console.log(org);
-        // console.log(typeof soc === 'string');
-        return typeof soc === 'string' ? org : soc;
-      }),
+    this.receipt$ = combineLatest(
+      this.route.paramMap.pipe(
+        tap((params) => this.receiptApiService.getReceipt(params.get('receiptId'))),
+        switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
+      ),
+      this.receiptApiService.currentReceipt).pipe(
+      map(([org, soc]) => typeof soc === 'string' ? org : soc),
     );
 
     // Initialize 2D array
     this.receipt$.subscribe((receipt) => {
-      console.log(receipt);
       this.receipt = receipt;
       this.receiptPrice = receipt.list.map((item) => Number(item.price));
       this.taxPP = Number(receipt.tax) / this.PEOPLE.length;

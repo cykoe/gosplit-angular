@@ -17,7 +17,6 @@ export class ReceiptApiService {
 
   constructor(
     private http: HttpClient,
-    private receiptSerializer: ReceiptSerializer,
     private socket: Socket,
   ) {
   }
@@ -47,7 +46,7 @@ export class ReceiptApiService {
   }
 
   update(item: Receipt): Observable<Receipt> {
-    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, this.receiptSerializer.toJson(item))
+    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, ReceiptSerializer.toJson(item))
       .pipe(
         map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
