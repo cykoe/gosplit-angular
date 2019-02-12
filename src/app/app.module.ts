@@ -10,19 +10,21 @@ import { SharedModule } from './shared/shared.module';
 
 import { httpInterceptorProviders } from './core/interceptors';
 
-import {environment} from '../environments/environment';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { ListComponent} from './components/list/list.component';
+import { ListComponent } from './components/list/list.component';
 import { LoginComponent } from './components/login/login.component';
 import { ThumbnailComponent } from './components/thumbnail/thumbnail.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { HeaderComponent } from './core/header/header.component';
+import { AboutPage } from './pages/about/about.page';
 import { ReceiptDetailPage } from './pages/receipt-detail/receipt-detail.page';
 import { ReceiptListPage } from './pages/receipt-list/receipt-list.page';
 import { LoadingBarComponent } from './shared/components/loading-bar/loading-bar.component';
+import { SignupComponent } from './components/signup/signup.component';
 
-const config: SocketIoConfig = { url: environment.api_url, options: {} };
+const config: SocketIoConfig = {url: environment.api_url, options: {}};
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ const config: SocketIoConfig = { url: environment.api_url, options: {} };
     UploadComponent,
     LoadingBarComponent,
     ListComponent,
+    AboutPage,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

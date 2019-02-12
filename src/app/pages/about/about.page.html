@@ -1,0 +1,9 @@
+<div class="button-nav" *ngIf="!isLoggedIn()">
+  <button mat-raised-button (click)="su=true;activate=true">Sign up</button>
+  <button mat-raised-button (click)="su=false;activate=true">Log in</button>
+</div>
+<div class="button-nav" *ngIf="isLoggedIn()">
+  <button mat-raised-button (click)="logout()">Log out</button>
+</div>
+<app-login *ngIf="!su && activate"></app-login>
+<app-signup *ngIf="su && activate"></app-signup>

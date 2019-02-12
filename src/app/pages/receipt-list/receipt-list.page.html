@@ -2,5 +2,5 @@
   <app-list *ngIf="(tab$|async)!='Upload' && (tab$|async)!='About'"></app-list>
   <app-loading-bar [isLoadingResults]="isLoadingResults" [isUploadingErrors]="isUploadingErrors"></app-loading-bar>
   <app-upload *ngIf="isLoggedIn() && (tab$|async)=='Upload'" (isError)="onErrors($event)" (isUploading)="onUploading($event)"></app-upload>
-  <app-login *ngIf="(tab$|async)=='About'"></app-login>
+  <app-about *ngIf="(tab$|async)=='About'"></app-about>
 </div>

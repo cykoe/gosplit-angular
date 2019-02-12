@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 import { ReceiptApiService } from '../../core/services/receipt-api.service';
 import { Receipt } from '../../shared/models/receipt';
@@ -47,9 +47,15 @@ export class ReceiptDetailPage implements OnInit {
   }
 
   ngOnInit() {
-    this.receipt$ = this.route.paramMap.pipe(
-      switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
+    this.receipt$ = combineLatest(
+      this.route.paramMap.pipe(
+        tap((params) => this.receiptApiService.getReceipt(params.get('receiptId'))),
+        switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
+      ),
+      this.receiptApiService.currentReceipt).pipe(
+      map(([org, soc]) => typeof soc === 'string' ? org : soc),
     );
+
     // Initialize 2D array
     this.receipt$.subscribe((receipt) => {
       this.receipt = receipt;
@@ -66,17 +72,13 @@ export class ReceiptDetailPage implements OnInit {
   changeRowPrice(itemIndex, personIndex) {
     this.booleanChart[itemIndex][personIndex] = !this.booleanChart[itemIndex][personIndex];
     let size = 0;
-    for (let i = 0; i < this.PEOPLE.length; i++) {
-      if (this.booleanChart[itemIndex][i]) {
-        size++;
-      }
-    }
-    if (size === this.PEOPLE.length) {
+    if (
+      this.booleanChart[itemIndex].every((item) => item) ||
+      this.booleanChart[itemIndex].every((item) => !item)) {
       this.selectAllPrice[itemIndex] = !this.selectAllPrice[itemIndex];
     }
-    for (let i = 0; i < this.PEOPLE.length; i++) {
-      this.numberChart[itemIndex][i] = (this.booleanChart[itemIndex][i]) ? this.receiptPrice[itemIndex] / size : 0.00;
-    }
+    this.booleanChart[itemIndex].forEach((bc) => bc ? size++ : null);
+    this.booleanChart[itemIndex].forEach((bc, i) => this.numberChart[itemIndex][i] = bc ? this.receiptPrice[itemIndex] / size : 0.00);
     this.calculateFinalPrice();
     this.receiptApiService.editReceipt(this.receipt);
   }
@@ -141,7 +143,7 @@ export class ReceiptDetailPage implements OnInit {
     this.receipt.booleanChart = this.booleanChart;
     this.receipt.selectAllPrice = this.selectAllPrice;
     this.receiptApiService.update(this.receipt)
-      .subscribe((res) => {
+      .subscribe(() => {
         this.router.navigate(['/']);
       });
   }

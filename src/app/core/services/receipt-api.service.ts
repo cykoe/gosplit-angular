@@ -17,7 +17,6 @@ export class ReceiptApiService {
 
   constructor(
     private http: HttpClient,
-    private receiptSerializer: ReceiptSerializer,
     private socket: Socket,
   ) {
   }
@@ -28,28 +27,28 @@ export class ReceiptApiService {
   create(item: Receipt): Observable<Receipt> {
     return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
   }
 
   read(id: string): Observable<Receipt> {
-    return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${id}`)
+    return this.http.get<{success: string, data: Receipt}>(`${this.url}/${this.endpoint}/${id}`)
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data.data) as Receipt),
       );
   }
 
   list(): Observable<Receipt[]> {
-    return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`)
+    return this.http.get<{success: string, data: Receipt[]}>(`${this.url}/${this.endpoint}`)
       .pipe(
-        map((data) => this.convertData(data)),
+        map((data) => this.convertData(data.data)),
       );
   }
 
   update(item: Receipt): Observable<Receipt> {
-    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, this.receiptSerializer.toJson(item))
+    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, ReceiptSerializer.toJson(item))
       .pipe(
-        map((data) => this.receiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
       );
   }
 
@@ -58,7 +57,7 @@ export class ReceiptApiService {
   }
 
   protected convertData(data: any): Receipt[] {
-    return data.map((item: any) => this.receiptSerializer.fromJson(item));
+    return data.map((item: any) => ReceiptSerializer.fromJson(item));
   }
 
   getReceipt(id: string) {
