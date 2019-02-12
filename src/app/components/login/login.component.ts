@@ -28,12 +28,4 @@ export class LoginComponent implements OnInit {
   verifyPassword(password: string) {
     this.auth.login({username: this.loginForm.get('username').value, password});
   }
-
-  isLoggedIn(): boolean {
-    return !!this.auth.token;
-  }
-
-  logout() {
-    this.auth.logout();
-  }
 }

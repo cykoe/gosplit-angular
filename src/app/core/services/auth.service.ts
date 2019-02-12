@@ -33,6 +33,18 @@ export class AuthService {
     return this.http.post(`${this.url}/user`, login);
   }
 
+  signup(signup: LoginInfo) {
+    console.log(signup);
+    this.http.post(`${this.url}/user/signup`, signup).subscribe(
+      (res: LoginRes) => {
+        console.log(res);
+        if (res.success) {
+          localStorage.setItem('token', res.token);
+          this.headerService.changeTab('Home');
+        }
+      });
+  }
+
   login(login: LoginInfo) {
     this.http.post(`${this.url}/user/login`, login).subscribe(
       (res: LoginRes) => {

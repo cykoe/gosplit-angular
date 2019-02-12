@@ -32,16 +32,16 @@ export class ReceiptApiService {
   }
 
   read(id: string): Observable<Receipt> {
-    return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${id}`)
+    return this.http.get<{success: string, data: Receipt}>(`${this.url}/${this.endpoint}/${id}`)
       .pipe(
-        map((data) => ReceiptSerializer.fromJson(data) as Receipt),
+        map((data) => ReceiptSerializer.fromJson(data.data) as Receipt),
       );
   }
 
   list(): Observable<Receipt[]> {
-    return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`)
+    return this.http.get<{success: string, data: Receipt[]}>(`${this.url}/${this.endpoint}`)
       .pipe(
-        map((data) => this.convertData(data)),
+        map((data) => this.convertData(data.data)),
       );
   }
 
