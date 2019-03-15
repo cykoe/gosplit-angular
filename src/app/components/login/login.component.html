@@ -16,12 +16,13 @@
         <div class="col">
           <mat-form-field class="full-width">
             <input matInput placeholder="Password" formControlName="password"
-                   (keyup.enter)="verifyPassword($event.target.value)">
+                   (keyup.enter)="verifyPassword()">
             <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
               Password is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
+        <button mat-raised-button (click)="verifyPassword()">Login</button>
       </div>
     </form>
   </mat-card-content>

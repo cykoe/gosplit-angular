@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     }, {updateOn: 'blur'});
   }
 
-  verifyPassword(password: string) {
-    this.auth.login({username: this.loginForm.get('username').value, password});
+  verifyPassword() {
+    this.auth.login(this.loginForm.value);
   }
 }

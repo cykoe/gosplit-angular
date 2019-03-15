@@ -2,6 +2,7 @@
   <div class="form-group">
     <input type="file" id="receipt" (change)="onFileChange($event)" #fileInput>
     <input type="text" id="payer" placeholder="Who paid?" #payer>
+    <input type="text" id="store" placeholder="Store?" #store>
     <button (click)="onSubmit()" mat-raised-button color="primary" [disabled]="form.invalid || loading">Submit</button>
   </div>
 </form>

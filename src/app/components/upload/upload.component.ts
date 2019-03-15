@@ -17,6 +17,7 @@ export class UploadComponent {
 
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('payer') payer: ElementRef;
+  @ViewChild('store') store: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -30,6 +31,7 @@ export class UploadComponent {
     this.form = this.fb.group({
       receipt: null,
       payer: null,
+      store: null,
     });
   }
 
@@ -44,7 +46,7 @@ export class UploadComponent {
     const input = new FormData();
     input.append('receipt', this.form.get('receipt').value);
     input.append('payer', this.payer.nativeElement.value);
-
+    input.append('store', this.store.nativeElement.value);
     return input;
   }
 
