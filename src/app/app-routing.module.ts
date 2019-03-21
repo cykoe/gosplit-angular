@@ -1,19 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ReceiptDetailPage } from './pages/receipt-detail/receipt-detail.page';
-import { ReceiptListPage } from './pages/receipt-list/receipt-list.page';
+import { AppConfig } from './configs/app.config';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: ReceiptListPage,
-    pathMatch: 'full',
-  },
-  {
-    path: 'library/:receiptId',
-    component: ReceiptDetailPage,
-  },
+  {path: '', redirectTo: AppConfig.routes.receipts, pathMatch: 'full'},
+  {path: AppConfig.routes.receipts, loadChildren: './modules/receipts/receipts.module#ReceiptsModule'},
+  {path: AppConfig.routes.accounts, loadChildren: './modules/accounts/accounts.module#AccountsModule'},
 ];
 
 @NgModule({

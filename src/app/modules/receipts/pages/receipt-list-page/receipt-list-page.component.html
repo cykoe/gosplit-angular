@@ -1,0 +1,4 @@
+<div class="example-container mat-elevation-z8">
+  <app-list *ngIf="(tab$|async)!='Upload' && (tab$|async)!='About'"></app-list>
+  <app-upload *ngIf="isLoggedIn() && (tab$|async)=='Upload'" (isError)="onErrors($event)" (isUploading)="onUploading($event)"></app-upload>
+</div>

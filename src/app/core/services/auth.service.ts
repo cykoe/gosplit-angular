@@ -1,67 +1,73 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
+import { AppConfig } from '../../configs/app.config';
+
+import { User } from '../../modules/accounts/shared/user.model';
 import { HeaderService } from './header.service';
-
-interface LoginInfo {
-  username?: string;
-  password?: string;
-}
-
-interface LoginRes {
-  success: boolean;
-  token?: string;
-  message?: string;
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  readonly url: string = environment.api_url;
+  readonly endpoint: string = 'user/';
+  private isAuthenticated$ = new BehaviorSubject<boolean>(false);
+  isAuthenticated = this.isAuthenticated$.asObservable();
 
   constructor(
     private http: HttpClient,
     private headerService: HeaderService,
-    private router: Router) {
-  }
-
-  readonly url: string = environment.api_url;
-
-  checkUsername(login: LoginInfo) {
-    return this.http.post(`${this.url}/user`, login);
-  }
-
-  signup(signup: LoginInfo) {
-    console.log(signup);
-    this.http.post(`${this.url}/user/signup`, signup).subscribe(
-      (res: LoginRes) => {
-        console.log(res);
-        if (res.success) {
-          localStorage.setItem('token', res.token);
-          this.headerService.changeTab('Home');
-        }
-      });
-  }
-
-  login(login: LoginInfo) {
-    this.http.post(`${this.url}/user/login`, login).subscribe(
-      (res: LoginRes) => {
-        if (res.success) {
-          localStorage.setItem('token', res.token);
-          this.headerService.changeTab('Home');
-        }
-      },
-      (err) => console.error(err),
-    );
+    private sb: MatSnackBar,
+  ) {
   }
 
   get token() {
     return localStorage.getItem('token');
   }
 
+  setAuth(data) {
+    localStorage.setItem('token', data.token);
+    this.isAuthenticated$.next(true);
+  }
+
+  purgeAuth() {
+    this.isAuthenticated$.next(false);
+  }
+
+  checkUsername(login: any) {
+    return this.http.post(`${this.url}/user`, login);
+  }
+
+  register(credentials): Observable<User> | any {
+    return this.http.post(`${this.url}${this.endpoint}register`, credentials)
+      .pipe(
+        tap((data: any) => this.setAuth(data)),
+        catchError((err): any => {
+          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
+          return throwError(err.message);
+        }),
+      );
+  }
+
+  login(credentials): Observable<User> | any {
+    return this.http.post(`${this.url}${this.endpoint}login`, credentials)
+      .pipe(
+        tap((data: any) => this.setAuth(data)),
+        catchError((err): any => {
+          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
+          return throwError(err.message);
+        }),
+      );
+  }
+
   logout() {
+    this.purgeAuth();
     return localStorage.clear();
   }
 }

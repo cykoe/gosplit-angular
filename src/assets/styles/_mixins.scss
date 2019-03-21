@@ -1,0 +1,14 @@
+@import "functions";
+@import "colors";
+
+@mixin push-auto ($vertically: false) {
+  @if $vertically {
+    margin: $vertically auto;
+  } @else {
+    margin: 0 auto;
+  }
+}
+
+@mixin font-size ($size) {
+  font-size: calculateRem($size);
+}

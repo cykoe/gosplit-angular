@@ -1,35 +1,39 @@
+import { LayoutModule } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import {
-  MatBadgeModule,
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-} from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MaterialModule } from './modules/material.module';
 
-const materials = [
-  MatBadgeModule,
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatSelectModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-];
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
+
 @NgModule({
-  imports: [materials],
-  exports: [materials],
+  declarations: [
+    FooterComponent,
+    HeaderComponent,
+  ],
+  imports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    LayoutModule,
+    FormsModule,
+    RouterModule,
+    FlexLayoutModule,
+  ],
+  exports: [
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    LayoutModule,
+    FormsModule,
+    RouterModule,
+    FlexLayoutModule,
+    HeaderComponent,
+    FooterComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {
+}

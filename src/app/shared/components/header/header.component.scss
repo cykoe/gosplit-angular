@@ -1,0 +1,55 @@
+navbar {
+  height: 15vh;
+}
+
+.navbar-wrap {
+  padding: 10px 100px 10px 36px;
+  line-height: 35px;
+  position: relative;
+  font-family: 'Roboto', arial, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.navbar-wrap__return {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAIGNIUk0AAHomAACAhAAA%2BgAAAIDo%0AAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAA%0AAMlJREFUWMPt1zsOwjAQhGEfCcRLCdyKGpGCCuWqITwOMBQUa0Ukdrw7EkIb9/8nJYUnAYF7ggMO%0A/B/Q4MIEGgBAywI%2BeQC4MgDJv3CwBwrzuUBxPg9Q5HMAVT4NKPMpQJ2fBgzyU4BJfhwwyo8BZvnv%0AgORLniSgy/8CQH9Fw4%2B851yZQjxRc%2B7kmKg4l74QD%2Bw4q0KIO7ac2RITG84uEqLHmjO8YmLFWXZC%0A3LDkLDshunlEyfDqsGBPxyN3/J648/3sfzgOODD3vAHfNQFeezFWMAAAAABJRU5ErkJggg%3D%3D%0A) no-repeat 24px 16px;
+  background-size: 24px 24px;
+  height: 100%;
+  width: 60px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.navbar-wrap__cancel {
+  background-size: 24px 24px;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAQpJREFUWMPt10sOgjAUheGLkLhBlAHg3lBR4xYtOQ4wSkkf56JMTGEI/T8CpYEMsu62WbmfgAQkIAAU0ktFV2o5Su45Btde4A7AoIIQe40BwAW566h7yBXjxhANhtfZJx6oYUjikzfY8wBLRPN+gCHad/7hy4eAGEHlw0CIIPMxwEccJvlduMDM8jmhyDPAnFDlOcAmPvmSGcsBU0KV5wGboPNYuFxnsqXPpa9/sG6RQf3LW9RMHq3REdp8ac0ogtDm55M2SsTyrXPeKwg+b7+1NLEsryD8+fiaQxFM3r/eE8Q3eYpwD+vJvE10PJDjFvpScBJnzYeXIMeZzI9E585DsvSXmYAE/AHwBI+u45Z+e4NqAAAAAElFTkSuQmCC) no-repeat 12px 16px;
+  height: 100%;
+  width: 60px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.navbar-wrap__text {
+  min-width: 50%;
+  font-size: 16px;
+  line-height: 33px;
+  position: relative;
+  left: 25px;
+}
+
+.header {
+  background-color: rgb(63, 20, 82);
+  height: 104px;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.header-label {
+  color: white;
+}
