@@ -1,6 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
@@ -8,30 +9,24 @@ import { ReceiptService } from '../../shared/receipt.service';
   templateUrl: './receipt-upload-page.component.html',
   styleUrls: ['./receipt-upload-page.component.scss'],
 })
-export class ReceiptUploadPageComponent {
-
+export class ReceiptUploadPageComponent implements OnInit {
   form: FormGroup;
   loading = false;
-  @Output() readonly isError = new EventEmitter<boolean>();
-  @Output() readonly isUploading = new EventEmitter<boolean>();
 
   @ViewChild('fileInput') fileInput: ElementRef;
-  @ViewChild('payer') payer: ElementRef;
-  @ViewChild('store') store: ElementRef;
 
   constructor(
     private fb: FormBuilder,
-    private receiptApiService: ReceiptService,
+    private receiptService: ReceiptService,
     private router: Router,
   ) {
-    this.createForm();
   }
 
-  createForm() {
+  ngOnInit(): void {
     this.form = this.fb.group({
-      receipt: null,
-      payer: null,
-      store: null,
+      receipt: ['', [Validators.required]],
+      payer: ['', [Validators.required]],
+      store: ['', [Validators.required]],
     });
   }
 
@@ -45,24 +40,20 @@ export class ReceiptUploadPageComponent {
   private prepareSave(): any {
     const input = new FormData();
     input.append('receipt', this.form.get('receipt').value);
-    input.append('payer', this.payer.nativeElement.value);
-    input.append('store', this.store.nativeElement.value);
+    input.append('payer', this.form.get('payer').value);
+    input.append('store', this.form.get('store').value);
     return input;
   }
 
   onSubmit() {
     const formModel = this.prepareSave();
     this.loading = true;
-    this.isUploading.emit(this.loading);
-    this.receiptApiService.create(formModel)
+    this.receiptService.create(formModel)
       .subscribe((res) => {
+        this.router.navigateByUrl('/');
         this.loading = false;
-        this.isUploading.emit(this.loading);
-        location.reload();
       }, (err) => {
         this.loading = false;
-        this.isUploading.emit(this.loading);
-        this.isError.emit(err);
       });
   }
 }
