@@ -1,8 +1,15 @@
+<form [formGroup]="form">
+  <mat-form-field><input matInput formControlName="name" placeholder="name"></mat-form-field>
+  <mat-form-field><input matInput formControlName="price" placeholder="price"></mat-form-field>
+  <mat-form-field><input matInput formControlName="image" placeholder="image"></mat-form-field>
+  <button mat-raised-button (click)="addItem()">Add</button>
+</form>
 <div *ngIf="receipt$ | async as receipt" class="container">
   <app-receipt-detail-card
     *ngFor="let item of receipt.list"
     [item]="item"
     (removed)="removeItem($event)"
+    (changed)="changeItem($event)"
   ></app-receipt-detail-card>
 </div>
 <div *ngIf="receipt$ | async as receipt" class="container">
@@ -23,7 +30,8 @@
           type="button"
           (click)="removeItem(row)"
           class="btn btn-sm btn-block btn-danger"
-        >Delete</button>
+        >Delete
+        </button>
       </td>
       <td (click)="selectAll(i)">
         <p class="name">{{ row.name | titlecase | slice:0:15 }}</p>
@@ -31,8 +39,8 @@
         <button
           type="button"
           class="btn btn-sm btn-block"
-          [class.btn-primary] = "!selectAllPrice[i]"
-          [class.btn-danger] = "selectAllPrice[i]">
+          [class.btn-primary]="!selectAllPrice[i]"
+          [class.btn-danger]="selectAllPrice[i]">
           {{ selectAllPrice[i] ? 'Remove All' : 'Select All' }}
         </button>
       </td>
@@ -50,7 +58,9 @@
       <td colspan="3" class="table-info"><strong>Total: $<span id="total">{{ receipt.total }}</span></strong></td>
     </tr>
     <tr class="row">
-      <td colspan="2" rowspan="2" class="table-dark"><br><button type="button" class="btn btn-success btn-block" (click)="saveReceipt()">SAVE RECEIPT</button></td>
+      <td colspan="2" rowspan="2" class="table-dark"><br>
+        <button type="button" class="btn btn-success btn-block" (click)="saveReceipt()">SAVE RECEIPT</button>
+      </td>
       <td
         *ngFor="let name of PEOPLE; let i = index"
         class="table-secondary"
@@ -62,7 +72,8 @@
       </td>
     </tr>
     <tr class="row">
-      <td class="table-success" *ngFor="let price of split"><strong>{{ price | number:'1.2-2' | currency }}</strong></td>
+      <td class="table-success" *ngFor="let price of split"><strong>{{ price | number:'1.2-2' | currency }}</strong>
+      </td>
     </tr>
     </tfoot>
   </table>

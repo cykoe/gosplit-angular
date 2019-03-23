@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
@@ -40,14 +41,23 @@ export class ReceiptDetailPageComponent implements OnInit {
   // payment for passenger
   passengerFee = 5;
 
+  form: FormGroup;
+
   constructor(
     private receiptApiService: ReceiptService,
     private route: ActivatedRoute,
     private router: Router,
+    private fb: FormBuilder,
   ) {
   }
 
   ngOnInit() {
+    this.form = this.fb.group({
+      name: [''],
+      price: [''],
+      image: [''],
+    });
+
     this.route.paramMap.pipe(
       switchMap((params) => this.receiptApiService.read(params.get('id'))),
     ).subscribe((receipt) => {
@@ -58,7 +68,9 @@ export class ReceiptDetailPageComponent implements OnInit {
 
     // Initialize 2D array
     this.receipt$.subscribe((receipt) => {
-      if (!receipt) { return; }
+      if (!receipt) {
+        return;
+      }
       console.log(receipt);
       this.receipt = receipt;
       this.receiptPrice = receipt.list.map((item) => Number(item.price));
@@ -85,6 +97,12 @@ export class ReceiptDetailPageComponent implements OnInit {
     this.receiptApiService.editReceipt(this.receipt);
   }
 
+  calculateTotal() {
+    const final = this.receipt.list
+      .reduce((acc, item) => acc.map((p, i) => p + item.people[i].price), [0, 0, 0, 0, 0]);
+    console.log(final);
+  }
+
   selectAll(itemIndex) {
     this.selectAllPrice[itemIndex] = !this.selectAllPrice[itemIndex];
     for (let i = 0; i < this.PEOPLE.length; i++) {
@@ -102,6 +120,16 @@ export class ReceiptDetailPageComponent implements OnInit {
   removeItem(item: Item) {
     this.receipt.removeItem(item);
     this.receipt$.next(this.receipt);
+    this.calculateTotal();
+  }
+
+  addItem() {
+    this.receipt.addItem(new Item(this.form.value));
+    this.receipt$.next(this.receipt);
+  }
+
+  changeItem(item: Item) {
+    this.calculateTotal();
   }
 
   isDriver(personIndex) {
