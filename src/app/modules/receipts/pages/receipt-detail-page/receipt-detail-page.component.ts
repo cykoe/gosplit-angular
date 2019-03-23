@@ -172,11 +172,11 @@ export class ReceiptDetailPageComponent implements OnInit {
   }
 
   saveReceipt() {
-    this.receipt.driverList = this.driverList;
-    this.receipt.split = this.split;
-    this.receipt.numberChart = this.numberChart;
-    this.receipt.booleanChart = this.booleanChart;
-    this.receipt.selectAllPrice = this.selectAllPrice;
+    // this.receipt.driverList = this.driverList;
+    // this.receipt.split = this.split;
+    // this.receipt.numberChart = this.numberChart;
+    // this.receipt.booleanChart = this.booleanChart;
+    // this.receipt.selectAllPrice = this.selectAllPrice;
     this.receiptApiService.update(this.receipt)
       .subscribe(() => {
         this.router.navigate(['/']);

@@ -2,8 +2,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { SortComponent } from '../../components/sort/sort.component';
-import { ThumbnailComponent } from '../../components/thumbnail/thumbnail.component';
 import { ReceiptUploadPageComponent } from '../receipt-upload-page/receipt-upload-page.component';
 import { ReceiptListPageComponent } from './receipt-list-page.component';
 
@@ -16,8 +14,6 @@ describe('LibraryComponent', () => {
       declarations: [
         ReceiptListPageComponent,
         ReceiptUploadPageComponent,
-        SortComponent,
-        ThumbnailComponent,
       ],
       imports: [
         HttpClientTestingModule,

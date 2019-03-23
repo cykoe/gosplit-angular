@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { IPerson, Item } from '../../shared/item.model';
+import { Item } from '../../shared/item.model';
+import { Person } from '../../shared/person.model';
 
 @Component({
   selector: 'app-receipt-detail-card',
@@ -42,7 +43,7 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.isEdit = !this.isEdit;
   }
 
-  toggle(person: IPerson) {
+  toggle(person: Person) {
     person.selection = !person.selection;
     this.updatePrice();
   }

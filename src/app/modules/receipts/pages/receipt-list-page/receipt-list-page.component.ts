@@ -58,8 +58,10 @@ export class ReceiptListPageComponent implements OnInit {
       // fill all short split with 0's and get total costs for each person
       this.totalFooter = receipts
         .map((t) => {
-          const newSplit = t.split;
-          while (t.split.length < this.displayedColumns.length) {
+          console.log(t.people);
+          const newSplit = t.people.map((person) => person.price);
+          console.log(newSplit);
+          while (t.people.length < this.displayedColumns.length) {
             newSplit.push(0);
           }
           return newSplit;
