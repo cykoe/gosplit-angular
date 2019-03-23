@@ -1,4 +1,6 @@
+import { AppConfig } from '../../../configs/app.config';
 import { Item } from './item.model';
+import { Person } from './person.model';
 
 export class Receipt {
   id: string;
@@ -6,35 +8,21 @@ export class Receipt {
   total: number;
   tax: number;
   date: string;
-  list: Item[];
   store: string;
-  length: number;
-  split: number[];
-  selectAllPrice: boolean[];
-  driverList: number[];
-  numberChart: number[][];
-  booleanChart: boolean[][];
-  payer: string;
-  people: string[];
   userId: string;
+  list: Item[];
+  people: Person[];
 
   constructor(receipt: any = {}) {
     this.id = receipt._id || '';
-    this.subtotal = receipt.subtotal || '';
-    this.total = receipt.total || '';
-    this.tax = receipt.tax || '';
+    this.subtotal = receipt.subtotal || 0;
+    this.total = receipt.total || 0;
+    this.tax = receipt.tax || 0;
     this.date = receipt.date || '';
-    this.list = receipt.list.map((list) => new Item(list));
     this.store = receipt.store || '';
-    this.length = receipt.length || '';
-    this.split = receipt.split || '';
-    this.selectAllPrice = receipt.selectAllPrice || '';
-    this.driverList = receipt.driverList || '';
-    this.numberChart = receipt.numberChart || '';
-    this.booleanChart = receipt.booleanChart || '';
-    this.payer = receipt.payer || '';
-    this.people = receipt.people || '';
     this.userId = receipt.userId || '';
+    this.list = receipt.list.map((item) => new Item(item));
+    this.people = (receipt.people || AppConfig.peopleList).map((person) => new Person(person));
   }
 
   toUrlDate() {
@@ -58,17 +46,10 @@ export class Receipt {
       total: this.total,
       tax: this.tax,
       date: this.date,
-      list: this.list,
-      store: this.store,
-      length: this.length,
-      split: this.split,
-      selectAllPrice: this.selectAllPrice,
-      driverList: this.driverList,
-      numberChart: this.numberChart,
-      booleanChart: this.booleanChart,
-      payer: this.payer,
-      people: this.people,
       userId: this.userId,
+      store: this.store,
+      list: this.list.map((list) => list.toJson()),
+      people: this.people.map((person) => person.toJson()),
     };
   }
 }

@@ -1,49 +1,28 @@
+import { AppConfig } from '../../../configs/app.config';
+import { Person } from './person.model';
+
 export class Item {
   id: string;
   name: string;
   price: number;
   image: string;
-  barcode: string;
-  people: IPerson[];
+  people: Person[];
 
   constructor(item: any = {}) {
     this.id = item._id || '';
     this.name = item.name || '';
     this.price = item.price || '';
     this.image = item.image || '';
-    this.barcode = item.barcode || '';
-    this.people = item.people || [
-      {
-        name: 'Charlie',
-        selection: false,
-        price: 0,
-      },
-      {
-        name: 'Xinghan',
-        selection: false,
-        price: 0,
-      },
-      {
-        name: 'Lawrence',
-        selection: false,
-        price: 0,
-      },
-      {
-        name: 'Mohan',
-        selection: false,
-        price: 0,
-      },
-      {
-        name: 'Haowei',
-        selection: false,
-        price: 0,
-      },
-    ];
+    this.people = (item.people || AppConfig.peopleList).map((person) => new Person(person));
   }
-}
 
-export interface IPerson {
-  name: string;
-  selection: boolean;
-  price: number;
+  toJson() {
+    return {
+      id: this.id,
+      name: this.image,
+      price: this.price,
+      image: this.image,
+      people: this.people.map((person) => person.toJson()),
+    };
+  }
 }
