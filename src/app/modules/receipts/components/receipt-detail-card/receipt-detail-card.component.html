@@ -1,0 +1,25 @@
+<mat-card class="detail-card">
+  <mat-card-header>
+    <mat-card-title>{{ item.name }}</mat-card-title>
+    <mat-card-subtitle>{{ item.price }}
+      <button mat-raised-button>Update</button>
+      <button mat-raised-button (click)="remove(item)">Delete</button>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-grid-list cols="3">
+      <mat-grid-tile colspan="2" rowspan="2">
+        <img mat-card-image [src]="item.image">
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1" rowspan="3" class="people-list">
+        <button mat-raised-button *ngFor="let person of item.people" class="button-row">
+        {{ person }}
+        </button>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="2" rowspan="1">
+        <button mat-raised-button>Select All</button>
+        <button mat-raised-button>Remove All</button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-card-content>
+</mat-card>

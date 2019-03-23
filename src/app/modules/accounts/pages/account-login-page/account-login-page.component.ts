@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../../../core/services/auth.service';
 import { UsernameValidator } from '../../../../core/validators/username.validator';
+import { AppConfig } from '../../../../configs/app.config';
+import { HeaderService } from '../../../../core/services/header.service';
 
 @Component({
   selector: 'app-account-login-page',
@@ -18,10 +20,18 @@ export class AccountLoginPageComponent implements OnInit {
     private usernameValidator: UsernameValidator,
     private auth: AuthService,
     private router: Router,
+    private headerService: HeaderService,
   ) {
   }
 
   ngOnInit(): void {
+    this.headerService.headerTabChange$.subscribe((tab) => {
+      if (tab === 'Home') {
+        this.router.navigate([`/${AppConfig.routes.receipts}/${AppConfig.routes.home}`]);
+      } else if (tab === 'About') {
+        this.router.navigate([`/${AppConfig.routes.accounts}/${AppConfig.routes.login}`]);
+      }
+    });
     this.form = this.fb.group({
       // username: ['', [Validators.required], [this.usernameValidator.validate.bind(this)]],
       username: ['', [Validators.required]],

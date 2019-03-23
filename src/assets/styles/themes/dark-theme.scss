@@ -1,8 +1,8 @@
-$dark-theme-primary: mat-palette($mat-grey, 700, 300, 900);
-$dark-theme-accent: mat-palette($mat-blue-grey, 400);
-$dark-theme-warn: mat-palette($mat-red, 500);
+$dark-theme-primary: mat-palette($mat-pink, 700, 500 ,900);
+$dark-theme-accent: mat-palette($mat-blue-grey, A200, A100, A400);
+$dark-theme-warn: mat-palette($mat-deep-orange);
 
-$dark-theme: mat-dark-theme(
+$dark-theme: mat-light-theme(
     $dark-theme-primary,
     $dark-theme-accent,
     $dark-theme-warn

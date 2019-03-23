@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
 
-import { combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
+import { Item } from '../../shared/item.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -14,7 +15,7 @@ import { ReceiptService } from '../../shared/receipt.service';
 })
 export class ReceiptDetailPageComponent implements OnInit {
 
-  receipt$: Observable<Receipt>;
+  receipt$;
   receipt: Receipt;
   // a list of people
   PEOPLE = ['Charlie', 'Xinghan', 'Lawrence', 'Mohan', 'Haowei'];
@@ -47,17 +48,18 @@ export class ReceiptDetailPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.receipt$ = combineLatest(
-    //   this.route.paramMap.pipe(
-    //     tap((params) => this.receiptApiService.getReceipt(params.get('receiptId'))),
-    //     switchMap((params) => this.receipt$ = this.receiptApiService.read(params.get('receiptId'))),
-    //   ),
-    //   this.receiptApiService.currentReceipt).pipe(
-    //   map(([org, soc]) => typeof soc === 'string' ? org : soc),
-    // );
+    this.route.paramMap.pipe(
+      switchMap((params) => this.receiptApiService.read(params.get('id'))),
+    ).subscribe((receipt) => {
+      this.receipt$.next(receipt);
+    });
+
+    this.receipt$ = new BehaviorSubject<any>(null);
 
     // Initialize 2D array
     this.receipt$.subscribe((receipt) => {
+      if (!receipt) { return; }
+      console.log(receipt);
       this.receipt = receipt;
       this.receiptPrice = receipt.list.map((item) => Number(item.price));
       this.taxPP = Number(receipt.tax) / this.PEOPLE.length;
@@ -95,6 +97,11 @@ export class ReceiptDetailPageComponent implements OnInit {
       }
     }
     this.calculateFinalPrice();
+  }
+
+  removeItem(item: Item) {
+    this.receipt.removeItem(item);
+    this.receipt$.next(this.receipt);
   }
 
   isDriver(personIndex) {

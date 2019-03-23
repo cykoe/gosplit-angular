@@ -1,13 +1,9 @@
-<mat-card *ngIf="receipt">
-  <mat-card-header>
-    <mat-card-title>
-
-    </mat-card-title>
-    <mat-card-subtitle>
-
-    </mat-card-subtitle>
-  </mat-card-header>
+<mat-card *ngIf="element" class="receipt-card">
   <mat-card-content>
-
+    {{ element.payer | titlecase }} paid for {{ element.store | titlecase }} with {{ element.driverList }}.
   </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="read(element)" color="primary">View</button>
+    <button mat-raised-button (click)="delete(element)" color="warn">Delete</button>
+  </mat-card-actions>
 </mat-card>

@@ -1,10 +1,12 @@
+import { Item } from './item.model';
+
 export class Receipt {
   id: string;
   subtotal: number;
   total: number;
   tax: number;
   date: string;
-  list: IList[];
+  list: Item[];
   store: string;
   length: number;
   split: number[];
@@ -17,12 +19,12 @@ export class Receipt {
   userId: string;
 
   constructor(receipt: any = {}) {
-    this.id = receipt.id || '';
+    this.id = receipt._id || '';
     this.subtotal = receipt.subtotal || '';
     this.total = receipt.total || '';
     this.tax = receipt.tax || '';
     this.date = receipt.date || '';
-    this.list = receipt.list || '';
+    this.list = receipt.list.map((list) => new Item(list));
     this.store = receipt.store || '';
     this.length = receipt.length || '';
     this.split = receipt.split || '';
@@ -33,6 +35,20 @@ export class Receipt {
     this.payer = receipt.payer || '';
     this.people = receipt.people || '';
     this.userId = receipt.userId || '';
+  }
+
+  toUrlDate() {
+    const date = new Date(this.date);
+    return date.toLocaleDateString();
+  }
+
+  removeItem(item: Item) {
+    const index = this.list.findIndex((i) => i.name === item.name);
+    this.list.splice(index, 1);
+  }
+
+  addItem(item: Item) {
+    this.list.push(item);
   }
 
   toJson() {
@@ -55,11 +71,4 @@ export class Receipt {
       userId: this.userId,
     };
   }
-}
-
-interface IList {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
 }

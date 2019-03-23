@@ -9,7 +9,7 @@ export const AppConfig: any = {
     register: 'register',
     login: 'login',
     home: '',
-    detail: ':year/:month/:day/:store/:id',
+    detail: ':mm/:dd/:yy/:store/:id',
     upload: 'upload',
   },
   repositoryURL: 'https://github.com/sircharlie/gosplit',

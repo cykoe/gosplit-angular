@@ -2,7 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Observable } from 'rxjs';
+
+import { HeaderService } from '../../../../core/services/header.service';
 import { ReceiptService } from '../../shared/receipt.service';
+import { AppConfig } from '../../../../configs/app.config';
 
 @Component({
   selector: 'app-upload',
@@ -13,16 +17,26 @@ export class ReceiptUploadPageComponent implements OnInit {
   form: FormGroup;
   loading = false;
 
+  tab$: Observable<string>;
+
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
     private fb: FormBuilder,
     private receiptService: ReceiptService,
+    private headerService: HeaderService,
     private router: Router,
   ) {
   }
 
   ngOnInit(): void {
+    this.headerService.headerTabChange$.subscribe((tab) => {
+      if (tab === 'Home') {
+        this.router.navigate([`/${AppConfig.routes.receipts}/${AppConfig.routes.home}`]);
+      } else if (tab === 'About') {
+        this.router.navigate([`/${AppConfig.routes.accounts}/${AppConfig.routes.login}`]);
+      }
+    });
     this.form = this.fb.group({
       receipt: ['', [Validators.required]],
       payer: ['', [Validators.required]],

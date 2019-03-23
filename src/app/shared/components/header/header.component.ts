@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router, Routes } from '@angular/router';
 
 import { Location } from '@angular/common';
 import { HeaderService } from '../../../core/services/header.service';
@@ -24,10 +24,21 @@ export class HeaderComponent implements OnInit {
     private headerService: HeaderService,
     private _location: Location,
     private router: Router,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
-    this.selectedTab = TABS.Home;
+    this.router.events.subscribe((param) => {
+      if (param instanceof NavigationEnd) {
+        if (param.url.includes('accounts')) {
+          this.selectedTab = TABS.About;
+        } else if (param.url.includes('upload')) {
+          this.selectedTab = TABS.Upload;
+        } else {
+          this.selectedTab = TABS.Home;
+        }
+      }
+    });
   }
 
   changeTab(tabChangeEvent: MatTabChangeEvent): void {

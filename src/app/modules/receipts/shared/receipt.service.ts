@@ -38,8 +38,8 @@ export class ReceiptService {
       );
   }
 
-  read(item: Receipt): Observable<Receipt> | any {
-    return this.http.get<Receipt>(`${this.url}${this.endpoint}${item.id}`)
+  read(itemId: string): Observable<Receipt> | any {
+    return this.http.get<Receipt>(`${this.url}${this.endpoint}${itemId}`)
       .pipe(
         map((data) => new Receipt(data)),
         catchError((err): any => {

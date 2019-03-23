@@ -1,3 +1,28 @@
-.full-width {
+@import "../../../../../assets/styles/mixins";
+
+.login-card {
+  margin-bottom: 2rem;
+  @include push-auto(2rem);
+}
+
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 100px 0px;
+}
+
+.mat-form-field {
   width: 100%;
+  min-width: 300px;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
 }

@@ -1,5 +1,12 @@
 <div *ngIf="receipt$ | async as receipt" class="container">
-  <!--<h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>-->
+  <app-receipt-detail-card
+    *ngFor="let item of receipt.list"
+    [item]="item"
+    (removed)="removeItem($event)"
+  ></app-receipt-detail-card>
+</div>
+<div *ngIf="receipt$ | async as receipt" class="container">
+  <h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>
   <table id="table" class="table table-bordered">
     <thead class="thead-dark">
     <tr>
@@ -10,7 +17,14 @@
     </thead>
     <tbody>
     <tr class="row" *ngFor="let row of receipt.list; let i = index">
-      <td class="object"><img src="{{row.image}}" width="100px" height="100px" alt="{{row.name}}"></td>
+      <td class="object">
+        <img src="{{row.image}}" width="100px" height="100px" alt="{{row.name}}">
+        <button
+          type="button"
+          (click)="removeItem(row)"
+          class="btn btn-sm btn-block btn-danger"
+        >Delete</button>
+      </td>
       <td (click)="selectAll(i)">
         <p class="name">{{ row.name | titlecase | slice:0:15 }}</p>
         <p class="price">${{ row.price | number:'1.2-2' }}</p>
