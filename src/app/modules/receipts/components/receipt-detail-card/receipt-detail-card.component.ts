@@ -10,11 +10,12 @@ import { Person } from '../../shared/person.model';
   styleUrls: ['./receipt-detail-card.component.scss'],
 })
 export class ReceiptDetailCardComponent implements OnInit {
-  @Input() item: Item;
-  @Output() readonly removed = new EventEmitter<Item>();
-  @Output() readonly changed = new EventEmitter<Item>();
   form: FormGroup;
   isEdit = false;
+
+  @Input() item: Item;
+  @Output() removed = new EventEmitter<Item>();
+  @Output() changed = new EventEmitter<Item>();
 
   constructor(
     private fb: FormBuilder,

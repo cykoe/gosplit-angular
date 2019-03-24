@@ -6,11 +6,11 @@ import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
-  selector: 'app-receipt-card',
-  templateUrl: './receipt-card.component.html',
-  styleUrls: ['./receipt-card.component.scss'],
+  selector: 'app-receipt-list-card',
+  templateUrl: './receipt-list-card.component.html',
+  styleUrls: ['./receipt-list-card.component.scss'],
 })
-export class ReceiptCardComponent implements OnInit {
+export class ReceiptListCardComponent implements OnInit {
   @Input() element: Receipt;
 
   constructor(

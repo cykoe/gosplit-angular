@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 import { MatSnackBar } from '@angular/material';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Receipt } from './receipt.model';
@@ -33,7 +33,7 @@ export class ReceiptService {
         map((data) => new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
@@ -41,10 +41,13 @@ export class ReceiptService {
   read(itemId: string): Observable<Receipt> | any {
     return this.http.get<Receipt>(`${this.url}${this.endpoint}${itemId}`)
       .pipe(
-        map((data) => new Receipt(data)),
+        map((data) => {
+          if (!data) { return undefined; }
+          return new Receipt(data);
+        }),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of(undefined);
         }),
       );
   }
@@ -55,7 +58,7 @@ export class ReceiptService {
         map((data) => new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
@@ -65,7 +68,7 @@ export class ReceiptService {
       .pipe(
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
@@ -76,7 +79,7 @@ export class ReceiptService {
         map((data) => data.map((item: any) => new Receipt(item))),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of([]);
         }),
       );
   }

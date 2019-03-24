@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccountRegisterPageComponent } from './account-register-page.component';
+import { ReceiptListCardComponent} from './receipt-list-card.component';
 
-describe('SignupComponent', () => {
-  let component: AccountRegisterPageComponent;
-  let fixture: ComponentFixture<AccountRegisterPageComponent>;
+describe('ReceiptCardComponent', () => {
+  let component: ReceiptListCardComponent;
+  let fixture: ComponentFixture<ReceiptListCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccountRegisterPageComponent ]
+      declarations: [ ReceiptListCardComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountRegisterPageComponent);
+    fixture = TestBed.createComponent(ReceiptListCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
