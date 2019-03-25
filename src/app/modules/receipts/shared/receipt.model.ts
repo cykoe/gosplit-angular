@@ -30,18 +30,29 @@ export class Receipt {
     return date.toLocaleDateString();
   }
 
-  removeItem(item: Item) {
+  createItem(item: Item) {
+    this.list.push(item);
+  }
+
+  updateItem(item: Item) {
+    const index = this.list.findIndex((i) => i.id === item.id);
+    if (index !== -1) {
+      this.list[index] = item;
+    }
+  }
+
+  deleteItem(item: Item) {
     const index = this.list.findIndex((i) => i.name === item.name);
     this.list.splice(index, 1);
   }
 
-  addItem(item: Item) {
-    this.list.push(item);
+  get split() {
+    return this.list.reduce((acc, item) => acc.map((p, i) => p + item.people[i].price), new Array(this.people.length).fill(0));
   }
 
   toJson() {
     return {
-      id: this.id,
+      _id: this.id,
       subtotal: this.subtotal,
       total: this.total,
       tax: this.tax,

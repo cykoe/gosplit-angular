@@ -18,7 +18,7 @@ export class Item {
 
   toJson() {
     return {
-      id: this.id,
+      _id: this.id,
       name: this.image,
       price: this.price,
       image: this.image,
