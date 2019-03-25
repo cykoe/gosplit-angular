@@ -22,7 +22,11 @@ export class Receipt {
     this.store = receipt.store || '';
     this.userId = receipt.userId || '';
     this.list = receipt.list.map((item) => new Item(item));
-    this.people = (receipt.people || AppConfig.peopleList).map((person) => new Person(person));
+    if (!receipt.people.length) {
+      this.people = AppConfig.peopleList.map((person) => new Person(person));
+    } else {
+      this.people = receipt.people.map((person) => new Person(person));
+    }
   }
 
   toUrlDate() {
@@ -47,7 +51,11 @@ export class Receipt {
   }
 
   get split() {
-    return this.list.reduce((acc, item) => acc.map((p, i) => p + item.people[i].price), new Array(this.people.length).fill(0));
+    return this.list.reduce((acc, item) => {
+      return acc.map((p, i) => {
+        return p + item.people[i].price;
+      });
+    }, new Array(this.people.length).fill(0));
   }
 
   toJson() {

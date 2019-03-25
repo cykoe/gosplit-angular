@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AppConfig } from '../../../../configs/app.config';
-import { AuthService } from '../../../../core/services/auth.service';
-import { HeaderService } from '../../../../core/services/header.service';
+import { AuthService, HeaderService } from '../../../../core/services';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -53,15 +52,13 @@ export class ReceiptListPageComponent implements OnInit {
       // find involved people
       const columns = receipts.find((receipt) => !!receipt.people.length);
       if (columns) {
-        this.displayedColumns = ['Date', ...columns.people];
+        this.displayedColumns = ['Date', ...columns.people.map((p) => p.name)];
       }
       // fill all short split with 0's and get total costs for each person
       this.totalFooter = receipts
         .map((t) => {
-          console.log(t.people);
           const newSplit = t.people.map((person) => person.price);
-          console.log(newSplit);
-          while (t.people.length < this.displayedColumns.length) {
+          while (t.people.length < this.displayedColumns.length - 1) {
             newSplit.push(0);
           }
           return newSplit;
@@ -71,5 +68,4 @@ export class ReceiptListPageComponent implements OnInit {
       this.dataSource = new MatTableDataSource<Receipt>(receipts);
     });
   }
-
 }

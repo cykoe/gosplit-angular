@@ -21,11 +21,11 @@
 
       <ng-container matColumnDef="expandedDetail">
         <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-          <app-receipt-card
+          <app-receipt-list-card
             [element]="element"
             [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
             class="example-element-detail"
-          ></app-receipt-card>
+          ></app-receipt-list-card>
         </td>
       </ng-container>
 

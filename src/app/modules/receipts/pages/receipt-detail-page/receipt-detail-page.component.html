@@ -1,10 +1,19 @@
-<!--<form [formGroup]="form">-->
-  <!--<mat-form-field><input matInput formControlName="name" placeholder="name"></mat-form-field>-->
-  <!--<mat-form-field><input matInput formControlName="price" placeholder="price"></mat-form-field>-->
-  <!--<mat-form-field><input matInput formControlName="image" placeholder="image"></mat-form-field>-->
-  <!--<button mat-raised-button (click)="createItem()">Add</button>-->
-<!--</form>-->
-<div *ngIf="receipt" class="container">
+<form [formGroup]="form">
+  <mat-form-field><input matInput formControlName="name" placeholder="name"></mat-form-field>
+  <mat-form-field><input matInput formControlName="price" placeholder="price"></mat-form-field>
+  <mat-form-field><input matInput formControlName="image" placeholder="image"></mat-form-field>
+  <button mat-raised-button (click)="createItem(form.value)">Add</button>
+</form>
+<!--<div *ngIf="receipt" class="container">-->
+  <!--<div>{{ receipt.split }}</div>-->
+  <!--<app-receipt-detail-card-->
+    <!--*ngFor="let item of receipt.list"-->
+    <!--[item]="item"-->
+    <!--(removed)="deleteItem($event)"-->
+    <!--(changed)="updateItem($event)"-->
+  <!--&gt;</app-receipt-detail-card>-->
+<!--</div>-->
+<div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="center" *ngIf="receipt">
   <app-receipt-detail-card
     *ngFor="let item of receipt.list"
     [item]="item"
