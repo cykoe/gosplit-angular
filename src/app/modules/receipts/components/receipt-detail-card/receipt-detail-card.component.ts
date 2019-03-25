@@ -34,6 +34,10 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.removed.emit(item);
   }
 
+  change(item: Item) {
+    this.changed.emit(item);
+  }
+
   update() {
     if (this.isEdit) {
       this.item.name = this.form.get('name').value;
@@ -54,7 +58,7 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.updatePrice();
   }
 
-  removeAll() {
+  deselectAll() {
     this.item.people.forEach((person) => person.selection = false);
     this.updatePrice();
   }
@@ -63,6 +67,6 @@ export class ReceiptDetailCardComponent implements OnInit {
     const count = this.item.people.filter((p) => !!p.selection).length;
     const split = this.item.price / count;
     this.item.people.forEach((person) => person.price = person.selection ? split : 0);
-    this.changed.emit(this.item);
+    this.change(this.item);
   }
 }

@@ -12,69 +12,69 @@
     (changed)="changeItem($event)"
   ></app-receipt-detail-card>
 </div>
-<div *ngIf="receipt$ | async as receipt" class="container">
-  <h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>
-  <table id="table" class="table table-bordered">
-    <thead class="thead-dark">
-    <tr>
-      <th scope="col" style="width: 15%">Picture</th>
-      <th scope="col" style="width: 15%">Price</th>
-      <th scope="col" *ngFor="let name of PEOPLE">{{ name }}</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="row" *ngFor="let row of receipt.list; let i = index">
-      <td class="object">
-        <img src="{{row.image}}" width="100px" height="100px" alt="{{row.name}}">
-        <button
-          type="button"
-          (click)="removeItem(row)"
-          class="btn btn-sm btn-block btn-danger"
-        >Delete
-        </button>
-      </td>
-      <td (click)="selectAll(i)">
-        <p class="name">{{ row.name | titlecase | slice:0:15 }}</p>
-        <p class="price">${{ row.price | number:'1.2-2' }}</p>
-        <button
-          type="button"
-          class="btn btn-sm btn-block"
-          [class.btn-primary]="!selectAllPrice[i]"
-          [class.btn-danger]="selectAllPrice[i]">
-          {{ selectAllPrice[i] ? 'Remove All' : 'Select All' }}
-        </button>
-      </td>
-      <td
-        *ngFor="let name of PEOPLE; let j = index"
-        (click)="changeRowPrice(i, j)"><input type="checkbox" [checked]="booleanChart[i][j]"><label
-        [attr.data-name]="name.substring(0,1)"></label></td>
-    </tr>
-    </tbody>
-    <tfoot id="footer">
-    <tr class="row">
-      <td colspan="1" class="table-info">Items: <span id="items">{{ receipt.length }}</span></td>
-      <td colspan="1" class="table-info">Subtotal: {{ receipt.subtotal | currency }}</td>
-      <td colspan="2" id="tax" class="table-info">Tax: {{ receipt.tax | number:'1.2-2' | currency }}</td>
-      <td colspan="3" class="table-info"><strong>Total: $<span id="total">{{ receipt.total }}</span></strong></td>
-    </tr>
-    <tr class="row">
-      <td colspan="2" rowspan="2" class="table-dark"><br>
-        <button type="button" class="btn btn-success btn-block" (click)="saveReceipt()">SAVE RECEIPT</button>
-      </td>
-      <td
-        *ngFor="let name of PEOPLE; let i = index"
-        class="table-secondary"
-        (click)="isDriver(i)">
-        <button mat-raised-button color="primary"
-                matBadge="{{DRIVER[driverList[i]]}}" matBadgeColor="accent">
-          {{ name }}
-        </button>
-      </td>
-    </tr>
-    <tr class="row">
-      <td class="table-success" *ngFor="let price of split"><strong>{{ price | number:'1.2-2' | currency }}</strong>
-      </td>
-    </tr>
-    </tfoot>
-  </table>
-</div>
+<!--<div *ngIf="receipt$ | async as receipt" class="container">-->
+  <!--<h3>{{ receipt.store }} {{ receipt.date | date:'shortDate' }}</h3>-->
+  <!--<table id="table" class="table table-bordered">-->
+    <!--<thead class="thead-dark">-->
+    <!--<tr>-->
+      <!--<th scope="col" style="width: 15%">Picture</th>-->
+      <!--<th scope="col" style="width: 15%">Price</th>-->
+      <!--<th scope="col" *ngFor="let name of PEOPLE">{{ name }}</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr class="row" *ngFor="let row of receipt.list; let i = index">-->
+      <!--<td class="object">-->
+        <!--<img src="{{row.image}}" width="100px" height="100px" alt="{{row.name}}">-->
+        <!--<button-->
+          <!--type="button"-->
+          <!--(click)="removeItem(row)"-->
+          <!--class="btn btn-sm btn-block btn-danger"-->
+        <!--&gt;Delete-->
+        <!--</button>-->
+      <!--</td>-->
+      <!--<td (click)="selectAll(i)">-->
+        <!--<p class="name">{{ row.name | titlecase | slice:0:15 }}</p>-->
+        <!--<p class="price">${{ row.price | number:'1.2-2' }}</p>-->
+        <!--<button-->
+          <!--type="button"-->
+          <!--class="btn btn-sm btn-block"-->
+          <!--[class.btn-primary]="!selectAllPrice[i]"-->
+          <!--[class.btn-danger]="selectAllPrice[i]">-->
+          <!--{{ selectAllPrice[i] ? 'Remove All' : 'Select All' }}-->
+        <!--</button>-->
+      <!--</td>-->
+      <!--<td-->
+        <!--*ngFor="let name of PEOPLE; let j = index"-->
+        <!--(click)="changeRowPrice(i, j)"><input type="checkbox" [checked]="booleanChart[i][j]"><label-->
+        <!--[attr.data-name]="name.substring(0,1)"></label></td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+    <!--<tfoot id="footer">-->
+    <!--<tr class="row">-->
+      <!--<td colspan="1" class="table-info">Items: <span id="items">{{ receipt.length }}</span></td>-->
+      <!--<td colspan="1" class="table-info">Subtotal: {{ receipt.subtotal | currency }}</td>-->
+      <!--<td colspan="2" id="tax" class="table-info">Tax: {{ receipt.tax | number:'1.2-2' | currency }}</td>-->
+      <!--<td colspan="3" class="table-info"><strong>Total: $<span id="total">{{ receipt.total }}</span></strong></td>-->
+    <!--</tr>-->
+    <!--<tr class="row">-->
+      <!--<td colspan="2" rowspan="2" class="table-dark"><br>-->
+        <!--<button type="button" class="btn btn-success btn-block" (click)="saveReceipt()">SAVE RECEIPT</button>-->
+      <!--</td>-->
+      <!--<td-->
+        <!--*ngFor="let name of PEOPLE; let i = index"-->
+        <!--class="table-secondary"-->
+        <!--(click)="isDriver(i)">-->
+        <!--<button mat-raised-button color="primary"-->
+                <!--matBadge="{{DRIVER[driverList[i]]}}" matBadgeColor="accent">-->
+          <!--{{ name }}-->
+        <!--</button>-->
+      <!--</td>-->
+    <!--</tr>-->
+    <!--<tr class="row">-->
+      <!--<td class="table-success" *ngFor="let price of split"><strong>{{ price | number:'1.2-2' | currency }}</strong>-->
+      <!--</td>-->
+    <!--</tr>-->
+    <!--</tfoot>-->
+  <!--</table>-->
+<!--</div>-->
