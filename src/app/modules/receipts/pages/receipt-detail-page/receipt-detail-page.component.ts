@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
+import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -9,6 +10,7 @@ import { Item } from '../../shared/item.model';
 import { Person } from '../../shared/person.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
+import { AppConfig } from "../../../../configs/app.config";
 
 @Component({
   selector: 'app-receipt-detail',
@@ -23,8 +25,8 @@ export class ReceiptDetailPageComponent implements OnInit {
   constructor(
     private receiptService: ReceiptService,
     private route: ActivatedRoute,
-    private router: Router,
     private fb: FormBuilder,
+    private sb: MatSnackBar,
   ) {
   }
 
@@ -54,7 +56,6 @@ export class ReceiptDetailPageComponent implements OnInit {
     this.receipt.deleteItem(item);
   }
 
-  // toggle between driver passenger or neither
   toggleDP(person: Person) {
     if (!person.isPassenger && !person.isDriver) {
       person.isPassenger = true;
@@ -64,6 +65,13 @@ export class ReceiptDetailPageComponent implements OnInit {
     } else if (!person.isPassenger && person.isDriver) {
       person.isDriver = false;
     }
+  }
+
+  updateReceipt() {
+    this.receiptService.update(this.receipt)
+      .subscribe((res: Receipt) => {
+        this.sb.open(`${res.people[0].name} Rocks!`, 'OK', {duration: AppConfig.sbDuration});
+      });
   }
 
   // changeRowPrice(itemIndex, personIndex) {
@@ -132,19 +140,6 @@ export class ReceiptDetailPageComponent implements OnInit {
   //   }
   //   this.calculateFinalPrice(driverFees);
   // }
-
-  // saveReceipt() {
-  //   this.receipt.driverList = this.driverList;
-  //   this.receipt.split = this.split;
-  //   this.receipt.numberChart = this.numberChart;
-  //   this.receipt.booleanChart = this.booleanChart;
-  //   this.receipt.selectAllPrice = this.selectAllPrice;
-  //   this.receiptService.update(this.receipt)
-  //     .subscribe(() => {
-  //       this.router.navigate(['/']);
-  //     });
-  // }
-
   // private calculateFinalPrice(...drivers) {
   //   for (let i = 0; i < this.split.length; i++) {
   //     this.split[i] = (drivers[0]) ? this.taxPP - drivers[0][i] : this.taxPP;

@@ -1,23 +1,23 @@
 <mat-card class="detail-card">
   <mat-card-header>
     <mat-card-title>{{ item.name | titlecase | slice:0:13 }}</mat-card-title>
-    <mat-card-subtitle fxLayout.lt-xs="row">
-      {{ item.price | number:'1.2-2' | currency }}
-      <button mat-button (click)="update()" *ngIf="!isEdit">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-button (click)="update()" *ngIf="isEdit">
-        <mat-icon>save</mat-icon>
-      </button>
-      <button mat-button (click)="remove(item)">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button mat-button (click)="selectAll()" *ngIf="!isSelectAll">
-        <mat-icon>select_all</mat-icon>
-      </button>
-      <button mat-button (click)="deselectAll()" *ngIf="isSelectAll">
-        <mat-icon>remove_circle</mat-icon>
-      </button>
+    <mat-card-subtitle fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
+      <span fxFlex="0 1 calc(25%-1px)">{{ item.price | number:'1.2-2' | currency }}</span>
+      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="update()" *ngIf="!isEdit">
+        edit
+      </mat-icon>
+      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="update()" *ngIf="isEdit">
+        save
+      </mat-icon>
+      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="remove(item)">
+        delete
+      </mat-icon>
+      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="selectAll()" *ngIf="!isSelectAll">
+        select_all
+      </mat-icon>
+      <mat-icon fxFlex="0 1 calc(25%-1px)" mat-button (click)="deselectAll()" *ngIf="isSelectAll">
+        remove_circle
+      </mat-icon>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
