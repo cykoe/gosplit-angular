@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../../shared/shared.module';
 
@@ -30,6 +31,7 @@ describe('ReceiptDetailPageComponent', () => {
       ],
       imports: [
         SharedModule,
+        BrowserAnimationsModule,
       ],
       providers: [
         {provide: ReceiptService, useValue: receiptServiceSpy},
@@ -80,6 +82,20 @@ describe('ReceiptDetailPageComponent', () => {
       expect(items.length).toBe(receipt.list.length, `should display ${receipt.list.length} items`);
     });
 
+    it('should toggle the person driving status within the receipt', () => {
+      component.toggleDP(receipt.people[0]);
+      expect(receipt.people[0].isPassenger).toEqual(true);
+      expect(receipt.people[0].isDriver).toEqual(false);
+
+      component.toggleDP(receipt.people[0]);
+      expect(receipt.people[0].isPassenger).toEqual(false);
+      expect(receipt.people[0].isDriver).toEqual(true);
+
+      component.toggleDP(receipt.people[0]);
+      expect(receipt.people[0].isPassenger).toEqual(false);
+      expect(receipt.people[0].isDriver).toEqual(false);
+    });
+
     it('should CREATE an item within the receipt', () => {
       const newItem = new Item({...testItems[0], people: testPeople, _id: 'tempId'});
       newItem.people.forEach((person) => person.selection = true);
@@ -89,7 +105,7 @@ describe('ReceiptDetailPageComponent', () => {
 
       component.createItem(newItem.toJson());
 
-      expect(receipt.split).toEqual(expectedSplit);
+      expect(receipt.people.map((p) => p.price)).toEqual(expectedSplit);
       expect(receipt.list.length).toEqual(expectedLength);
     });
 
@@ -102,7 +118,7 @@ describe('ReceiptDetailPageComponent', () => {
       item.people.forEach((person) => person.price = item.price / item.people.length);
       component.updateItem(item);
 
-      expect(receipt.split).toEqual(expectedSplit);
+      expect(receipt.people.map((p) => p.price)).toEqual(expectedSplit);
     });
 
     it('should REMOVE an item within the receipt', () => {
@@ -114,7 +130,7 @@ describe('ReceiptDetailPageComponent', () => {
       const item = receipt.list[1];
       component.deleteItem(item);
 
-      expect(receipt.split).toEqual(expectedSplit);
+      expect(receipt.people.map((p) => p.price)).toEqual(expectedSplit);
       expect(receipt.list.length).toEqual(expectedLength);
     });
   });

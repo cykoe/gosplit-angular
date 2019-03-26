@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Item } from '../../shared/item.model';
+import { Person } from '../../shared/person.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -51,6 +52,18 @@ export class ReceiptDetailPageComponent implements OnInit {
 
   deleteItem(item: Item) {
     this.receipt.deleteItem(item);
+  }
+
+  // toggle between driver passenger or neither
+  toggleDP(person: Person) {
+    if (!person.isPassenger && !person.isDriver) {
+      person.isPassenger = true;
+    } else if (person.isPassenger && !person.isDriver) {
+      person.isDriver = true;
+      person.isPassenger = false;
+    } else if (!person.isPassenger && person.isDriver) {
+      person.isDriver = false;
+    }
   }
 
   // changeRowPrice(itemIndex, personIndex) {

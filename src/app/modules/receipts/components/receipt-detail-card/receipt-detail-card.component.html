@@ -1,10 +1,23 @@
 <mat-card class="detail-card">
   <mat-card-header>
-    <mat-card-title>{{ item.name }}</mat-card-title>
-    <mat-card-subtitle>{{ item.price }}
-      <button mat-raised-button (click)="update()" *ngIf="!isEdit">Edit</button>
-      <button mat-raised-button (click)="update()" *ngIf="isEdit">Save</button>
-      <button mat-raised-button (click)="remove(item)">Delete</button>
+    <mat-card-title>{{ item.name | titlecase | slice:0:13 }}</mat-card-title>
+    <mat-card-subtitle fxLayout.lt-xs="row">
+      {{ item.price | number:'1.2-2' | currency }}
+      <button mat-button (click)="update()" *ngIf="!isEdit">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-button (click)="update()" *ngIf="isEdit">
+        <mat-icon>save</mat-icon>
+      </button>
+      <button mat-button (click)="remove(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button mat-button (click)="selectAll()" *ngIf="!isSelectAll">
+        <mat-icon>select_all</mat-icon>
+      </button>
+      <button mat-button (click)="deselectAll()" *ngIf="isSelectAll">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
@@ -22,25 +35,17 @@
       </form>
     </ng-container>
     <ng-container *ngIf="!isEdit">
-      <mat-grid-list cols="3">
-        <mat-grid-tile colspan="2" rowspan="2">
-          <img mat-card-image [src]="item.image">
-        </mat-grid-tile>
-        <mat-grid-tile colspan="1" rowspan="3" class="people-list">
-          <button
-            mat-raised-button
-            *ngFor="let person of item.people"
-            class="button-row"
-            (click)="toggle(person)"
-            [color]="person.selection ? 'warn' : 'primary'"
-          >{{ person.name }}
-          </button>
-        </mat-grid-tile>
-        <mat-grid-tile colspan="2" rowspan="1">
-          <button mat-raised-button (click)="selectAll()">Select All</button>
-          <button mat-raised-button (click)="deselectAll()">Remove All</button>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <img [src]="item.image" style="width: 100%; height: 100px; display: inline-block">
+      <mat-chip-list>
+        <mat-chip
+          mat-raised-button
+          *ngFor="let person of item.people"
+          class="button-row"
+          (click)="toggle(person)"
+          [color]="person.selection ? 'accent' : 'primary'"
+        >{{ person.name  | slice:0:1}}
+        </mat-chip>
+      </mat-chip-list>
     </ng-container>
   </mat-card-content>
 </mat-card>

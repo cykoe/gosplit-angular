@@ -12,6 +12,7 @@ import { Person } from '../../shared/person.model';
 export class ReceiptDetailCardComponent implements OnInit {
   form: FormGroup;
   isEdit = false;
+  isSelectAll = false;
 
   @Input() item: Item;
   @Output() removed = new EventEmitter<Item>();
@@ -54,11 +55,13 @@ export class ReceiptDetailCardComponent implements OnInit {
   }
 
   selectAll() {
+    this.isSelectAll = !this.isSelectAll;
     this.item.people.forEach((person) => person.selection = true);
     this.updatePrice();
   }
 
   deselectAll() {
+    this.isSelectAll = !this.isSelectAll;
     this.item.people.forEach((person) => person.selection = false);
     this.updatePrice();
   }

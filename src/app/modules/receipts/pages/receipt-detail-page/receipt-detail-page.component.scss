@@ -3,6 +3,11 @@
   margin: 20px auto;
 }
 
+.detail-card {
+  width: 23%;
+  margin-bottom: 2%;
+}
+
 input[type=checkbox]:checked + label:before {
   background: #dc3545;
   border-color: #dc3545;

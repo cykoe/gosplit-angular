@@ -36,6 +36,7 @@ export class Receipt {
 
   createItem(item: Item) {
     this.list.push(item);
+    this.people.forEach((p, i) => p.price += this.split[i]);
   }
 
   updateItem(item: Item) {
@@ -43,19 +44,40 @@ export class Receipt {
     if (index !== -1) {
       this.list[index] = item;
     }
+    this.people.forEach((p, i) => p.price += this.split[i]);
   }
 
   deleteItem(item: Item) {
     const index = this.list.findIndex((i) => i.name === item.name);
     this.list.splice(index, 1);
+    this.people.forEach((p, i) => p.price += this.split[i]);
   }
 
   get split() {
-    return this.list.reduce((acc, item) => {
+    const split = this.list.reduce((acc, item) => {
       return acc.map((p, i) => {
         return p + item.people[i].price;
       });
     }, new Array(this.people.length).fill(0));
+    return split;
+    // TODO: fix driver fees
+    // let counter = 0;
+    // const reward = this.people.reduce((acc, cur) => {
+    //   if (cur.isDriver || cur.isPassenger) {
+    //     counter++;
+    //     return acc + cur.price;
+    //   } else {
+    //     return acc;
+    //   }
+    // }, 0);
+    // const punishment = reward / counter;
+    // return this.people.forEach((p) => {
+    //   if (p.isDriver) {
+    //     p.price -= AppConfig.rewards.driver;
+    //   } else if (p.isPassenger) {
+    //     p.price -= AppConfig.rewards.passenger;
+    //   }
+    // });
   }
 
   toJson() {

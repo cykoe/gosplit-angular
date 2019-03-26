@@ -29,6 +29,10 @@ export const AppConfig: any = {
       name: 'Haowei',
     },
   ],
+  rewards: {
+    driver: 10,
+    passenger: 5,
+  },
   repositoryURL: 'https://github.com/sircharlie/gosplit',
   sbDuration: 3000,
 };
