@@ -19,7 +19,7 @@ export class Item {
   toJson() {
     return {
       _id: this.id,
-      name: this.image,
+      name: this.name,
       price: this.price,
       image: this.image,
       people: this.people.map((person) => person.toJson()),

@@ -1,39 +1,61 @@
-<form [formGroup]="form">
-  <mat-form-field><input matInput formControlName="name" placeholder="name"></mat-form-field>
-  <mat-form-field><input matInput formControlName="price" placeholder="price"></mat-form-field>
-  <mat-form-field><input matInput formControlName="image" placeholder="image"></mat-form-field>
-  <button mat-raised-button (click)="createItem(form.value)">Add</button>
-</form>
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span *ngFor="let person of receipt.people">
-      {{person.name}}: {{person.price}}
-      <mat-icon *ngIf="person.isDriver">drive_eta</mat-icon>
-      <mat-icon *ngIf="person.isPassenger">person_add</mat-icon>
-      <mat-icon *ngIf="!person.isDriver&&!person.isPassenger">tag_faces</mat-icon>
-    </span>
-  </mat-toolbar-row>
-  <mat-toolbar-row>
-    <span><button mat-button (click)="updateReceipt()">Save</button></span>
-    <span class="spacer"></span>
-    <span>{{receipt.subtotal}}</span>
-    <span>{{receipt.tax}}</span>
-    <span>{{receipt.total}}</span>
-  </mat-toolbar-row>
-</mat-toolbar>
-<div
-  fxLayout="row wrap"
-  fxLayout.lt-sm="column"
-  fxLayoutGap="25px"
-  fxLayoutAlign="flex-center"
-  *ngIf="receipt">
-  <app-receipt-detail-card
-    fxFlex="0 1 calc(25% - 25px)"
-    fxFlex.lt-md="0 1 calc(33.3% - 25px)"
-    fxFlex.lt-sm="100%"
-    *ngFor="let item of receipt.list"
-    [item]="item"
-    (removed)="deleteItem($event)"
-    (changed)="updateItem($event)"
-  ></app-receipt-detail-card>
+<div *ngIf="receipt">
+  <form [formGroup]="form">
+    <mat-form-field><input matInput formControlName="name" placeholder="name"></mat-form-field>
+    <mat-form-field><input matInput formControlName="price" placeholder="price"></mat-form-field>
+    <mat-form-field><input matInput formControlName="image" placeholder="image"></mat-form-field>
+    <button mat-raised-button (click)="createItem(form.value)">Create Item</button>
+  </form>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <mat-chip-list>
+        <mat-chip *ngFor="let person of receipt.people" (click)="toggleDP(person)">
+          {{ person.name }}: {{ person.price | number:'1.2-2' }}
+          <mat-icon *ngIf="person.isDriver">drive_eta</mat-icon>
+          <mat-icon *ngIf="person.isPassenger">person</mat-icon>
+          <mat-icon *ngIf="!person.isDriver&&!person.isPassenger">tag_faces</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-toolbar-row>
+    <mat-toolbar-row>
+      <mat-chip-list>
+        <mat-chip color="primary" selected>#Items: {{ receipt.list.length }}</mat-chip>
+        <mat-chip color="primary" selected>Date: {{ receipt.date | date:'shortDate' }}</mat-chip>
+      </mat-chip-list>
+      <span class="spacer"></span>
+      <mat-chip-list>
+        <mat-chip selected>Store: {{ receipt.store | titlecase }}</mat-chip>
+        <ng-container *ngIf="receipt.isSubtotalRight()">
+          <mat-chip selected>Subtotal: {{ receipt.subtotal | number:'1.2-2' | currency }}</mat-chip>
+        </ng-container>
+        <ng-container *ngIf="!receipt.isSubtotalRight()">
+          <mat-chip selected matBadge="Wrong" matBadgeColor="warn"
+                    matTooltip="Subtotal does not add up correctly!">
+            Subtotal: {{ receipt.subtotal | number:'1.2-2' | currency }}</mat-chip>
+        </ng-container>
+        <mat-chip selected>Tax: {{ receipt.tax | number:'1.2-2' | currency }}</mat-chip>
+        <mat-chip color="warn" selected>Total: {{ receipt.total | number:'1.2-2' | currency }}</mat-chip>
+      </mat-chip-list>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div
+    fxLayout="row wrap"
+    fxLayout.lt-sm="column"
+    fxLayoutGap="1px"
+    fxLayoutAlign="flex-center">
+    <app-receipt-detail-card
+      fxFlex="0 1 calc(25% - 1px)"
+      fxFlex.lt-md="0 1 calc(33.3% - 1px)"
+      fxFlex.lt-sm="100%"
+      *ngFor="let item of receipt.list"
+      [item]="item"
+      (removed)="deleteItem($event)"
+      (changed)="updateItem($event)"
+      class="receipt-detail-card"
+    ></app-receipt-detail-card>
+  </div>
 </div>
+<span class="done">
+  <button mat-fab (click)="updateReceipt()">
+    <mat-icon>check circle</mat-icon>
+  </button>
+</span>

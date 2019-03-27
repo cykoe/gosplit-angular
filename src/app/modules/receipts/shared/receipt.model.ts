@@ -10,6 +10,7 @@ export class Receipt {
   date: string;
   store: string;
   userId: string;
+  payer: string;
   list: Item[];
   people: Person[];
 
@@ -22,11 +23,17 @@ export class Receipt {
     this.store = receipt.store || '';
     this.userId = receipt.userId || '';
     this.list = receipt.list.map((item) => new Item(item));
+    this.payer = receipt.payer || '';
     if (!receipt.people.length) {
       this.people = AppConfig.peopleList.map((person) => new Person(person));
     } else {
       this.people = receipt.people.map((person) => new Person(person));
     }
+  }
+
+  isSubtotalRight() {
+    const expectedSub = this.list.reduce((acc, cur) => acc + Number.parseFloat(`${cur.price}`), 0).toFixed(2);
+    return (`${this.subtotal}` === `${expectedSub}`);
   }
 
   toUrlDate() {
@@ -36,48 +43,50 @@ export class Receipt {
 
   createItem(item: Item) {
     this.list.push(item);
-    this.people.forEach((p, i) => p.price += this.split[i]);
   }
 
   updateItem(item: Item) {
-    const index = this.list.findIndex((i) => i.id === item.id);
-    if (index !== -1) {
-      this.list[index] = item;
-    }
-    this.people.forEach((p, i) => p.price += this.split[i]);
+    this.list[this.list.findIndex((i) => i.id === item.id)] = item;
+    this.isSubtotalRight();
   }
 
   deleteItem(item: Item) {
-    const index = this.list.findIndex((i) => i.name === item.name);
-    this.list.splice(index, 1);
-    this.people.forEach((p, i) => p.price += this.split[i]);
+    this.list.splice(this.list.findIndex((i) => i.name === item.name), 1);
   }
 
-  get split() {
-    const split = this.list.reduce((acc, item) => {
-      return acc.map((p, i) => {
-        return p + item.people[i].price;
+  updateSplit(rewards: any) {
+    if (this.list.length === 0) {
+      this.people.forEach((person) => person.price === 0);
+    } else {
+      this.people.forEach((person) => {
+        person.price = this.list.map((item) => item.people.find((p) => p.name === person.name).price).reduce((acc, cur) => acc + cur);
       });
-    }, new Array(this.people.length).fill(0));
-    return split;
-    // TODO: fix driver fees
-    // let counter = 0;
-    // const reward = this.people.reduce((acc, cur) => {
-    //   if (cur.isDriver || cur.isPassenger) {
-    //     counter++;
-    //     return acc + cur.price;
-    //   } else {
-    //     return acc;
-    //   }
-    // }, 0);
-    // const punishment = reward / counter;
-    // return this.people.forEach((p) => {
-    //   if (p.isDriver) {
-    //     p.price -= AppConfig.rewards.driver;
-    //   } else if (p.isPassenger) {
-    //     p.price -= AppConfig.rewards.passenger;
-    //   }
-    // });
+    }
+    //  apply rewards
+    if (rewards) {
+      let counter = 0;
+      const punishmentTotal: number = this.people.reduce((acc, person) => {
+        if (person.isPassenger) {
+          person.price -= rewards.passenger;
+          return acc + rewards.passenger;
+        } else if (person.isDriver) {
+          person.price -= rewards.driver;
+          return acc + rewards.driver;
+        } else {
+          counter++;
+          return acc;
+        }
+      }, 0);
+      const punishmentEach = punishmentTotal / counter;
+      this.people.forEach((person) => {
+        if (!person.isPassenger && !person.isDriver) {
+          person.price += punishmentEach;
+        }
+      });
+    }
+
+    // apply taxes
+    this.people.forEach((person) => person.price += this.tax / this.people.length);
   }
 
   toJson() {
@@ -89,6 +98,7 @@ export class Receipt {
       date: this.date,
       userId: this.userId,
       store: this.store,
+      payer: this.payer,
       list: this.list.map((list) => list.toJson()),
       people: this.people.map((person) => person.toJson()),
     };

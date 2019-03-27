@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { v4 as uuid } from 'uuid';
 
 import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
+import { AppConfig } from '../../../../configs/app.config';
 import { Item } from '../../shared/item.model';
 import { Person } from '../../shared/person.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
-import { AppConfig } from "../../../../configs/app.config";
 
 @Component({
   selector: 'app-receipt-detail',
@@ -45,15 +46,17 @@ export class ReceiptDetailPageComponent implements OnInit {
   }
 
   createItem(item: any) {
-    this.receipt.createItem(new Item(item));
+    this.receipt.createItem(new Item({...item, _id: uuid()}));
   }
 
   updateItem(item: Item) {
     this.receipt.updateItem(item);
+    this.receipt.updateSplit(AppConfig.rewards);
   }
 
   deleteItem(item: Item) {
     this.receipt.deleteItem(item);
+    this.receipt.updateSplit(AppConfig.rewards);
   }
 
   toggleDP(person: Person) {
@@ -65,6 +68,7 @@ export class ReceiptDetailPageComponent implements OnInit {
     } else if (!person.isPassenger && person.isDriver) {
       person.isDriver = false;
     }
+    this.receipt.updateSplit(AppConfig.rewards);
   }
 
   updateReceipt() {

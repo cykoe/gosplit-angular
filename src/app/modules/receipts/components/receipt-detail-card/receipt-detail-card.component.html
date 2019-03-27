@@ -1,7 +1,9 @@
 <mat-card class="detail-card">
   <mat-card-header>
-    <mat-card-title>{{ item.name | titlecase | slice:0:13 }}</mat-card-title>
-    <mat-card-subtitle fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
+    <mat-card-subtitle>{{ item.name | titlecase | slice:0:14 }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
       <span fxFlex="0 1 calc(25%-1px)">{{ item.price | number:'1.2-2' | currency }}</span>
       <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="update()" *ngIf="!isEdit">
         edit
@@ -18,9 +20,7 @@
       <mat-icon fxFlex="0 1 calc(25%-1px)" mat-button (click)="deselectAll()" *ngIf="isSelectAll">
         remove_circle
       </mat-icon>
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
+    </div>
     <ng-container *ngIf="isEdit">
       <form [formGroup]="form" autocomplete="off">
         <mat-form-field>
@@ -35,14 +35,16 @@
       </form>
     </ng-container>
     <ng-container *ngIf="!isEdit">
-      <img [src]="item.image" style="width: 100%; height: 100px; display: inline-block">
-      <mat-chip-list>
+      <img [src]="item.image" style="width: 100%; height: 200px; display: inline-block; padding: 1.5rem 0" [alt]="item.name">
+      <mat-chip-list fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
         <mat-chip
           mat-raised-button
           *ngFor="let person of item.people"
           class="button-row"
           (click)="toggle(person)"
-          [color]="person.selection ? 'accent' : 'primary'"
+          [color]="person.selection ? 'warn' : 'primary'"
+          selected
+          fxFlex="0 1 calc({{100/(item.people.length)}}%-1px)"
         >{{ person.name  | slice:0:1}}
         </mat-chip>
       </mat-chip-list>

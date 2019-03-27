@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../../../configs/app.config';
 
@@ -12,6 +12,7 @@ import { ReceiptService } from '../../shared/receipt.service';
 })
 export class ReceiptListCardComponent implements OnInit {
   @Input() element: Receipt;
+  @Output() deleted = new EventEmitter<Receipt>();
 
   constructor(
     private router: Router,
@@ -27,8 +28,8 @@ export class ReceiptListCardComponent implements OnInit {
   }
 
   delete(receipt: Receipt) {
-    // TODO: Needs to refresh to show deletion
-    this.receiptService.delete(receipt).subscribe(() => this.router.navigate([`/${AppConfig.routes.home}`]));
+    this.receiptService.delete(receipt).subscribe(() => {
+      this.deleted.emit(receipt);
+    });
   }
-
 }

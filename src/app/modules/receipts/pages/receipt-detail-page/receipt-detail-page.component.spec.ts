@@ -50,9 +50,16 @@ describe('ReceiptDetailPageComponent', () => {
     receiptServiceSpy.read.and.returnValue(asyncData(receipt));
   });
 
-  const click = () => {
-    const receiptDe: DebugElement = fixture.debugElement;
-    receiptDe.triggerEventHandler('changed', receipt.list[0]);
+  const click = (eventName: string) => {
+    const receiptDe: DebugElement = fixture.debugElement.query(By.css('app-receipt-detail-card'));
+    const changedPeople = receipt.list[0].people.map((person) => {
+      const newPerson = {...person};
+      newPerson.selection = true;
+      newPerson.price = receipt.list[0].price / receipt.list[0].people.length;
+      return newPerson;
+    });
+    const changedItem = {...receipt.list[0], people: changedPeople};
+    receiptDe.triggerEventHandler(eventName, changedItem);
   };
 
   describe('before get receipts', () => {
@@ -97,15 +104,11 @@ describe('ReceiptDetailPageComponent', () => {
     });
 
     it('should CREATE an item within the receipt', () => {
-      const newItem = new Item({...testItems[0], people: testPeople, _id: 'tempId'});
-      newItem.people.forEach((person) => person.selection = true);
-      newItem.people.forEach((person) => person.price = newItem.price / newItem.people.length);
-      const expectedSplit = receipt.split.map((o, i) => o + newItem.people[i].price);
+      const newItem = new Item({...testItems[0], people: testPeople, _id: 'id'});
       const expectedLength = receipt.list.length + 1;
 
       component.createItem(newItem.toJson());
 
-      expect(receipt.people.map((p) => p.price)).toEqual(expectedSplit);
       expect(receipt.list.length).toEqual(expectedLength);
     });
 
@@ -122,16 +125,36 @@ describe('ReceiptDetailPageComponent', () => {
     });
 
     it('should REMOVE an item within the receipt', () => {
-      receipt.list[0].people.forEach((person) => person.selection = true);
-      receipt.list[0].people.forEach((person) => person.price = receipt.list[0].price / receipt.list[0].people.length);
-      const expectedSplit = receipt.split;
       const expectedLength = receipt.list.length - 1;
 
       const item = receipt.list[1];
       component.deleteItem(item);
 
-      expect(receipt.people.map((p) => p.price)).toEqual(expectedSplit);
       expect(receipt.list.length).toEqual(expectedLength);
+    });
+
+    it('should raise the CHANGED event when clicked', () => {
+      // original split
+      const expectedSplit = receipt.people.map(() => {
+        return receipt.list[0].price / receipt.list[0].people.length;
+      });
+
+      click('changed');
+
+      // after split
+      const newSplit = receipt.people.map((person) => person.price);
+      expect(newSplit).toEqual(expectedSplit);
+    });
+
+    it('should raise the REMOVED event when clicked', () => {
+      // original split
+      const expectedSplit = receipt.people.map((person) => person.price += receipt.list[0].price / receipt.list[0].people.length);
+
+      click('removed');
+
+      // after split
+      const newSplit = receipt.people.map((person) => person.price);
+      expect(newSplit).toEqual(expectedSplit);
     });
   });
 
