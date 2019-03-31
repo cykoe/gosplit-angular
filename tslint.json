@@ -93,7 +93,6 @@
     "no-output-named-after-standard-event": true,
     "max-inline-declarations": true,
     "no-life-cycle-call": true,
-    "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": true,
     "enforce-component-selector": true,
     "no-queries-parameter": true,

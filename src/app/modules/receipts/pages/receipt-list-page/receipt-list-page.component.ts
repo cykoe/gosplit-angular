@@ -1,43 +1,110 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
-
-import { AuthService } from '../../../../core/services/auth.service';
-import { HeaderService } from '../../../../core/services/header.service';
-import { ReceiptService } from '../../shared/receipt.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
+
+import { AppConfig } from '../../../../configs/app.config';
+import { AuthService, HeaderService } from '../../../../core/services';
+import { Receipt } from '../../shared/receipt.model';
+import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
   selector: 'app-receipt',
   templateUrl: './receipt-list-page.component.html',
   styleUrls: ['./receipt-list-page.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ReceiptListPageComponent implements OnInit {
-  isUploadingErrors;
-  isLoadingResults = false;
-  tab$: Observable<string>;
+  dataSource;
+  displayedColumns: string[];
+  totalFooter: number[];
+  receipts: Receipt[];
+  selection = new SelectionModel<Receipt>(true, []);
+
+  expandedElement;
 
   constructor(
     private auth: AuthService,
     private headerService: HeaderService,
     private receiptService: ReceiptService,
-  ) {}
+    private router: Router,
+  ) {
+  }
 
   ngOnInit() {
-    this.tab$ = this.headerService.headerTabChange$;
-    this.receiptService.list().subscribe((res) => {
-      console.log(res);
+    this.headerService.headerTabChange$.subscribe((tab) => {
+      if (tab === 'Upload') {
+        this.router.navigate([`/${AppConfig.routes.receipts}/${AppConfig.routes.upload}`]);
+      } else if (tab === 'About') {
+        this.router.navigate([`/${AppConfig.routes.accounts}/${AppConfig.routes.login}`]);
+      }
+    });
+    this.displayedColumns = ['Select', 'Date'];
+    this.receiptService.list().subscribe((receipts) => {
+      this.receipts = receipts;
+      this.reset(this.receipts);
     });
   }
 
-  onErrors(error: string) {
-    error ? this.isUploadingErrors = error : this.isUploadingErrors = undefined;
+  findPrice(arr, name) {
+    return arr.find((a) => a.name === name).price;
   }
 
-  onUploading(isUploading: boolean) {
-    isUploading ? this.isLoadingResults = true : this.isLoadingResults = false;
+  delete(receipt: Receipt) {
+    this.receipts = this.receipts.filter((r) => r.id !== receipt.id);
+    this.reset(this.receipts);
   }
 
-  isLoggedIn(): boolean {
-    return !!this.auth.token;
+  reset(receipts: Receipt[]) {
+    // sort by date
+    receipts = receipts.sort((val1, val2) => +new Date(val2.date) - +new Date(val1.date));
+    // find involved people
+    const columns = receipts.find((receipt) => !!receipt.people.length);
+    if (columns) {
+      this.displayedColumns = ['Select', 'Date', ...columns.people.map((p) => p.name)];
+    }
+    // fill all short split with 0's and get total costs for each person
+    this.totalFooter = new Array(this.displayedColumns.length - 2).fill(0);
+    // assign to data table
+    this.dataSource = new MatTableDataSource<Receipt>(receipts);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach((row) => this.selection.select(row));
+    this.calculateTotal();
+  }
+
+  rowToggle(row) {
+    this.selection.toggle(row);
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    this.totalFooter = this.selection.selected
+      .map((t) => {
+        const newSplit = t.people.map((person) => person.price);
+        while (t.people.length < this.displayedColumns.length - 2) {
+          newSplit.push(0);
+        }
+        return newSplit;
+      })
+      .reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
   }
 }

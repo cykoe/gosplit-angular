@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 
 import { MatSnackBar } from '@angular/material';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Receipt } from './receipt.model';
@@ -33,18 +33,23 @@ export class ReceiptService {
         map((data) => new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
 
-  read(item: Receipt): Observable<Receipt> | any {
-    return this.http.get<Receipt>(`${this.url}${this.endpoint}${item.id}`)
+  read(itemId: string): Observable<Receipt> | any {
+    return this.http.get<Receipt>(`${this.url}${this.endpoint}${itemId}`)
       .pipe(
-        map((data) => new Receipt(data)),
+        map((data) => {
+          if (!data) {
+            return undefined;
+          }
+          return new Receipt(data);
+        }),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of(undefined);
         }),
       );
   }
@@ -55,7 +60,7 @@ export class ReceiptService {
         map((data) => new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
@@ -65,7 +70,7 @@ export class ReceiptService {
       .pipe(
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return throwError(err);
         }),
       );
   }
@@ -73,10 +78,10 @@ export class ReceiptService {
   list(): Observable<Receipt[]> | any {
     return this.http.get<Receipt[]>(`${this.url}${this.endpoint}`)
       .pipe(
-        map((data) => data.map((item: any) => new Receipt(item))),
+        map((data) => data.map((receipt: any) => new Receipt(receipt))),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of([]);
         }),
       );
   }

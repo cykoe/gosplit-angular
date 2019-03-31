@@ -9,8 +9,29 @@ export const AppConfig: any = {
     register: 'register',
     login: 'login',
     home: '',
-    detail: ':year/:month/:day/:store/:id',
+    detail: ':mm/:dd/:yy/:store/:id',
     upload: 'upload',
+  },
+  peopleList: [
+    {
+      name: 'Charlie',
+    },
+    {
+      name: 'Xinghan',
+    },
+    {
+      name: 'Lawrence',
+    },
+    {
+      name: 'Mohan',
+    },
+    {
+      name: 'Haowei',
+    },
+  ],
+  rewards: {
+    driver: 12,
+    passenger: 6,
   },
   repositoryURL: 'https://github.com/sircharlie/gosplit',
   sbDuration: 3000,
