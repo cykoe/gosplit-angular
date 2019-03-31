@@ -5,6 +5,25 @@
   color: white;
 }
 
+.add {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  color: white;
+}
+
 .receipt-detail-card {
-  padding: 2%;
+  padding: 5%;
+}
+
+app-receipt-detail-header {
+  z-index: 1000;
+  //box-shadow: 2px 0 0 2px rgba(0, 0, 0, 0.3);
+  color: white;
+  //background-color: #ab47bc;
+  font-size: 2rem;
+  //height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

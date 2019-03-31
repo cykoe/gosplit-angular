@@ -2,11 +2,6 @@ import { AppConfig } from '../../../configs/app.config';
 import { Person } from './person.model';
 
 export class Item {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  people: Person[];
 
   constructor(item: any = {}) {
     this.id = item._id || '';
@@ -14,6 +9,15 @@ export class Item {
     this.price = item.price || '';
     this.image = item.image || '';
     this.people = (item.people || AppConfig.peopleList).map((person) => new Person(person));
+  }
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  people: Person[];
+
+  static getPropertyNames() {
+    return ['name', 'price', 'image'];
   }
 
   toJson() {

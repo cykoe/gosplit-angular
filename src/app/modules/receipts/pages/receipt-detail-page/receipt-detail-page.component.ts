@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
-import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { AppConfig } from '../../../../configs/app.config';
+import { CreateFormDialogComponent } from '../../../../shared/components/create-form-dialog/create-form-dialog.component';
 import { Item } from '../../shared/item.model';
-import { Person } from '../../shared/person.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -19,25 +18,17 @@ import { ReceiptService } from '../../shared/receipt.service';
   styleUrls: ['./receipt-detail-page.component.scss'],
 })
 export class ReceiptDetailPageComponent implements OnInit {
-  form: FormGroup;
-
   receipt: Receipt;
 
   constructor(
     private receiptService: ReceiptService,
     private route: ActivatedRoute,
-    private fb: FormBuilder,
     private sb: MatSnackBar,
+    private dialog: MatDialog,
   ) {
   }
 
   ngOnInit() {
-    this.form = this.fb.group({
-      name: [''],
-      price: [''],
-      image: [''],
-    });
-
     this.route.paramMap.pipe(
       switchMap((params) => this.receiptService.read(params.get('id'))),
     ).subscribe((receipt: Receipt) => {
@@ -45,8 +36,17 @@ export class ReceiptDetailPageComponent implements OnInit {
     });
   }
 
-  createItem(item: any) {
-    this.receipt.createItem(new Item({...item, _id: uuid()}));
+  createReceipt() {
+    const dialogRef = this.dialog.open(CreateFormDialogComponent, {
+      width: '250px',
+      data: Item.getPropertyNames(),
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.receipt.createItem(new Item({...result, _id: uuid()}));
+      }
+    });
   }
 
   updateItem(item: Item) {
@@ -56,18 +56,6 @@ export class ReceiptDetailPageComponent implements OnInit {
 
   deleteItem(item: Item) {
     this.receipt.deleteItem(item);
-    this.receipt.updateSplit(AppConfig.rewards);
-  }
-
-  toggleDP(person: Person) {
-    if (!person.isPassenger && !person.isDriver) {
-      person.isPassenger = true;
-    } else if (person.isPassenger && !person.isDriver) {
-      person.isDriver = true;
-      person.isPassenger = false;
-    } else if (!person.isPassenger && person.isDriver) {
-      person.isDriver = false;
-    }
     this.receipt.updateSplit(AppConfig.rewards);
   }
 

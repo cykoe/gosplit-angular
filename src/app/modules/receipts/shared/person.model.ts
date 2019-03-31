@@ -1,3 +1,5 @@
+import { AppConfig } from '../../../configs/app.config';
+
 export class Person {
   name: string;
   selection: boolean;
@@ -21,5 +23,15 @@ export class Person {
       isDriver: this.isDriver,
       isPassenger: this.isPassenger,
     };
+  }
+
+  get status() {
+    if (this.isDriver) {
+      return {name: 'Driver', reward: `-${AppConfig.rewards.driver}`};
+    } else if (this.isPassenger) {
+      return {name: 'Passenger', reward: `-${AppConfig.rewards.passenger}`};
+    } else {
+      return {name: 'Salty Fish', reward: ''};
+    }
   }
 }

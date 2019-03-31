@@ -1,7 +1,17 @@
-mat-card-subtitle {
-  word-wrap: break-word;
+.header {
+  display: flex;
+}
+
+.card-title {
+  word-break: break-all;
+  line-height: 40px;
+  font-size: 20px;
 }
 
 mat-icon:hover {
   cursor: pointer;
+}
+
+.money-color {
+  color: green;
 }

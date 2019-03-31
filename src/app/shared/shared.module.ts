@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './modules/material.module';
 
+import { CreateFormDialogComponent } from './components/create-form-dialog/create-form-dialog.component';
+import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 
@@ -13,6 +15,8 @@ import { HeaderComponent } from './components/header/header.component';
   declarations: [
     FooterComponent,
     HeaderComponent,
+    DeleteConfirmDialogComponent,
+    CreateFormDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -33,6 +37,10 @@ import { HeaderComponent } from './components/header/header.component';
     FlexLayoutModule,
     HeaderComponent,
     FooterComponent,
+  ],
+  entryComponents: [
+    DeleteConfirmDialogComponent,
+    CreateFormDialogComponent,
   ],
 })
 export class SharedModule {

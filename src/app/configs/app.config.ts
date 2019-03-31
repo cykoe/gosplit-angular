@@ -30,8 +30,8 @@ export const AppConfig: any = {
     },
   ],
   rewards: {
-    driver: 10,
-    passenger: 5,
+    driver: 12,
+    passenger: 6,
   },
   repositoryURL: 'https://github.com/sircharlie/gosplit',
   sbDuration: 3000,

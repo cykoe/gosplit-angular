@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { AppConfig } from '../../../../configs/app.config';
 
+import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -17,6 +19,7 @@ export class ReceiptListCardComponent implements OnInit {
   constructor(
     private router: Router,
     private receiptService: ReceiptService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -28,8 +31,16 @@ export class ReceiptListCardComponent implements OnInit {
   }
 
   delete(receipt: Receipt) {
-    this.receiptService.delete(receipt).subscribe(() => {
-      this.deleted.emit(receipt);
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      width: '250px',
+      data: receipt,
+    });
+    dialogRef.afterClosed().subscribe((result: Receipt) => {
+      if (result.id && result.id === receipt.id) {
+        this.receiptService.delete(receipt).subscribe(() => {
+          this.deleted.emit(receipt);
+        });
+      }
     });
   }
 }

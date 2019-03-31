@@ -1,25 +1,40 @@
-<mat-card class="detail-card">
-  <mat-card-header>
-    <mat-card-subtitle>{{ item.name | titlecase | slice:0:14 }}</mat-card-subtitle>
-  </mat-card-header>
+<mat-card class="detail-card" *ngIf="item">
+  <div class="header">
+    <span matTooltip="{{item.name}}" class="card-title">
+      {{ item.name | titlecase | slice: 0:14 }}
+    </span>
+    <span class="spacer"></span>
+    <mat-menu #appMenu="matMenu">
+      <button mat-menu-item (click)="update()">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="remove(item)">
+        <mat-icon color="warn">delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </mat-menu>
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" matTooltip="More options">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
   <mat-card-content>
-    <div fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
-      <span fxFlex="0 1 calc(25%-1px)">{{ item.price | number:'1.2-2' | currency }}</span>
-      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="update()" *ngIf="!isEdit">
-        edit
-      </mat-icon>
-      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="update()" *ngIf="isEdit">
-        save
-      </mat-icon>
-      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="remove(item)">
-        delete
-      </mat-icon>
-      <mat-icon fxFlex="0 1 calc(25%-1px)" (click)="selectAll()" *ngIf="!isSelectAll">
-        select_all
-      </mat-icon>
-      <mat-icon fxFlex="0 1 calc(25%-1px)" mat-button (click)="deselectAll()" *ngIf="isSelectAll">
-        remove_circle
-      </mat-icon>
+    <div class="header">
+      <button mat-button class="money-color">{{ item.price | currency:'USD':'symbol':'1.2-2' }}</button>
+      <span class="spacer"></span>
+      <button mat-raised-button color="primary" (click)="update()" *ngIf="isEdit">
+        Save
+      </button>
+      <span class="spacer"></span>
+      <button mat-raised-button color="accent" (click)="undo()" *ngIf="isEdit">
+        Undo
+      </button>
+      <button mat-icon-button (click)="selectAll()" *ngIf="!isSelectAll && !isEdit" matTooltip="Select All">
+        <mat-icon>select_all</mat-icon>
+      </button>
+      <button mat-icon-button (click)="deselectAll()" *ngIf="isSelectAll && !isEdit" matTooltip="Remove All">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
     </div>
     <ng-container *ngIf="isEdit">
       <form [formGroup]="form" autocomplete="off">
@@ -35,19 +50,19 @@
       </form>
     </ng-container>
     <ng-container *ngIf="!isEdit">
-      <img [src]="item.image" style="width: 100%; height: 200px; display: inline-block; padding: 1.5rem 0" [alt]="item.name">
-      <mat-chip-list fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
-        <mat-chip
-          mat-raised-button
+      <div style="display: flex; justify-content: center">
+        <img [src]="item.image" style="height: 200px; display: inline-block; padding: 1.5rem 0"
+             [alt]="item.name">
+      </div>
+      <div fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
+        <mat-checkbox
           *ngFor="let person of item.people"
-          class="button-row"
-          (click)="toggle(person)"
-          [color]="person.selection ? 'warn' : 'primary'"
-          selected
+          (change)="toggle()"
+          [(ngModel)]="person.selection"
           fxFlex="0 1 calc({{100/(item.people.length)}}%-1px)"
-        >{{ person.name  | slice:0:1}}
-        </mat-chip>
-      </mat-chip-list>
+        >{{ person.name  | slice:0:1 }}
+        </mat-checkbox>
+      </div>
     </ng-container>
   </mat-card-content>
 </mat-card>

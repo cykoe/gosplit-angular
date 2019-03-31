@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 
+import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Item } from '../../shared/item.model';
 import { Person } from '../../shared/person.model';
 
@@ -18,8 +20,11 @@ export class ReceiptDetailCardComponent implements OnInit {
   @Output() removed = new EventEmitter<Item>();
   @Output() changed = new EventEmitter<Item>();
 
+  item_cp: any;
+
   constructor(
     private fb: FormBuilder,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -32,7 +37,15 @@ export class ReceiptDetailCardComponent implements OnInit {
   }
 
   remove(item: Item) {
-    this.removed.emit(item);
+    const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
+      width: '250px',
+      data: item,
+    });
+    dialogRef.afterClosed().subscribe((result: Item) => {
+      if (result.id && result.id === item.id) {
+        this.removed.emit(item);
+      }
+    });
   }
 
   change(item: Item) {
@@ -40,6 +53,7 @@ export class ReceiptDetailCardComponent implements OnInit {
   }
 
   update() {
+    this.item_cp = {...this.item};
     if (this.isEdit) {
       this.item.name = this.form.get('name').value;
       this.item.price = this.form.get('price').value;
@@ -49,8 +63,17 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.isEdit = !this.isEdit;
   }
 
-  toggle(person: Person) {
-    person.selection = !person.selection;
+  undo() {
+    this.item.name = this.item_cp.name;
+    this.item.price = this.item_cp.price;
+    this.item.image = this.item_cp.image;
+    this.form.get('name').setValue(this.item.name);
+    this.form.get('price').setValue(this.item.price);
+    this.form.get('image').setValue(this.item.image);
+    this.isEdit = !this.isEdit;
+  }
+
+  toggle() {
     this.updatePrice();
   }
 

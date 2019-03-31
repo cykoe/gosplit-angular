@@ -1,4 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
@@ -17,7 +18,7 @@ import { ReceiptService } from '../../shared/receipt.service';
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
-      state('expanded', style({height: '*'})),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -27,6 +28,7 @@ export class ReceiptListPageComponent implements OnInit {
   displayedColumns: string[];
   totalFooter: number[];
   receipts: Receipt[];
+  selection = new SelectionModel<Receipt>(true, []);
 
   expandedElement;
 
@@ -46,7 +48,7 @@ export class ReceiptListPageComponent implements OnInit {
         this.router.navigate([`/${AppConfig.routes.accounts}/${AppConfig.routes.login}`]);
       }
     });
-    this.displayedColumns = ['Date'];
+    this.displayedColumns = ['Select', 'Date'];
     this.receiptService.list().subscribe((receipts) => {
       this.receipts = receipts;
       this.reset(this.receipts);
@@ -68,19 +70,41 @@ export class ReceiptListPageComponent implements OnInit {
     // find involved people
     const columns = receipts.find((receipt) => !!receipt.people.length);
     if (columns) {
-      this.displayedColumns = ['Date', ...columns.people.map((p) => p.name)];
+      this.displayedColumns = ['Select', 'Date', ...columns.people.map((p) => p.name)];
     }
     // fill all short split with 0's and get total costs for each person
-    this.totalFooter = receipts
+    this.totalFooter = new Array(this.displayedColumns.length - 2).fill(0);
+    // assign to data table
+    this.dataSource = new MatTableDataSource<Receipt>(receipts);
+  }
+
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach((row) => this.selection.select(row));
+    this.calculateTotal();
+  }
+
+  rowToggle(row) {
+    this.selection.toggle(row);
+    this.calculateTotal();
+  }
+
+  calculateTotal() {
+    this.totalFooter = this.selection.selected
       .map((t) => {
         const newSplit = t.people.map((person) => person.price);
-        while (t.people.length < this.displayedColumns.length - 1) {
+        while (t.people.length < this.displayedColumns.length - 2) {
           newSplit.push(0);
         }
         return newSplit;
       })
       .reduce((acc, value) => acc.map((p, i) => p + value[i]), [0, 0, 0, 0, 0]);
-    // assign to data table
-    this.dataSource = new MatTableDataSource<Receipt>(receipts);
   }
 }
