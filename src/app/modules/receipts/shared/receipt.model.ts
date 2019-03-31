@@ -55,6 +55,7 @@ export class Receipt {
   }
 
   updateSplit(rewards: any) {
+    console.log(rewards);
     if (this.list.length === 0) {
       this.people.forEach((person) => person.price === 0);
     } else {
@@ -89,7 +90,7 @@ export class Receipt {
     this.people.forEach((person) => person.price += this.tax / this.people.length);
   }
 
-  toJson() {
+  toJson(): any {
     return {
       _id: this.id,
       subtotal: this.subtotal,

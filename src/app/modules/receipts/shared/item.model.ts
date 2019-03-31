@@ -1,5 +1,6 @@
-import { AppConfig } from '../../../configs/app.config';
 import { Person } from './person.model';
+
+import { AppConfig } from '../../../configs/app.config';
 
 export class Item {
 
