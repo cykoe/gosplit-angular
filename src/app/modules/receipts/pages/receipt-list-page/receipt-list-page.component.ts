@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 
@@ -31,6 +31,8 @@ export class ReceiptListPageComponent implements OnInit {
   selection = new SelectionModel<Receipt>(true, []);
 
   expandedElement;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private auth: AuthService,
@@ -70,17 +72,14 @@ export class ReceiptListPageComponent implements OnInit {
   }
 
   reset(receipts: Receipt[]) {
-    // sort by date
     receipts = receipts.sort((val1, val2) => +new Date(val2.date) - +new Date(val1.date));
-    // find involved people
     const columns = receipts.find((receipt) => !!receipt.people.length);
     if (columns) {
       this.displayedColumns = ['Select', 'Date', ...columns.people.map((p) => p.name)];
     }
-    // fill all short split with 0's and get total costs for each person
     this.totalFooter = new Array(this.displayedColumns.length - 2).fill(0);
-    // assign to data table
     this.dataSource = new MatTableDataSource<Receipt>(receipts);
+    this.dataSource.paginator = this.paginator;
   }
 
   isAllSelected() {
