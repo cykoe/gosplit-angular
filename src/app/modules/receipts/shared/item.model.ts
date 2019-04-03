@@ -1,21 +1,23 @@
 import { Person } from './person.model';
 
-import { AppConfig } from '../../../configs/app.config';
+const defaultPeople = [{name: 'Emily'}, {name: 'John'}, {name: 'Alex'}];
 
 export class Item {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  people: Person[];
 
   constructor(item: any = {}) {
     this.id = item._id || '';
     this.name = item.name || '';
     this.price = item.price || '';
     this.image = item.image || '';
-    this.people = (item.people || AppConfig.peopleList).map((person) => new Person(person));
+    this.people = (!item.people || !item.people.length)
+      ? defaultPeople.map((person) => new Person(person))
+      : item.people.map((person) => new Person(person));
   }
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  people: Person[];
 
   static getPropertyNames() {
     return ['name', 'price', 'image'];

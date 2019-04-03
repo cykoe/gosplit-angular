@@ -1,6 +1,7 @@
-import { AppConfig } from '../../../configs/app.config';
 import { Item } from './item.model';
 import { Person } from './person.model';
+
+const defaultPeople = [{name: 'Emily'}, {name: 'John'}, {name: 'Alex'}];
 
 export class Receipt {
   id: string;
@@ -24,11 +25,9 @@ export class Receipt {
     this.userId = receipt.userId || '';
     this.list = receipt.list.map((item) => new Item(item));
     this.payer = receipt.payer || '';
-    if (!receipt.people.length) {
-      this.people = AppConfig.peopleList.map((person) => new Person(person));
-    } else {
-      this.people = receipt.people.map((person) => new Person(person));
-    }
+    this.people = (!receipt.people || !receipt.people.length)
+      ? defaultPeople.map((person) => new Person(person))
+      : receipt.people.map((person) => new Person(person));
   }
 
   isSubtotalRight() {
@@ -38,7 +37,12 @@ export class Receipt {
 
   toUrlDate() {
     const date = new Date(this.date);
-    return date.toLocaleDateString();
+    const yy = date.getFullYear();
+    // tslint:disable-next-line:no-magic-numbers
+    const mm = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+    // tslint:disable-next-line:no-magic-numbers
+    const dd = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+    return `${yy}/${mm}/${dd}`;
   }
 
   createItem(item: Item) {
@@ -54,8 +58,7 @@ export class Receipt {
     this.list.splice(this.list.findIndex((i) => i.name === item.name), 1);
   }
 
-  updateSplit(rewards: any) {
-    console.log(rewards);
+  updateSplit(rewards: any = null) {
     if (this.list.length === 0) {
       this.people.forEach((person) => person.price === 0);
     } else {
@@ -63,31 +66,42 @@ export class Receipt {
         person.price = this.list.map((item) => item.people.find((p) => p.name === person.name).price).reduce((acc, cur) => acc + cur);
       });
     }
+    this.people.forEach((person) => person.price += this.tax / this.people.length);
+
     //  apply rewards
     if (rewards) {
-      let counter = 0;
+      let punishmentCounter = 0;
       const punishmentTotal: number = this.people.reduce((acc, person) => {
         if (person.isPassenger) {
-          person.price -= rewards.passenger;
-          return acc + rewards.passenger;
+          if (rewards.passenger > person.price) {
+            const price = person.price;
+            person.price = 0;
+            return acc + price;
+          } else {
+            person.price -= rewards.passenger;
+            return acc + rewards.passenger;
+          }
         } else if (person.isDriver) {
-          person.price -= rewards.driver;
-          return acc + rewards.driver;
+          if (rewards.driver > person.price) {
+            const price = person.price;
+            person.price = 0;
+            return acc + price;
+          } else {
+            person.price -= rewards.driver;
+            return acc + rewards.driver;
+          }
         } else {
-          counter++;
+          punishmentCounter++;
           return acc;
         }
       }, 0);
-      const punishmentEach = punishmentTotal / counter;
+      const punishmentEach = punishmentTotal / punishmentCounter;
       this.people.forEach((person) => {
         if (!person.isPassenger && !person.isDriver) {
           person.price += punishmentEach;
         }
       });
     }
-
-    // apply taxes
-    this.people.forEach((person) => person.price += this.tax / this.people.length);
   }
 
   toJson(): any {
@@ -100,7 +114,7 @@ export class Receipt {
       userId: this.userId,
       store: this.store,
       payer: this.payer,
-      list: this.list.map((list) => list.toJson()),
+      list: this.list.map((item) => item.toJson()),
       people: this.people.map((person) => person.toJson()),
     };
   }
