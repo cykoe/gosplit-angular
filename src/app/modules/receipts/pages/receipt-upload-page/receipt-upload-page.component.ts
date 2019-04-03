@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
+import { AppConfig } from '../../../../configs/app.config';
 import { HeaderService } from '../../../../core/services/header.service';
 import { ReceiptService } from '../../shared/receipt.service';
-import { AppConfig } from '../../../../configs/app.config';
 
 @Component({
   selector: 'app-upload',

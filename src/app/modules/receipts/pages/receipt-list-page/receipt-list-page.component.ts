@@ -18,7 +18,7 @@ import { ReceiptService } from '../../shared/receipt.service';
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
+      state('expanded', style({height: '*', visibility: 'visible'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -56,7 +56,12 @@ export class ReceiptListPageComponent implements OnInit {
   }
 
   findPrice(arr, name) {
-    return arr.find((a) => a.name === name).price;
+    const foundPerson = arr.find((a) => a.name === name);
+    if (!foundPerson) {
+      return 0;
+    } else {
+      return arr.find((a) => a.name === name).price;
+    }
   }
 
   delete(receipt: Receipt) {

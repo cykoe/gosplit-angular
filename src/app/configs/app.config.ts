@@ -12,26 +12,9 @@ export const AppConfig: any = {
     detail: ':mm/:dd/:yy/:store/:id',
     upload: 'upload',
   },
-  peopleList: [
-    {
-      name: 'Charlie',
-    },
-    {
-      name: 'Xinghan',
-    },
-    {
-      name: 'Lawrence',
-    },
-    {
-      name: 'Mohan',
-    },
-    {
-      name: 'Haowei',
-    },
-  ],
   rewards: {
-    driver: 12,
-    passenger: 6,
+    driver: 10,
+    passenger: 5,
   },
   repositoryURL: 'https://github.com/sircharlie/gosplit',
   sbDuration: 3000,

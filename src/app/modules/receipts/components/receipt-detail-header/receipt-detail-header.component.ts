@@ -3,6 +3,7 @@ import { AfterViewInit, Component, HostBinding, Input, OnInit } from '@angular/c
 
 import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime } from 'rxjs/operators';
+
 import { AppConfig } from '../../../../configs/app.config';
 import { Person } from '../../shared/person.model';
 import { Receipt } from '../../shared/receipt.model';
@@ -37,6 +38,7 @@ export class ReceiptDetailHeaderComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const scroll$ = fromEvent(window, 'scroll').pipe(
+      // tslint:disable-next-line:no-magic-numbers
       throttleTime(10),
       map(() => window.pageYOffset),
       pairwise(),
