@@ -3,7 +3,9 @@
   <div
     fxLayout="row wrap"
     fxLayout.lt-sm="column"
-    fxLayoutAlign="flex-center">
+    fxLayoutAlign="flex-center"
+    #cardDisplay
+    >
     <app-receipt-detail-card
       fxFlex="0 1 calc(25%)"
       fxFlex.lt-sm="100%"
@@ -14,6 +16,8 @@
       (removed)="deleteItem($event)"
       (changed)="updateItem($event)"
       class="receipt-detail-card"
+      [currentItemId]="currentItemId"
+      #card
     ></app-receipt-detail-card>
   </div>
 </div>

@@ -1,12 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { FocusMonitor, FocusOrigin, FocusTrapFactory, ListKeyManager } from '@angular/cdk/a11y';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
 import { Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
-
 import { AppConfig } from '../../../../configs/app.config';
+
 import { CreateFormDialogComponent } from '../../../../shared/components/create-form-dialog/create-form-dialog.component';
 import { Item } from '../../shared/item.model';
 import { Receipt } from '../../shared/receipt.model';
@@ -17,24 +30,54 @@ import { ReceiptService } from '../../shared/receipt.service';
   templateUrl: './receipt-detail-page.component.html',
   styleUrls: ['./receipt-detail-page.component.scss'],
 })
-export class ReceiptDetailPageComponent implements OnInit {
+export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   receipt: Receipt;
+  keyManager: any;
+  currentItemId: string;
+
+  @ViewChildren('card') card: QueryList<any>;
+  @ViewChild('cardDisplay') cardDisplay: ElementRef<HTMLElement>;
 
   constructor(
     private receiptService: ReceiptService,
     private route: ActivatedRoute,
     private sb: MatSnackBar,
     private dialog: MatDialog,
+    private focusMonitor: FocusMonitor,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private focusTrap: FocusTrapFactory,
   ) {
   }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      switchMap((params) => this.receiptService.read(params.get('id'))),
-    ).subscribe((receipt: Receipt) => {
-      this.receipt = receipt;
+    this.route.data.subscribe((data: { receipt: Receipt }) => {
+      this.receipt = data.receipt;
     });
   }
+
+  ngAfterViewInit() {
+    this.keyManager = new ListKeyManager(this.card);
+    this.keyManager.withWrap();
+    const focusTrap = this.focusTrap.create(this.cardDisplay.nativeElement);
+    focusTrap.focusInitialElement();
+    this.keyManager.setFirstItemActive();
+  }
+
+  @HostListener('window:keyup', ['$event']) keyFunc(event) {
+    if (event.shiftKey && event.keyCode === 9) {
+      this.keyManager.onKeydown(event);
+      this.keyManager.setPreviousItemActive();
+      this.currentItemId = this.keyManager.activeItem.item.id;
+    } else if (event.code === 'Tab') {
+      this.keyManager.onKeydown(event);
+      this.keyManager.setNextItemActive();
+      this.currentItemId = this.keyManager.activeItem.item.id;
+    }
+  }
+  // ngOnDestroy() {
+  //   this.focusMonitor.stopMonitoring(this.card);
+  // }
 
   createReceipt() {
     const dialogRef = this.dialog.open(CreateFormDialogComponent, {

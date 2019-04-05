@@ -1,10 +1,22 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Item } from '../../shared/item.model';
-import { Person } from '../../shared/person.model';
 
 @Component({
   selector: 'app-receipt-detail-card',
@@ -16,15 +28,27 @@ export class ReceiptDetailCardComponent implements OnInit {
   isEdit = false;
   isSelectAll = false;
 
+  @Input() currentItemId: any;
   @Input() item: Item;
   @Output() removed = new EventEmitter<Item>();
   @Output() changed = new EventEmitter<Item>();
+
+  @ViewChild('card') set cardContent(card: ElementRef<HTMLElement>) {
+    if (card) {
+      this.focusMonitor.monitor(card).subscribe((origin: FocusOrigin) => this.ngZone.run(() => {
+        this.cdr.markForCheck();
+      }));
+    }
+  }
 
   item_cp: any;
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor,
   ) {
   }
 
@@ -94,5 +118,14 @@ export class ReceiptDetailCardComponent implements OnInit {
     const split = this.item.price / count;
     this.item.people.forEach((person) => person.price = person.selection ? split : 0);
     this.change(this.item);
+  }
+
+  @HostListener('window:keydown', ['$event']) keyFunc(event) {
+    if (this.item.id !== this.currentItemId) { return; }
+    const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(event.key.toLowerCase()));
+    if (person) {
+      person.selection = !person.selection;
+      this.updatePrice();
+    }
   }
 }
