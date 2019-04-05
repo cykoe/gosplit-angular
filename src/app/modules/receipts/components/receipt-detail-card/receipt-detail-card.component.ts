@@ -14,6 +14,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { Observable, forkJoin } from 'rxjs';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Item } from '../../shared/item.model';
@@ -28,10 +29,12 @@ export class ReceiptDetailCardComponent implements OnInit {
   isEdit = false;
   isSelectAll = false;
 
-  @Input() currentItemId: any;
+  @Input() itemId: Observable<string>;
+  @Input() keyCode: Observable<string>;
   @Input() item: Item;
   @Output() removed = new EventEmitter<Item>();
   @Output() changed = new EventEmitter<Item>();
+  @Output() selected = new EventEmitter<string>();
 
   @ViewChild('card') set cardContent(card: ElementRef<HTMLElement>) {
     if (card) {
@@ -58,6 +61,17 @@ export class ReceiptDetailCardComponent implements OnInit {
       price: [this.item.price],
       image: [this.item.image],
     });
+    forkJoin(this.keyCode, this.itemId).subscribe(val=>{
+      console.log(val);
+      if (this.item.id === val[1]) {
+        const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(val[0].toLowerCase()));
+        console.log(person);
+      if (person) {
+          person.selection = !person.selection;
+          this.updatePrice();
+        }
+      }
+    })
   }
 
   remove(item: Item) {
@@ -97,6 +111,10 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.isEdit = !this.isEdit;
   }
 
+  focus() {
+    this.selected.emit(this.item.id);
+  }
+
   toggle() {
     this.updatePrice();
   }
@@ -120,12 +138,12 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.change(this.item);
   }
 
-  @HostListener('window:keydown', ['$event']) keyFunc(event) {
-    if (this.item.id !== this.currentItemId) { return; }
-    const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(event.key.toLowerCase()));
-    if (person) {
-      person.selection = !person.selection;
-      this.updatePrice();
-    }
-  }
+  // @HostListener('window:keydown', ['$event']) keyFunc(event) {
+  // if (this.item.id !== this.currentItemId) { return; }
+  // const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(event.key.toLowerCase()));
+  // if (person) {
+  //   person.selection = !person.selection;
+  //   this.updatePrice();
+  // }
+  // }
 }

@@ -1,4 +1,4 @@
-<mat-card class="detail-card" *ngIf="item">
+<mat-card class="detail-card" *ngIf="item" (click)="focus()">
   <div class="header" #card>
     <span matTooltip="{{item.name}}" class="card-title" tabindex="1">
       {{ item.name | titlecase | slice: 0:14 }}

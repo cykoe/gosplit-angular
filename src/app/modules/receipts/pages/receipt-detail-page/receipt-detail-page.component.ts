@@ -16,7 +16,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AppConfig } from '../../../../configs/app.config';
 
@@ -33,7 +33,10 @@ import { ReceiptService } from '../../shared/receipt.service';
 export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   receipt: Receipt;
   keyManager: any;
-  currentItemId: string;
+  itemId$ = new BehaviorSubject<string>('');
+  itemId = this.itemId$.asObservable();
+  keyCode$ = new BehaviorSubject<string>('');
+  keyCode = this.keyCode$.asObservable();
 
   @ViewChildren('card') card: QueryList<any>;
   @ViewChild('cardDisplay') cardDisplay: ElementRef<HTMLElement>;
@@ -68,11 +71,21 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
     if (event.shiftKey && event.keyCode === 9) {
       this.keyManager.onKeydown(event);
       this.keyManager.setPreviousItemActive();
-      this.currentItemId = this.keyManager.activeItem.item.id;
+      this.itemId$.next(this.keyManager.activeItem.item.id);
     } else if (event.code === 'Tab') {
       this.keyManager.onKeydown(event);
       this.keyManager.setNextItemActive();
-      this.currentItemId = this.keyManager.activeItem.item.id;
+      this.itemId$.next(this.keyManager.activeItem.item.id);
+    } else {
+      this.keyCode$.next(event.key);
+    }
+  }
+
+  select(itemId: string) {
+    const found = this.receipt.list.findIndex(item=>item.id===itemId);
+    if(found) {
+      this.keyManager.setActiveItem(found);
+      this.itemId$.next(this.keyManager.activeItem.item.id);
     }
   }
   // ngOnDestroy() {

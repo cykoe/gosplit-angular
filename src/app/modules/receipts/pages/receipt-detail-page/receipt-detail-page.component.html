@@ -16,7 +16,9 @@
       (removed)="deleteItem($event)"
       (changed)="updateItem($event)"
       class="receipt-detail-card"
-      [currentItemId]="currentItemId"
+      [itemId]="itemId"
+      [keyCode]="keyCode"
+      (selected)="select($event)"
       #card
     ></app-receipt-detail-card>
   </div>
