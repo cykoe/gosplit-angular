@@ -16,7 +16,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { AppConfig } from '../../../../configs/app.config';
 
@@ -33,10 +33,9 @@ import { ReceiptService } from '../../shared/receipt.service';
 export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   receipt: Receipt;
   keyManager: any;
-  itemId$ = new BehaviorSubject<string>('');
-  itemId = this.itemId$.asObservable();
-  keyCode$ = new BehaviorSubject<string>('');
-  keyCode = this.keyCode$.asObservable();
+  key$ = new BehaviorSubject<string>('');
+  key = this.key$.asObservable();
+  activeItemId = 0;
 
   @ViewChildren('card') card: QueryList<any>;
   @ViewChild('cardDisplay') cardDisplay: ElementRef<HTMLElement>;
@@ -67,27 +66,28 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
     this.keyManager.setFirstItemActive();
   }
 
-  @HostListener('window:keyup', ['$event']) keyFunc(event) {
-    if (event.shiftKey && event.keyCode === 9) {
-      this.keyManager.onKeydown(event);
+  onKeyDown($event) {
+    if ($event.shiftKey && $event.key === 'Tab') {
+      this.keyManager.onKeydown($event);
       this.keyManager.setPreviousItemActive();
-      this.itemId$.next(this.keyManager.activeItem.item.id);
-    } else if (event.code === 'Tab') {
-      this.keyManager.onKeydown(event);
+      this.activeItemId = this.keyManager.activeItemIndex;
+    } else if (!$event.shiftKey && $event.key === 'Tab') {
+      this.keyManager.onKeydown($event);
       this.keyManager.setNextItemActive();
-      this.itemId$.next(this.keyManager.activeItem.item.id);
+      this.activeItemId = this.keyManager.activeItemIndex;
     } else {
-      this.keyCode$.next(event.key);
+      this.key$.next($event.key);
     }
   }
 
-  select(itemId: string) {
-    const found = this.receipt.list.findIndex(item=>item.id===itemId);
-    if(found) {
+  select(item: Item) {
+    const found = this.receipt.list.findIndex((i) => i === item);
+    if (found) {
       this.keyManager.setActiveItem(found);
-      this.itemId$.next(this.keyManager.activeItem.item.id);
+      this.activeItemId = this.keyManager.activeItemIndex;
     }
   }
+
   // ngOnDestroy() {
   //   this.focusMonitor.stopMonitoring(this.card);
   // }
@@ -106,7 +106,7 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   }
 
   updateItem(item: Item) {
-    this.receipt.updateItem(item);
+    this.receipt.updateItem();
     this.receipt.updateSplit(AppConfig.rewards);
   }
 

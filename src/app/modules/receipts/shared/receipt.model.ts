@@ -49,8 +49,7 @@ export class Receipt {
     this.list.push(item);
   }
 
-  updateItem(item: Item) {
-    this.list[this.list.findIndex((i) => i.id === item.id)] = item;
+  updateItem() {
     this.isSubtotalRight();
   }
 

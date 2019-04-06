@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { Observable, forkJoin } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Item } from '../../shared/item.model';
@@ -29,20 +29,14 @@ export class ReceiptDetailCardComponent implements OnInit {
   isEdit = false;
   isSelectAll = false;
 
-  @Input() itemId: Observable<string>;
-  @Input() keyCode: Observable<string>;
+  @Input() isSelected: boolean;
+  @Input() key: Observable<string>;
   @Input() item: Item;
   @Output() removed = new EventEmitter<Item>();
   @Output() changed = new EventEmitter<Item>();
-  @Output() selected = new EventEmitter<string>();
+  @Output() selected = new EventEmitter<Item>();
 
-  @ViewChild('card') set cardContent(card: ElementRef<HTMLElement>) {
-    if (card) {
-      this.focusMonitor.monitor(card).subscribe((origin: FocusOrigin) => this.ngZone.run(() => {
-        this.cdr.markForCheck();
-      }));
-    }
-  }
+  @ViewChild('card') card: ElementRef<HTMLElement>;
 
   item_cp: any;
 
@@ -61,18 +55,25 @@ export class ReceiptDetailCardComponent implements OnInit {
       price: [this.item.price],
       image: [this.item.image],
     });
-    forkJoin(this.keyCode, this.itemId).subscribe(val=>{
-      console.log(val);
-      if (this.item.id === val[1]) {
-        const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(val[0].toLowerCase()));
-        console.log(person);
-      if (person) {
+    this.key.subscribe((key) => {
+      if (this.isSelected && key) {
+        const person = this.item.people[Number(key) - 1];
+        if (person) {
           person.selection = !person.selection;
           this.updatePrice();
         }
+        if (key  === 'a') {
+          (this.isSelectAll) ? this.deselectAll() : this.selectAll();
+        }
       }
-    })
+    });
   }
+
+  // ngAfterViewInit() {
+  //   this.focusMonitor.monitor(this.card).subscribe(() => this.ngZone.run(() => {
+  //     this.cdr.markForCheck();
+  //   }));
+  // }
 
   remove(item: Item) {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
@@ -112,7 +113,7 @@ export class ReceiptDetailCardComponent implements OnInit {
   }
 
   focus() {
-    this.selected.emit(this.item.id);
+    this.selected.emit(this.item);
   }
 
   toggle() {
@@ -137,13 +138,4 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.item.people.forEach((person) => person.price = person.selection ? split : 0);
     this.change(this.item);
   }
-
-  // @HostListener('window:keydown', ['$event']) keyFunc(event) {
-  // if (this.item.id !== this.currentItemId) { return; }
-  // const person = this.item.people.find((p) => p.name.toLowerCase().startsWith(event.key.toLowerCase()));
-  // if (person) {
-  //   person.selection = !person.selection;
-  //   this.updatePrice();
-  // }
-  // }
 }

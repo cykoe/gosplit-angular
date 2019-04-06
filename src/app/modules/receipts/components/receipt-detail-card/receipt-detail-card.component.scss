@@ -15,16 +15,3 @@ mat-icon:hover {
 .money-color {
   color: green;
 }
-
-.header > .cdk-mouse-focused {
-  background: rgba(255, 0, 0, 0.5);
-}
-.header > .cdk-keyboard-focused {
-  background: rgba(0, 255, 0, 0.5);
-}
-.header > .cdk-touch-focused {
-  background: rgba(0, 0, 255, 0.5);
-}
-.header > .cdk-program-focused {
-  background: rgba(255, 0, 255, 0.5);
-}

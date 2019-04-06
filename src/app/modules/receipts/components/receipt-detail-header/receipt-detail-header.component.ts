@@ -16,11 +16,11 @@ import { Receipt } from '../../shared/receipt.model';
     trigger('toggle', [
       state(
         'hidden',
-        style({ opacity: 0, transform: 'translateY(-100%)' }),
+        style({opacity: 0, transform: 'translateY(-100%)'}),
       ),
       state(
         'visible',
-        style({ opacity: 1, transform: 'translateY(0)' }),
+        style({opacity: 1, transform: 'translateY(0)'}),
       ),
       transition('* => *', animate('200ms ease-in')),
     ]),
@@ -46,6 +46,19 @@ export class ReceiptDetailHeaderComponent implements AfterViewInit {
       distinctUntilChanged(),
       share(),
     );
+
+    const top$ = fromEvent(window, 'scroll').pipe(
+      // tslint:disable-next-line:no-magic-numbers
+      throttleTime(10),
+      map(() => window.pageYOffset),
+      distinctUntilChanged(),
+    );
+
+    top$.subscribe((res) => {
+      if (res < 1) {
+        this.isVisible = false;
+      }
+    });
 
     const goingUp$ = scroll$.pipe(
       filter((direction) => direction === 'Up'),

@@ -15,7 +15,7 @@ html, body {
 }
 
 *, *::before, *::after {
-  box-sizing: inherit;
+  box-sizing: border-box !important;
 }
 
 a {
@@ -32,4 +32,8 @@ a {
 
 .spacer {
   flex: 1 1 auto;
+}
+
+button:focus {
+  outline: none !important;
 }
