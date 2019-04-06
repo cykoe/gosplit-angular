@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ReceiptsRoutingModule } from './receipts-routing.module';
@@ -21,6 +22,7 @@ import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-
   imports: [
     SharedModule,
     ReceiptsRoutingModule,
+    A11yModule,
   ],
 })
 export class ReceiptsModule {

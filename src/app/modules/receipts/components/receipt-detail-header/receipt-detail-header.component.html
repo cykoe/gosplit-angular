@@ -1,8 +1,7 @@
-<div fxFlex="10" fxFlex.gt-lg="20"></div>
-<mat-toolbar color="primary" fxFlex="90" fxFlex.gt-lg="80" *ngIf="receipt">
+<mat-toolbar color="primary" fxFlex="100" *ngIf="receipt">
   <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
     <mat-chip
-      fxFlex.lt-md="0 1 calc({{100/(receipt.people.length+1)}}%)"
+      fxFlex.lt-md="0 1 calc({{100/(receipt.people.length)}}%)"
       fxFlex.lt-sm="100%"
       fxLayoutAlign="flex-center"
       [matBadge]="person.status.reward"
@@ -11,17 +10,12 @@
       [matTooltip]="person.status.name"
       *ngFor="let person of receipt.people"
       (click)="toggleDP(person)">
-      {{ person.name }}: {{ person.price | number:'1.2-2' }}
+      {{ person.name }}: {{ person.price | number:'1.2-2'| currency }}
     </mat-chip>
   </mat-toolbar-row>
-  <mat-toolbar-row>
+  <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
     <mat-chip-list>
-      <mat-chip color="primary" selected>#Items: {{ receipt.list.length }}</mat-chip>
-      <mat-chip color="primary" selected>Date: {{ receipt.date | date:'shortDate' }}</mat-chip>
-    </mat-chip-list>
-    <span class="spacer"></span>
-    <mat-chip-list>
-      <mat-chip selected>Store: {{ receipt.store | titlecase }}</mat-chip>
+      <mat-chip color="primary" selected>{{ receipt.date | date:'shortDate' }}</mat-chip>
       <ng-container *ngIf="receipt.isSubtotalRight()">
         <mat-chip selected>Subtotal: {{ receipt.subtotal | number:'1.2-2' | currency }}</mat-chip>
       </ng-container>
@@ -35,4 +29,3 @@
     </mat-chip-list>
   </mat-toolbar-row>
 </mat-toolbar>
-<div fxFlex="10" fxFlex.gt-lg="20"></div>

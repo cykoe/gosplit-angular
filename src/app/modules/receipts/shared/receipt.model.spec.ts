@@ -72,7 +72,7 @@ describe('#ReceiptModel', () => {
     oldItem.price = 1;
     const expectedLength = receipt.list.length;
 
-    receipt.updateItem(oldItem);
+    receipt.updateItem();
     const addedItem = receipt.list.find((l) => l.id === oldItem.id);
 
     expect(receipt.list.length).toEqual(expectedLength);

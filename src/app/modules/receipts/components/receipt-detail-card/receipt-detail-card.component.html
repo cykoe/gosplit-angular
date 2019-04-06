@@ -1,8 +1,8 @@
-<mat-card class="detail-card" *ngIf="item">
+<mat-card class="detail-card" *ngIf="item" (click)="focus()">
   <div class="header">
-    <span matTooltip="{{item.name}}" class="card-title">
-      {{ item.name | titlecase | slice: 0:14 }}
-    </span>
+    <button mat-button class="card-title" tabindex="1">
+      {{ item.name | titlecase | slice: 0:13 }}
+    </button>
     <span class="spacer"></span>
     <mat-menu #appMenu="matMenu">
       <button mat-menu-item (click)="update()">
@@ -14,13 +14,13 @@
         <span>Delete</span>
       </button>
     </mat-menu>
-    <button mat-icon-button [matMenuTriggerFor]="appMenu" matTooltip="More options">
+    <button mat-icon-button [matMenuTriggerFor]="appMenu" matTooltip="More options" tabindex="-1">
       <mat-icon>more_vert</mat-icon>
     </button>
   </div>
   <mat-card-content>
     <div class="header">
-      <button mat-button class="money-color">{{ item.price | currency:'USD':'symbol':'1.2-2' }}</button>
+      <button mat-button class="money-color" tabindex="-1" matTooltip="{{item.name}}">{{ item.price | currency:'USD':'symbol':'1.2-2' }}</button>
       <span class="spacer"></span>
       <button mat-raised-button color="primary" (click)="update()" *ngIf="isEdit">
         Save
@@ -29,11 +29,13 @@
       <button mat-raised-button color="accent" (click)="undo()" *ngIf="isEdit">
         Undo
       </button>
-      <button mat-icon-button (click)="selectAll()" *ngIf="!isSelectAll && !isEdit" matTooltip="Select All">
-        <mat-icon>select_all</mat-icon>
+      <button mat-icon-button (click)="selectAll()" *ngIf="!isSelectAll && !isEdit" matTooltip="Select All"
+              tabindex="-1">
+        <mat-icon color="primary">select_all</mat-icon>
       </button>
-      <button mat-icon-button (click)="deselectAll()" *ngIf="isSelectAll && !isEdit" matTooltip="Remove All">
-        <mat-icon>remove_circle</mat-icon>
+      <button mat-icon-button (click)="deselectAll()" *ngIf="isSelectAll && !isEdit" matTooltip="Remove All"
+              tabindex="-1">
+        <mat-icon color="warn">remove_circle</mat-icon>
       </button>
     </div>
     <ng-container *ngIf="isEdit">
@@ -51,11 +53,12 @@
     </ng-container>
     <ng-container *ngIf="!isEdit">
       <div style="display: flex; justify-content: center">
-        <img [src]="item.image" style="height: 200px; display: inline-block; padding: 1.5rem 0"
+        <img [src]="item.image" style="height: 200px; max-width: 200px;display: inline-block; padding: 1.5rem 0"
              [alt]="item.name">
       </div>
       <div fxLayout="row" fxLayoutGap="1px" fxLayoutAlign="flex-center">
         <mat-checkbox
+          tabindex="-1"
           *ngFor="let person of item.people"
           (change)="toggle()"
           [(ngModel)]="person.selection"

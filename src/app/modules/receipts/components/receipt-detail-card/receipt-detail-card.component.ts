@@ -1,10 +1,23 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { combineLatest, Observable } from 'rxjs';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { Item } from '../../shared/item.model';
-import { Person } from '../../shared/person.model';
 
 @Component({
   selector: 'app-receipt-detail-card',
@@ -16,15 +29,23 @@ export class ReceiptDetailCardComponent implements OnInit {
   isEdit = false;
   isSelectAll = false;
 
+  @Input() isSelected: boolean;
+  @Input() key: Observable<string>;
   @Input() item: Item;
   @Output() removed = new EventEmitter<Item>();
   @Output() changed = new EventEmitter<Item>();
+  @Output() selected = new EventEmitter<Item>();
+
+  @ViewChild('card') card: ElementRef<HTMLElement>;
 
   item_cp: any;
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor,
   ) {
   }
 
@@ -34,7 +55,25 @@ export class ReceiptDetailCardComponent implements OnInit {
       price: [this.item.price],
       image: [this.item.image],
     });
+    this.key.subscribe((key) => {
+      if (this.isSelected && key) {
+        const person = this.item.people[Number(key) - 1];
+        if (person) {
+          person.selection = !person.selection;
+          this.updatePrice();
+        }
+        if (key  === 'a') {
+          (this.isSelectAll) ? this.deselectAll() : this.selectAll();
+        }
+      }
+    });
   }
+
+  // ngAfterViewInit() {
+  //   this.focusMonitor.monitor(this.card).subscribe(() => this.ngZone.run(() => {
+  //     this.cdr.markForCheck();
+  //   }));
+  // }
 
   remove(item: Item) {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
@@ -71,6 +110,10 @@ export class ReceiptDetailCardComponent implements OnInit {
     this.form.get('price').setValue(this.item.price);
     this.form.get('image').setValue(this.item.image);
     this.isEdit = !this.isEdit;
+  }
+
+  focus() {
+    this.selected.emit(this.item);
   }
 
   toggle() {

@@ -1,7 +1,7 @@
 import { Item } from './item.model';
 import { Person } from './person.model';
 
-const defaultPeople = [{name: 'Emily'}, {name: 'John'}, {name: 'Alex'}];
+const defaultPeople = [{name: 'Charlie'}, {name: 'Xinghan'}, {name: 'Lawrence'}, {name: 'Mohan'}, {name: 'Haowei'}];
 
 export class Receipt {
   id: string;
@@ -49,8 +49,7 @@ export class Receipt {
     this.list.push(item);
   }
 
-  updateItem(item: Item) {
-    this.list[this.list.findIndex((i) => i.id === item.id)] = item;
+  updateItem() {
     this.isSubtotalRight();
   }
 

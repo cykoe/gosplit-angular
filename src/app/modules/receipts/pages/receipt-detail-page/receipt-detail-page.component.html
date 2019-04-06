@@ -3,17 +3,24 @@
   <div
     fxLayout="row wrap"
     fxLayout.lt-sm="column"
-    fxLayoutAlign="flex-center">
+    fxLayoutAlign="flex-center"
+    #cardDisplay
+    >
     <app-receipt-detail-card
-      fxFlex="0 1 calc(25%)"
+      fxFlex="0 1 calc(24%)"
       fxFlex.lt-sm="100%"
       fxFlex.lt-md="0 1 calc(50%)"
       fxFlex.lt-lg="0 1 calc(33.3%)"
-      *ngFor="let item of receipt.list"
+      *ngFor="let item of receipt.list; let i = index"
       [item]="item"
       (removed)="deleteItem($event)"
       (changed)="updateItem($event)"
       class="receipt-detail-card"
+      [key]="key"
+      [isSelected]="activeItemId === i"
+      (keydown)="onKeyDown($event)"
+      (selected)="select($event)"
+      #card
     ></app-receipt-detail-card>
   </div>
 </div>

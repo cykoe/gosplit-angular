@@ -5,6 +5,8 @@ import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
 
+import { ReceiptResolverService } from './shared/receipt-resolver.service';
+
 import { AppConfig } from '../../configs/app.config';
 
 const routes: Routes = [
@@ -17,6 +19,9 @@ const routes: Routes = [
     path: AppConfig.routes.detail,
     component: ReceiptDetailPageComponent,
     pathMatch: 'full',
+    resolve: {
+      receipt: ReceiptResolverService,
+    },
   },
   {
     path: AppConfig.routes.upload,
@@ -28,6 +33,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
+  providers: [
+    ReceiptResolverService,
+  ],
 })
 export class ReceiptsRoutingModule {
 }
