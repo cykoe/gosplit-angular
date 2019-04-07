@@ -65,7 +65,7 @@
             "browserTarget": "gosplit:build"
           },
           "configurations": {
-            "production": {
+            "production":   {
               "browserTarget": "gosplit:build:production"
             }
           }
