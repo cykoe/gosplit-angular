@@ -1,31 +1,16 @@
-<mat-toolbar color="primary" fxFlex="100" *ngIf="receipt">
+<mat-toolbar color="primary" fxFlex="100" *ngIf="receipt" class="navbar-transparent">
   <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
     <mat-chip
       fxFlex.lt-md="0 1 calc({{100/(receipt.people.length)}}%)"
       fxFlex.lt-sm="100%"
-      fxLayoutAlign="flex-center"
-      [matBadge]="person.status.reward"
-      matBadgeColor="warn"
-      matBadgePosition="below after"
       [matTooltip]="person.status.name"
       *ngFor="let person of receipt.people"
+      [color]="person.isDriver ? 'warn' : 'primary'"
+      selected
       (click)="toggleDP(person)">
-      {{ person.name }}: {{ person.price | number:'1.2-2'| currency }}
+      <i class="nc-icon nc-delivery-fast" *ngIf="person.isDriver"></i>
+      <i class="nc-icon nc-user-run" *ngIf="person.isPassenger"></i>
+      {{ person.name }}: {{ person.price | number:'1.2-2' }}
     </mat-chip>
-  </mat-toolbar-row>
-  <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
-    <mat-chip-list>
-      <mat-chip color="primary" selected>{{ receipt.date | date:'shortDate' }}</mat-chip>
-      <ng-container *ngIf="receipt.isSubtotalRight()">
-        <mat-chip selected>Subtotal: {{ receipt.subtotal | number:'1.2-2' | currency }}</mat-chip>
-      </ng-container>
-      <ng-container *ngIf="!receipt.isSubtotalRight()">
-        <mat-chip selected matBadge="Wrong" matBadgeColor="warn"
-                  matTooltip="Subtotal does not add up correctly!">
-          Subtotal: {{ receipt.subtotal | number:'1.2-2' | currency }}</mat-chip>
-      </ng-container>
-      <mat-chip selected>Tax: {{ receipt.tax | number:'1.2-2' | currency }}</mat-chip>
-      <mat-chip color="warn" selected>Total: {{ receipt.total | number:'1.2-2' | currency }}</mat-chip>
-    </mat-chip-list>
   </mat-toolbar-row>
 </mat-toolbar>

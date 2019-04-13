@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AppConfig } from '../../configs/app.config';
@@ -15,16 +15,19 @@ import { HeaderService } from './header.service';
   providedIn: 'root',
 })
 export class AuthService {
+  redirectUrl = '/';
   readonly url: string = environment.api_url;
   readonly endpoint: string = 'user/';
-  private isAuthenticated$ = new BehaviorSubject<boolean>(false);
-  isAuthenticated = this.isAuthenticated$.asObservable();
+  isAuthenticated = false;
 
   constructor(
     private http: HttpClient,
     private headerService: HeaderService,
     private sb: MatSnackBar,
   ) {
+    if (this.token) {
+      this.isAuthenticated = true;
+    }
   }
 
   get token() {
@@ -33,11 +36,11 @@ export class AuthService {
 
   setAuth(data) {
     localStorage.setItem('token', data.token);
-    this.isAuthenticated$.next(true);
+    this.isAuthenticated = true;
   }
 
   purgeAuth() {
-    this.isAuthenticated$.next(false);
+    this.isAuthenticated = false;
   }
 
   checkUsername(login: any) {
@@ -48,9 +51,13 @@ export class AuthService {
     return this.http.post(`${this.url}${this.endpoint}register`, credentials)
       .pipe(
         tap((data: any) => this.setAuth(data)),
+        map((data: any) => {
+          data.url = this.redirectUrl;
+          return data;
+        }),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of(err.message);
         }),
       );
   }
@@ -59,9 +66,13 @@ export class AuthService {
     return this.http.post(`${this.url}${this.endpoint}login`, credentials)
       .pipe(
         tap((data: any) => this.setAuth(data)),
+        map((data: any) => {
+          data.url = this.redirectUrl;
+          return data;
+        }),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err.message);
+          return of(err.message);
         }),
       );
   }

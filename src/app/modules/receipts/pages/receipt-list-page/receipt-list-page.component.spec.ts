@@ -20,7 +20,7 @@ describe('LibraryComponent', () => {
         RouterTestingModule,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

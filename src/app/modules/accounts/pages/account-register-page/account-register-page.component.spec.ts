@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccountRegisterPageComponent } from './account-register-page.component';
 
-describe('SignupComponent', () => {
+describe('SigninComponent', () => {
   let component: AccountRegisterPageComponent;
   let fixture: ComponentFixture<AccountRegisterPageComponent>;
 

@@ -1,13 +1,5 @@
-:host {
-  display: block;
-  justify-content: center;
-  margin: 100px 0;
-}
-
-.example-container {
-  position: relative;
-  max-width: 752px;
-  margin: 0 auto;
+.container {
+  z-index: 2;
 }
 
 table {
@@ -24,16 +16,6 @@ tr.mat-footer-row, .date-column, .mat-header-cell {
 
 tr.example-element-row:hover {
   background: #f5f5f5;
-}
-
-td, th {
-  width: 10%;
-}
-
-.example-table-container {
-  position: relative;
-  min-width: 120px;
-  margin: 20px auto;
 }
 
 tr.example-detail-row {

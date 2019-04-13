@@ -12,6 +12,8 @@ export const AppConfig: any = {
     detail: ':mm/:dd/:yy/:store/:id',
     upload: 'upload',
   },
+  title: 'Split Your Bills',
+  subtitle: '@ Walmart, County, FreshIntl... with friends',
   rewards: {
     driver: 10,
     passenger: 5,

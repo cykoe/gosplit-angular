@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../../shared/shared.module';
 
@@ -14,7 +14,7 @@ import { Item } from '../../shared/item.model';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
-describe('ReceiptDetailPageComponent', () => {
+describe('DemoDetailComponent', () => {
   let component: ReceiptDetailPageComponent;
   let fixture: ComponentFixture<ReceiptDetailPageComponent>;
   let receipt: Receipt;

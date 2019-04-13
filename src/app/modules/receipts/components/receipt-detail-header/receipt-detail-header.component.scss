@@ -1,20 +1,13 @@
-:host {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-}
-
 mat-toolbar {
   box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 mat-toolbar-row {
-  justify-content: center ;
+  height: auto !important;
 }
 
 mat-chip {
-  overflow: visible;
-  margin: 0 2%;
-  line-height: 20px;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 10px;
 }

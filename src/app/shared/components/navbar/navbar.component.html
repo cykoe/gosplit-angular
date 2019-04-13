@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="500">
   <div class="container">
     <div class="navbar-translate">
-      <a class="navbar-brand" href="https://gosplit.online">gosplit.online</a>
+      <a class="navbar-brand" [routerLink]="['/']">gosplit.online</a>
       <button class="navbar-toggler navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
         <span class="navbar-toggler-bar"></span>
         <span class="navbar-toggler-bar"></span>
@@ -16,15 +16,20 @@
             <p class="d-lg-none">GitHub</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="!isDocumentation()">
-          <a href="https://gosplit.online/receipts" class="nav-link" target="_blank"><i class="nc-icon nc-book-bookmark"></i> Receipts</a>
+        <li class="nav-item" *ngIf="isLoggedin()">
+          <a [routerLink]="['/receipts']" class="nav-link"><i class="nc-icon nc-book-bookmark"></i> Receipts</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedin()">
+          <a [routerLink]="['/receipts/upload']" class="nav-link"><i class="nc-icon nc-book-bookmark"></i> Upload</a>
+        </li>
+        <li class="nav-item" *ngIf="!isLoggedin()">
+          <a [routerLink]="['/receipts/signup']" class="nav-link"><i class="nc-icon nc-book-bookmark"></i> Sign Up</a>
         </li>
         <li class="nav-item" *ngIf="!isHome()">
-          <a [routerLink]="['/']" *ngIf="!isDocumentation()" class="nav-link"><i class="nc-icon nc-layout-11"></i>About</a>
-          <a [routerLink]="['/']" *ngIf="isDocumentation()" class="nav-link">Back to Kit</a>
+          <a [routerLink]="['/demo']" class="nav-link"><i class="nc-icon nc-layout-11"></i>Demo</a>
         </li>
-        <li class="nav-item" *ngIf="isDocumentation()">
-          <a href="https://github.com/sircharlie/gosplit-web" target="_blank" class="nav-link">Have an issue</a>
+        <li class="nav-item" *ngIf="isLoggedin()">
+          <a [routerLink]="['/']" (click)="logout()" class="nav-link"><i class="nc-icon nc-button-power"></i>Log Out</a>
         </li>
       </ul>
     </div>

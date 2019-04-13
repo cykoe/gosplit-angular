@@ -1,10 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
-
-import { Observable } from 'rxjs';
 
 import { AppConfig } from '../../../../configs/app.config';
 import { AuthService, HeaderService } from '../../../../core/services';
