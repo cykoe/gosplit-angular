@@ -1,36 +1,23 @@
-FROM node:8.11-alpine
+# build stage
+FROM node:8.15.1 as build-stage
 
-# Set up working directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY ./package*.json /usr/src/app/
+COPY ./package*.json ./
 
 RUN npm install
 
-COPY . /usr/src/app/
+COPY . .
+
 RUN npm run build:prod
 
-EXPOSE 3000
-CMD ["npm", "run", "serve"]
-# Angular base image
-#FROM teracy/angular-cli:1.7.4
-#RUN npm update -g @angular/cli
-#
-## Install latest version of Chrome
-#RUN apt-get update && apt-get install google-chrome-stable
-#
-## Set up working directory
-#WORKDIR /usr/src/app/
-#
-## Install packages
-#COPY ./package*.json /usr/src/app/
-#
-#RUN npm install --silent
-#
-## Add code
-#COPY ./ /usr/src/app/
-#
-#EXPOSE 4200
-#
-#CMD ["ng"]
+# serve stage
+FROM nginx:1.13.9-alpine
+
+COPY --from=build-stage /usr/src/app/dist /usr/share/nginx/html
+
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

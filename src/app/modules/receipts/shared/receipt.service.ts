@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+// import { Socket } from 'ngx-socket-io';
 
 import { MatSnackBar } from '@angular/material';
 import { Observable, of, throwError } from 'rxjs';
@@ -15,11 +15,11 @@ import { AppConfig } from '../../../configs/app.config';
   providedIn: 'root',
 })
 export class ReceiptService {
-  currentReceipt = this.socket.fromEvent<Receipt>('receipt');
+  // currentReceipt = this.socket.fromEvent<Receipt>('receipt');
 
   constructor(
     private http: HttpClient,
-    private socket: Socket,
+    // private socket: Socket,
     private sb: MatSnackBar,
   ) {
   }
@@ -86,11 +86,11 @@ export class ReceiptService {
       );
   }
 
-  getReceipt(id: string) {
-    this.socket.emit('getRec', id);
-  }
+  // getReceipt(id: string) {
+  //   this.socket.emit('getRec', id);
+  // }
 
-  editReceipt(receipt: Receipt) {
-    this.socket.emit('editRec', receipt);
-  }
+  // editReceipt(receipt: Receipt) {
+  //   this.socket.emit('editRec', receipt);
+  // }
 }

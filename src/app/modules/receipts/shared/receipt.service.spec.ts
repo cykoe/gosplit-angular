@@ -148,6 +148,5 @@ describe('ReceiptService', () => {
 
       req.flush('err msg', {status: 404, statusText: 'not found'});
     });
-
   });
 });
