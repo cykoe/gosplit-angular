@@ -10,6 +10,8 @@ import { CreateFormDialogComponent } from './components/create-form-dialog/creat
 import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './components/home/home.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { HeaderComponent } from './components/header/header.component';
     HeaderComponent,
     DeleteConfirmDialogComponent,
     CreateFormDialogComponent,
+    HomeComponent,
+    NavbarComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,7 @@ import { HeaderComponent } from './components/header/header.component';
     FlexLayoutModule,
     HeaderComponent,
     FooterComponent,
+    NavbarComponent,
   ],
   entryComponents: [
     DeleteConfirmDialogComponent,
