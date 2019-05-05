@@ -86,11 +86,21 @@ export class ReceiptService {
       .pipe(
         map((data) => {
           // parse to train format
-          console.log(data);
-          const train = this.parseToTrain(data);
-          // create test format
-          const test = new Map<string, {}>();
-          receipt.list.forEach((item) => test.set(item.name, {}));
+          const train = new Map<string, {}>();
+          data.forEach((r) => {
+            r.list.forEach((item) => {
+              if (train.has(item.name)) {
+                const itemN = train.get(item.name);
+                item.people.forEach((person) => person.selection ? itemN[person.name]++ : null);
+                itemN['length']++;
+              } else {
+                train.set(item.name, {});
+                const itemN = train.get(item.name);
+                item.people.forEach((person) => itemN[person.name] = person.selection ? 1 : 0);
+                itemN['length'] = 1;
+              }
+            });
+          });
           // do baseline algorithm
           for (const item of receipt.list) {
             if (train.has(item.name)) {
@@ -103,30 +113,10 @@ export class ReceiptService {
               }
             }
           }
-          // edit receipt model
+
           return receipt;
         }),
       );
-  }
-
-  parseToTrain(receipts: any[]) {
-    const dict = new Map<string, {}>();
-    receipts.forEach((receipt) => {
-      receipt.list.forEach((item) => {
-        if (dict.has(item.name)) {
-          const itemN = dict.get(item.name);
-          item.people.forEach((person) => person.selection ? itemN[person.name]++ : null);
-          itemN['length']++;
-        } else {
-          dict.set(item.name, {});
-          const itemN = dict.get(item.name);
-          item.people.forEach((person) => itemN[person.name] = person.selection ? 1 : 0);
-          itemN['length'] = 1;
-        }
-      });
-    });
-
-    return dict;
   }
 
   // getReceipt(id: string) {
