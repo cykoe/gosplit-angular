@@ -66,7 +66,7 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   autoSelect() {
     this.receiptService.autoSelect(this.receipt)
       .subscribe((res) => {
-        console.log(res);
+        // console.log(res);
       });
   }
 

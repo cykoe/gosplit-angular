@@ -56,6 +56,16 @@
             <p class="d-lg-none">Upload</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a
+            [routerLink]="['/demo']"
+            class="nav-link"
+            matTooltip="try this demo"
+          >
+            <i class="fas fa-play"></i>
+            <p class="d-lg-none">Demo</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="!isLoggedin()">
           <a
             [routerLink]="['/receipts/signup']"
