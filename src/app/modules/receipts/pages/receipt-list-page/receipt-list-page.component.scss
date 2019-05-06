@@ -1,5 +1,7 @@
 .container {
   z-index: 2;
+  max-height: 74vh;
+  overflow: auto;
 }
 
 table {
@@ -10,7 +12,7 @@ tr.example-detail-row {
   height: 0;
 }
 
-tr.mat-footer-row, .date-column, .mat-header-cell {
+tr.mat-footer-row, .date-column, .mat-header-cell, .mat-footer-cell {
   font-weight: bold;
 }
 
@@ -38,3 +40,14 @@ tr.example-element-row:not(.example-expanded-row):active {
   overflow: hidden;
   display: flex;
 }
+
+mat-checkbox {
+  position: relative;
+  top: 4px;
+}
+
+.container::-webkit-scrollbar { width: 0 !important }
+
+.container { overflow: -moz-scrollbars-none; }
+
+.container { -ms-overflow-style: none; }

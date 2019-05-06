@@ -1,51 +1,15 @@
 <div class="wrapper">
-  <div
-    class="page-header"
-    data-parallax="true"
-    style="background-image: url('./assets/img/ilya-yakover.jpg');"
-  >
+  <div class="page-header" data-parallax="true">
     <div class="filter"></div>
     <div class="container">
       <div class="row">
-        <div class="mr-auto ml-auto">
+        <div class="col-sm-11 col-md-10 mr-auto ml-auto">
           <div *ngIf="receipt" style="margin-top: 5%">
-            <div
-              #cardDisplay
-              fxLayout="row wrap"
-              fxLayout.lt-sm="column"
-              fxLayoutAlign="flex-center"
-            >
-              <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
-                <mat-chip-list>
-                  <mat-chip color="primary" selected>{{ receipt.date | date: "shortDate" }}</mat-chip>
-                  <mat-chip color="primary" selected>{{ receipt.store | titlecase }}</mat-chip>
-                  <ng-container *ngIf="receipt.isSubtotalRight()">
-                    <mat-chip selected
-                    >Subtotal:
-                      {{ receipt.subtotal | number: "1.2-2" }}</mat-chip
-                    >
-                  </ng-container>
-                  <ng-container *ngIf="!receipt.isSubtotalRight()">
-                    <mat-chip
-                      matBadge="Wrong"
-                      matBadgeColor="warn"
-                      matTooltip="Subtotal does not add up correctly!"
-                      selected
-                    >
-                      Subtotal:
-                      {{ receipt.subtotal | number: "1.2-2" }}</mat-chip
-                    >
-                  </ng-container>
-                  <mat-chip selected
-                  >Tax:
-                    {{ receipt.tax | number: "1.2-2" }}</mat-chip
-                  >
-                  <mat-chip color="primary" selected
-                  >Total:
-                    {{ receipt.total | number: "1.2-2" }}</mat-chip
-                  >
-                </mat-chip-list>
-              </mat-toolbar-row>
+            <app-receipt-detail-header
+              [receipt]="receipt"
+              (selected)="autoSelect()"
+            ></app-receipt-detail-header>
+            <div #cardDisplay class="row">
               <app-receipt-detail-card
                 #card
                 (changed)="updateItem($event)"
@@ -56,16 +20,12 @@
                 [isSelected]="activeItemId === i"
                 [item]="item"
                 [key]="key"
-                class="receipt-detail-card"
-                fxFlex="0 1 calc(24%)"
-                fxFlex.lt-lg="0 1 calc(33.3%)"
-                fxFlex.lt-md="0 1 calc(50%)"
-                fxFlex.lt-sm="100%"
+                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
               ></app-receipt-detail-card>
             </div>
-            <app-receipt-detail-header
+            <app-receipt-detail-footer
               [receipt]="receipt"
-            ></app-receipt-detail-header>
+            ></app-receipt-detail-footer>
           </div>
           <span class="add">
             <button (click)="createReceipt()" mat-fab>

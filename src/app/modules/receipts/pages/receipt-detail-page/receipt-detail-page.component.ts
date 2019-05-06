@@ -63,6 +63,13 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
     this.keyManager.setFirstItemActive();
   }
 
+  autoSelect() {
+    this.receiptService.autoSelect(this.receipt)
+      .subscribe((res) => {
+        // console.log(res);
+      });
+  }
+
   onKeyDown($event) {
     if ($event.shiftKey && $event.key === 'Tab') {
       this.keyManager.onKeydown($event);

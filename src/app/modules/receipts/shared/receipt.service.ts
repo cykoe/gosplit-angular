@@ -27,7 +27,7 @@ export class ReceiptService {
   readonly url: string = environment.api_url;
   readonly endpoint: string = 'store/';
 
-  create(item: any): Observable<Receipt> | any {
+  create(item: any): Observable<Receipt | {}> {
     return this.http.post<Receipt>(`${this.url}${this.endpoint}`, item)
       .pipe(
         map((data) => new Receipt(data)),
@@ -38,15 +38,10 @@ export class ReceiptService {
       );
   }
 
-  read(itemId: string): Observable<Receipt> | any {
+  read(itemId: string): Observable<Receipt | {}> {
     return this.http.get<Receipt>(`${this.url}${this.endpoint}${itemId}`)
       .pipe(
-        map((data) => {
-          if (!data) {
-            return undefined;
-          }
-          return new Receipt(data);
-        }),
+        map((data) => !data ? undefined : new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
           return of(undefined);
@@ -54,7 +49,7 @@ export class ReceiptService {
       );
   }
 
-  update(item: Receipt): Observable<Receipt> | any {
+  update(item: Receipt): Observable<Receipt | {}> {
     return this.http.put<Receipt>(`${this.url}${this.endpoint}${item.id}`, item.toJson())
       .pipe(
         map((data) => new Receipt(data)),
@@ -65,7 +60,7 @@ export class ReceiptService {
       );
   }
 
-  delete(item: Receipt): any {
+  delete(item: Receipt): Observable<{}> {
     return this.http.delete(`${this.url}${this.endpoint}${item.id}`)
       .pipe(
         catchError((err): any => {
@@ -82,6 +77,44 @@ export class ReceiptService {
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
           return of([]);
+        }),
+      );
+  }
+
+  autoSelect(receipt: Receipt): Observable<Receipt> {
+    return this.http.get<Receipt[]>(`${this.url}${this.endpoint}`)
+      .pipe(
+        map((data) => {
+          // parse to train format
+          const train = new Map<string, {}>();
+          data.forEach((r) => {
+            r.list.forEach((item) => {
+              if (train.has(item.name)) {
+                const itemN = train.get(item.name);
+                item.people.forEach((person) => person.selection ? itemN[person.name]++ : null);
+                itemN['length']++;
+              } else {
+                train.set(item.name, {});
+                const itemN = train.get(item.name);
+                item.people.forEach((person) => itemN[person.name] = person.selection ? 1 : 0);
+                itemN['length'] = 1;
+              }
+            });
+          });
+          // do baseline algorithm
+          for (const item of receipt.list) {
+            if (train.has(item.name)) {
+              const itemN = train.get(item.name);
+              for (const person in itemN) {
+                if (itemN.hasOwnProperty(person) && person !== 'length') {
+                  const p = item.people.find((p) => p.name === person);
+                  p.selection = itemN[person] / itemN['length'] >= 0.5;
+                }
+              }
+            }
+          }
+
+          return receipt;
         }),
       );
   }
