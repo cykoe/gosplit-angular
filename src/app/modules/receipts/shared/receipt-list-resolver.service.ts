@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 import { ReceiptService } from './receipt.service';
 
 @Injectable()
-export class ReceiptResolverService implements Resolve<Observable<string>> {
+export class ReceiptListResolverService implements Resolve<Observable<string>> {
 
   constructor(
     private receiptService: ReceiptService,
@@ -16,8 +16,10 @@ export class ReceiptResolverService implements Resolve<Observable<string>> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    return this.receiptService.read(route.paramMap.get('id')).pipe(
-      catchError((err) => this.router.navigateByUrl('/')),
-    );
+    return this.receiptService
+      .list()
+      .pipe(
+        catchError(() => this.router.navigateByUrl('/')),
+      );
   }
 }

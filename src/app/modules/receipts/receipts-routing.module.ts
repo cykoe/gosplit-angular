@@ -8,7 +8,8 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
-import { ReceiptResolverService } from './shared/receipt-resolver.service';
+import { ReceiptDetailResolverService } from './shared/receipt-detail-resolver.service';
+import { ReceiptListResolverService } from './shared/receipt-list-resolver.service';
 
 const routes: Routes = [
   {
@@ -16,13 +17,16 @@ const routes: Routes = [
     component: ReceiptListPageComponent,
     pathMatch: 'full',
     canActivate: [AuthGuard],
+    resolve: {
+      receipts: ReceiptListResolverService,
+    },
   },
   {
     path: AppConfig.routes.detail,
     component: ReceiptDetailPageComponent,
     pathMatch: 'full',
     resolve: {
-      receipt: ReceiptResolverService,
+      receipt: ReceiptDetailResolverService,
     },
   },
   {
@@ -38,7 +42,8 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
   providers: [
-    ReceiptResolverService,
+    ReceiptDetailResolverService,
+    ReceiptListResolverService,
     AuthGuard,
   ],
 })

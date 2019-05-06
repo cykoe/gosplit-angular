@@ -1,16 +1,6 @@
-<mat-toolbar color="primary" fxFlex="100" *ngIf="receipt" class="navbar-transparent">
-  <mat-toolbar-row fxLayout="row" fxLayout.lt-sm="column">
-    <mat-chip
-      fxFlex.lt-md="0 1 calc({{100/(receipt.people.length)}}%)"
-      fxFlex.lt-sm="100%"
-      [matTooltip]="person.status.name"
-      *ngFor="let person of receipt.people"
-      [color]="person.isDriver ? 'warn' : 'primary'"
-      selected
-      (click)="toggleDP(person)">
-      <i class="nc-icon nc-delivery-fast" *ngIf="person.isDriver"></i>
-      <i class="nc-icon nc-user-run" *ngIf="person.isPassenger"></i>
-      {{ person.name }}: {{ person.price | number:'1.2-2' }}
-    </mat-chip>
-  </mat-toolbar-row>
-</mat-toolbar>
+<mat-chip-list>
+  <mat-chip color='primary' selected class="col-lg-2 col-sm-12">{{ receipt.date | date: "shortDate" }}</mat-chip>
+  <mat-chip color='primary' selected class="col-lg-2 col-sm-12">{{ receipt.store | titlecase }}</mat-chip>
+ <mat-chip color='primary' selected class="col-lg-2 col-sm-12">Total: {{ receipt.total | number: "1.2-2" }}</mat-chip>
+  <mat-chip color='accent' selected class="col-lg-2 col-sm-12" (click)="autoSelect()">Auto-Select</mat-chip>
+</mat-chip-list>

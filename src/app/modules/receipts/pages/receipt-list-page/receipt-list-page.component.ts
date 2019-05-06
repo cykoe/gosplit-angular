@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { AppConfig } from '../../../../configs/app.config';
@@ -15,7 +15,7 @@ import { ReceiptService } from '../../shared/receipt.service';
   styleUrls: ['./receipt-list-page.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+      state('collapsed', style({height: '0px', minHeight: '0'})),
       state('expanded', style({height: '*', visibility: 'visible'})),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
@@ -29,8 +29,6 @@ export class ReceiptListPageComponent implements OnInit {
   selection = new SelectionModel<Receipt>(true, []);
 
   expandedElement;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private auth: AuthService,
@@ -77,7 +75,6 @@ export class ReceiptListPageComponent implements OnInit {
     }
     this.totalFooter = new Array(this.displayedColumns.length - 2).fill(0);
     this.dataSource = new MatTableDataSource<Receipt>(receipts);
-    this.dataSource.paginator = this.paginator;
   }
 
   isAllSelected() {

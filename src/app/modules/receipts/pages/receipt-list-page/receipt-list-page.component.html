@@ -1,71 +1,103 @@
 <div class="wrapper">
-  <div class="page-header" data-parallax="true" style="background-image: url('./assets/img/fabio-mangione.jpg');">
+  <div
+    class="page-header"
+    data-parallax="true"
+    style="background-image: url('./assets/img/fabio-mangione.jpg');"
+  >
     <div class="filter"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-sm-10 mr-auto ml-auto">
           <table [dataSource]="dataSource" mat-table multiTemplateDataRows>
-
             <!-- Checkbox Column -->
             <ng-container matColumnDef="Select">
               <th *matHeaderCellDef mat-header-cell>
-                <mat-checkbox (change)="$event ? masterToggle() : null"
-                              [checked]="selection.hasValue() && isAllSelected()"
-                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                <mat-checkbox
+                  (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                >
                 </mat-checkbox>
               </th>
               <td *matCellDef="let row" mat-cell>
-                <mat-checkbox (change)="$event ? rowToggle(row) : null"
-                              (click)="$event.stopPropagation()"
-                              [checked]="selection.isSelected(row)">
+                <mat-checkbox
+                  (change)="$event ? rowToggle(row) : null"
+                  (click)="$event.stopPropagation()"
+                  [checked]="selection.isSelected(row)"
+                >
                 </mat-checkbox>
               </td>
-              <td *matFooterCellDef mat-footer-cell>Select</td>
+              <td *matFooterCellDef mat-footer-cell>Total</td>
             </ng-container>
 
             <!-- Other Columns -->
-            <ng-container *ngFor="let column of displayedColumns.slice(1); let i = index" matColumnDef="{{column}}">
+            <ng-container
+              *ngFor="let column of displayedColumns.slice(1); let i = index"
+              matColumnDef="{{ column }}"
+            >
               <!-- DATE -->
               <ng-container *ngIf="i === 0">
                 <th *matHeaderCellDef mat-header-cell>Date</th>
-                <td *matCellDef="let element" class="date-column" mat-cell> {{ element.date | date: 'shortDate' }}</td>
-                <td *matFooterCellDef mat-footer-cell>Total</td>
+                <td *matCellDef="let element" class="date-column" mat-cell>
+                  {{ element.date | date: "M/dd" }}
+                </td>
+                <td *matFooterCellDef mat-footer-cell></td>
               </ng-container>
 
               <!-- NOT DATE -->
               <ng-container>
-                <th *matHeaderCellDef mat-header-cell> {{ column }}</th>
+                <th *matHeaderCellDef mat-header-cell>
+                  {{ column | slice: 0:6 }}
+                </th>
                 <td *matCellDef="let element" mat-cell>
-                  {{ findPrice(element.people, column) | currency:'USD':'symbol':'1.2-2' }}
+                  {{ findPrice(element.people, column) | number: "2.2-2" }}
                 </td>
-                <td *matFooterCellDef mat-footer-cell> {{ totalFooter[i - 1] | currency }}</td>
+                <td *matFooterCellDef mat-footer-cell>
+                  {{ totalFooter[i - 1] | number: "2.2-2" }}
+                </td>
               </ng-container>
             </ng-container>
 
             <ng-container matColumnDef="expandedDetail">
-              <td *matCellDef="let element" [attr.colspan]="displayedColumns.length" mat-cell>
+              <td
+                *matCellDef="let element"
+                [attr.colspan]="displayedColumns.length"
+                mat-cell
+              >
                 <app-receipt-list-card
                   (deleted)="delete($event)"
-                  [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                  [@detailExpand]="
+                    element == expandedElement ? 'expanded' : 'collapsed'
+                  "
                   [element]="element"
                   class="example-element-detail"
                 ></app-receipt-list-card>
               </td>
             </ng-container>
 
-            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
             <tr
-              (click)="expandedElement = expandedElement === element ? null : element"
-              *matRowDef="let element; columns: displayedColumns;"
+              *matHeaderRowDef="displayedColumns; sticky: true"
+              mat-header-row
+            ></tr>
+            <tr
+              (click)="
+                expandedElement = expandedElement === element ? null : element
+              "
+              *matRowDef="let element; columns: displayedColumns"
               [class.example-expanded-row]="expandedElement === element"
               class="example-element-row"
               mat-row
             ></tr>
-            <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
-            <tr *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" mat-row></tr>
-
+            <tr
+              *matFooterRowDef="displayedColumns; sticky: true"
+              mat-footer-row
+            ></tr>
+            <tr
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="example-detail-row"
+              mat-row
+            ></tr>
           </table>
-          <mat-paginator [pageSizeOptions]="[5,10,25]"></mat-paginator>
         </div>
       </div>
     </div>
