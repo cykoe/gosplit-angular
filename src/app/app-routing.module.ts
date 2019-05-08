@@ -15,8 +15,8 @@ const routes: Routes = [
     loadChildren: './modules/receipts/receipts.module#ReceiptsModule',
   },
   {
-    path: 'accounts',
-    loadChildren: './modules/accounts/accounts.module#AccountsModule',
+    path: 'dashboard',
+    loadChildren: './modules/dashboard/dashboard.module#DashboardModule',
   },
   {path: '**', redirectTo: AppConfig.routes.receipts},
 ];

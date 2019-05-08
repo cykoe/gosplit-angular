@@ -5,18 +5,18 @@ import { asyncData } from '../../../../../testing';
 import { testPeople } from '../../../receipts/shared/data';
 import { Person } from '../../../receipts/shared/person.model';
 import { AccountService } from '../../shared/account.service';
-import { AccountSettingPageComponent } from './account-setting-page.component';
+import { DashboardSettingPageComponent } from './dashboard-setting-page.component';
 
-describe('AccountSettingPageComponent', () => {
-  let component: AccountSettingPageComponent;
-  let fixture: ComponentFixture<AccountSettingPageComponent>;
+describe('DashboardSettingPageComponent', () => {
+  let component: DashboardSettingPageComponent;
+  let fixture: ComponentFixture<DashboardSettingPageComponent>;
 
   const accountServiceSpy = jasmine.createSpyObj('AccountService', ['list', 'update']);
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AccountSettingPageComponent,
+        DashboardSettingPageComponent,
       ],
       imports: [
         SharedModule,
@@ -29,7 +29,7 @@ describe('AccountSettingPageComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AccountSettingPageComponent);
+    fixture = TestBed.createComponent(DashboardSettingPageComponent);
     component = fixture.componentInstance;
     const people = testPeople.map((person) => new Person(person));
     accountServiceSpy.list.and.returnValue(asyncData(people));

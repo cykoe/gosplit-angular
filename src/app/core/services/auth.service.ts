@@ -8,7 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AppConfig } from '../../configs/app.config';
 
-import { User } from '../../modules/accounts/shared/user.model';
+import { User } from '../../modules/dashboard/shared/user.model';
 import { HeaderService } from './header.service';
 
 @Injectable({
@@ -77,8 +77,16 @@ export class AuthService {
       );
   }
 
-  logout() {
+  logout()  {
     this.purgeAuth();
     return localStorage.clear();
+  }
+
+  readFriends(): Observable<object[]> {
+    return of([['Charlie', 'Emily', 'John', 'Adam'], ['Joy', 'Lawrence', 'Zach']]);
+  }
+
+  saveFriends(friendList: object[]): Observable<object[]> {
+    return of(friendList);
   }
 }

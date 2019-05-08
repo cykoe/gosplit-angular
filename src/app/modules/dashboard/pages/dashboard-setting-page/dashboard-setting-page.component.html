@@ -1,0 +1,24 @@
+<form
+  [formGroup]="form"
+  novalidate
+  (ngSubmit)="save()"
+  style="margin-top: 200px"
+>
+  <div formArrayName="groups">
+    <h3>Groups</h3>
+    <button (click)="addGroup()">Add Group</button>
+    <div *ngFor="let p of groups.controls; let i = index">
+      <div [formGroupName]="i">
+        <button (click)="addName(p.get('names'))">Add Name</button>
+        <button mat-raised-button [routerLink]="['/receipts']">View</button>
+        <div *ngFor="let g of p.get('names').controls; let f = index">
+          <div formArrayName="names">
+            {{ g.value | json }}
+            <input type="text" [formControlName]="f"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{{ form.value | json }}
