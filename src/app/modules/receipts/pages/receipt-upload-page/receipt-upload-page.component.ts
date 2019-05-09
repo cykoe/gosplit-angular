@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../core/services';
 import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { ReceiptService } from '../../shared/receipt.service';
 export class ReceiptUploadPageComponent implements OnInit {
   form: FormGroup;
   loading = false;
+  groups = {};
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -18,14 +20,31 @@ export class ReceiptUploadPageComponent implements OnInit {
     private fb: FormBuilder,
     private receiptService: ReceiptService,
     private router: Router,
+    private auth: AuthService,
   ) {
   }
 
+  get group() {
+    return this.form.get('group');
+  }
+
+  get payer() {
+    return this.form.get('payer');
+  }
+
+  get store() {
+    return this.form.get('store');
+  }
+
   ngOnInit(): void {
+    this.auth.readFriends().subscribe((list) => {
+      this.groups = list;
+    });
     this.form = this.fb.group({
       receipt: ['', [Validators.required]],
       payer: ['', [Validators.required]],
-      store: ['walmart', [Validators.required]],
+      store: ['', [Validators.required]],
+      group: ['', [Validators.required]],
     });
   }
 
@@ -53,6 +72,7 @@ export class ReceiptUploadPageComponent implements OnInit {
     input.append('receipt', this.form.get('receipt').value);
     input.append('payer', this.form.get('payer').value);
     input.append('store', this.form.get('store').value);
+    input.append('group', this.form.get('group').value);
     return input;
   }
 }

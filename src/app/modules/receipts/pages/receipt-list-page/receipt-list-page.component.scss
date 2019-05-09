@@ -12,7 +12,10 @@ tr.example-detail-row {
   height: 0;
 }
 
-tr.mat-footer-row, .date-column, .mat-header-cell, .mat-footer-cell {
+tr.mat-footer-row,
+.date-column,
+.mat-header-cell,
+.mat-footer-cell {
   font-weight: bold;
 }
 
@@ -46,8 +49,14 @@ mat-checkbox {
   top: 4px;
 }
 
-.container::-webkit-scrollbar { width: 0 !important }
+.container::-webkit-scrollbar {
+  width: 0 !important;
+}
 
-.container { overflow: -moz-scrollbars-none; }
+.container {
+  overflow: -moz-scrollbars-none;
+}
 
-.container { -ms-overflow-style: none; }
+.container {
+  -ms-overflow-style: none;
+}

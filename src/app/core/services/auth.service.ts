@@ -77,13 +77,17 @@ export class AuthService {
       );
   }
 
-  logout()  {
+  logout() {
     this.purgeAuth();
     return localStorage.clear();
   }
 
   readFriends(): Observable<object[]> {
-    return of([['Charlie', 'Emily', 'John', 'Adam'], ['Joy', 'Lawrence', 'Zach']]);
+    return of([
+      {name: 'roommate', people: ['Charlie', 'Emily', 'John', 'Adam']},
+      {name: 'physics', people: ['Joy', 'Lawrence', 'Zach']},
+      {name: 'love', people: ['Charlie', 'Emily', 'John', 'Adam']},
+    ]);
   }
 
   saveFriends(friendList: object[]): Observable<object[]> {

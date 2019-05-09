@@ -16,6 +16,7 @@ import { DemoComponent } from './components/demo/demo.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { DisableControlDirective } from './directives/disable-control.directive';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ReceiptDetailCardComponent,
     ReceiptDetailFooterComponent,
     ReceiptDetailHeaderComponent,
+    DisableControlDirective,
   ],
   imports: [
     CommonModule,
@@ -54,6 +56,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     ReceiptDetailCardComponent,
     ReceiptDetailFooterComponent,
     ReceiptDetailHeaderComponent,
+    DisableControlDirective,
   ],
   entryComponents: [
     DeleteConfirmDialogComponent,

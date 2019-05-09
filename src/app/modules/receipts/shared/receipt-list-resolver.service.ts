@@ -16,6 +16,7 @@ export class ReceiptListResolverService implements Resolve<Observable<string>> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    console.log(route.paramMap.get('groupId'));
     return this.receiptService
       .list()
       .pipe(

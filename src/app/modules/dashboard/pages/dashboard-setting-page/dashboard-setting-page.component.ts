@@ -23,8 +23,9 @@ export class DashboardSettingPageComponent implements OnInit {
     this.auth.readFriends().subscribe((res) => {
       res.forEach((list: any, index) => {
         this.addGroup();
-        const fm = this.groups.at(index).get('names') as FormArray;
-        list.forEach((name) => {
+        this.groups.at(index).get('name').setValue(list.name);
+        const fm = this.groups.at(index).get('people') as FormArray;
+        list.people.forEach((name) => {
           fm.push(this.fb.control(name));
         });
       });
@@ -38,7 +39,8 @@ export class DashboardSettingPageComponent implements OnInit {
 
   addGroup() {
     this.groups.push(this.fb.group({
-      names: this.fb.array([]),
+      people: this.fb.array([]),
+      name: '',
     }));
   }
 

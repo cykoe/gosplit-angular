@@ -1,25 +1,80 @@
 <div class="wrapper">
-  <div class="page-header" style="background-image: url('./assets/img/login-image.jpg');">
+  <div
+    class="page-header"
+    style="background-image: url('./assets/img/login-image.jpg');"
+  >
     <div class="filter"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-4 col-sm-6 mr-auto ml-auto">
           <mat-card>
-            <mat-card-title>Upload</mat-card-title>
+<!--            <mat-card-title>Upload</mat-card-title>-->
             <mat-card-content>
-              <form [formGroup]="form" autocomplete="off" class="example-container">
+              <form
+                [formGroup]="form"
+                autocomplete="off"
+                class="example-container"
+              >
                 <mat-form-field>
-                  <input formControlName="payer" matInput placeholder="Who paid?">
+                  <mat-label>Group</mat-label>
+                  <mat-select formControlName="group">
+                    <mat-option
+                      *ngFor="let group of groups; let i = index"
+                      [value]="group"
+                      >{{ group.name }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error *ngIf="group.hasError('required')"
+                    >Please choose a group</mat-error
+                  >
                 </mat-form-field>
                 <mat-form-field>
-                  <mat-select formControlName="store">
+                  <mat-label>Payer</mat-label>
+                  <mat-select
+                    formControlName="payer"
+                    [disableControl]="group.hasError('required')"
+                  >
+                    <mat-option
+                      *ngFor="let name of group.value.people"
+                      [value]="name"
+                      >{{ name }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error *ngIf="payer.hasError('required')"
+                    >Please choose a payer</mat-error
+                  >
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Store</mat-label>
+                  <mat-select
+                    formControlName="store"
+                    [disableControl]="
+                      group.hasError('required') || payer.hasError('required')
+                    "
+                  >
                     <mat-option value="walmart">Walmart</mat-option>
                     <mat-option value="county">County Market</mat-option>
-                    <mat-option value="freshIntl">Fresh International</mat-option>
+                    <mat-option value="freshIntl"
+                      >Fresh International</mat-option
+                    >
                   </mat-select>
+                  <mat-error *ngIf="store.hasError('required')"
+                    >Please choose a store</mat-error
+                  >
                 </mat-form-field>
-                <input #fileInput (change)="onFileChange($event)" id="receipt" type="file">
-                <button (click)="onSubmit()" [disabled]="form.invalid || loading" color="primary" mat-raised-button style="margin-top: 15px">
+                <input
+                  #fileInput
+                  (change)="onFileChange($event)"
+                  id="receipt"
+                  type="file"
+                />
+                <button
+                  (click)="onSubmit()"
+                  [disabled]="form.invalid || loading"
+                  color="primary"
+                  mat-raised-button
+                  style="margin-top: 15px"
+                >
                   Submit
                 </button>
               </form>

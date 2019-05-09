@@ -1,24 +1,40 @@
-<form
-  [formGroup]="form"
-  novalidate
-  (ngSubmit)="save()"
-  style="margin-top: 200px"
->
-  <div formArrayName="groups">
-    <h3>Groups</h3>
-    <button (click)="addGroup()">Add Group</button>
-    <div *ngFor="let p of groups.controls; let i = index">
-      <div [formGroupName]="i">
-        <button (click)="addName(p.get('names'))">Add Name</button>
-        <button mat-raised-button [routerLink]="['/receipts']">View</button>
-        <div *ngFor="let g of p.get('names').controls; let f = index">
-          <div formArrayName="names">
-            {{ g.value | json }}
-            <input type="text" [formControlName]="f"/>
+<div class="wrapper">
+  <div
+    class="page-header"
+    data-parallax="true"
+    style="background-image: url('./assets/img/fabio-mangione.jpg');"
+  >
+    <div class="filter"></div>
+    <div class="container">
+      <form [formGroup]="form" novalidate (ngSubmit)="save()">
+        <div formArrayName="groups">
+          <div class="row">
+            <div
+              *ngFor="let p of groups.controls; let i = index"
+              class="col-lg-4 col-sm-10 mr-auto ml-auto"
+            >
+              <mat-card [formGroupName]="i">
+                <button mat-raised-button (click)="addName(p.get('people'))">Add People</button>
+                <button mat-raised-button [routerLink]="['/receipts', p.value.name]">
+                  View
+                </button>
+                <button mat-raised-button>{{ p.value.name }}</button>
+<!--                <input type="text" formControlName="name">-->
+                <div *ngFor="let g of p.get('people').controls; let f = index">
+                  <div formArrayName="people">
+                    <input type="text" [formControlName]="f"/>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+            <div class="col-lg-4 col-sm-10 mr-auto ml-auto">
+              <mat-card>
+                <button (click)="addGroup()">Add Group</button>
+              </mat-card>
+            </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
-</form>
-{{ form.value | json }}
+</div>
