@@ -86,7 +86,10 @@ export class AuthService {
   listGroups(): Observable<Group[]> | any {
     return this.http.get<Group[]>(`${this.url}group`)
       .pipe(
-        map((data) => data.map((group: any) => new Group(group))),
+        map((data) => {
+          console.log(data);
+          return data.map((group: any) => new Group(group));
+        }),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
           return of([]);
@@ -94,8 +97,12 @@ export class AuthService {
       );
   }
 
-  saveFriends(friendList: object[]): Observable<any> {
+  saveFriends(friendList: any): Observable<any> {
     return this.http.post<any>(`${this.url}group`, friendList);
-    // return of(friendList);
   }
+
+  updateFriends(friendList: any): Observable<any> {
+    return this.http.put<any>(`${this.url}group`, friendList);
+  }
+
 }

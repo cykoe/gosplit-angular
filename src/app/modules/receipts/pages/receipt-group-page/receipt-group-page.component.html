@@ -1,1 +1,4 @@
-<app-receipt-group-card *ngFor="let group of groups" [group]="group"></app-receipt-group-card>
+<mat-card>
+  <button (click)="addGroup()">Add Group</button>
+</mat-card>
+<app-receipt-group-card *ngFor="let group of groups" [group]="group" (saved)="saveGroup($event)"></app-receipt-group-card>

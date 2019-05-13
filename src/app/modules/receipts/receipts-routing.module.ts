@@ -6,6 +6,7 @@ import { AuthGuard } from '../../core/guards/auth-guard.service';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
+import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
 import { ReceiptDetailResolverService } from './shared/receipt-detail-resolver.service';
@@ -45,6 +46,7 @@ const routes: Routes = [
   },
   { path: 'signup', component: SignupComponent},
   { path: 'signin', component: SigninComponent},
+  { path: 'dashboard', component: ReceiptGroupPageComponent},
 ];
 
 @NgModule({

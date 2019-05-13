@@ -16,8 +16,22 @@ export class ReceiptGroupPageComponent implements OnInit {
 
   ngOnInit() {
     this.authService.listGroups().subscribe((groups: Group[]) => {
+      console.log(groups);
       this.groups = groups;
     });
   }
 
+  addGroup() {
+    this.authService.saveFriends({name: 'sample', people: []})
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
+
+  saveGroup(group) {
+    this.authService.updateFriends({groupId: group.id, ...group})
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }
 }

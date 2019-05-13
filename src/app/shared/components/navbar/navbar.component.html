@@ -1,103 +1,103 @@
-<section class="example-section">
-  <mat-progress-bar [color]="color" [mode]="mode"></mat-progress-bar>
-</section>
-<nav
-  class="navbar navbar-expand-lg fixed-top bg-dark"
-  [class.navbar-transparent]="!isReceipt()"
->
-  <div class="container">
-    <div class="navbar-translate">
-      <a class="navbar-brand" [routerLink]="['/']">gosplit</a>
-      <button
-        class="navbar-toggler navbar-burger"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarToggler"
-        aria-controls="navbarTogglerDemo02"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-        (click)="sidebarToggle()"
-      >
-        <span class="navbar-toggler-bar"></span>
-        <span class="navbar-toggler-bar"></span>
-        <span class="navbar-toggler-bar"></span>
-      </button>
-    </div>
-    <div class="navbar-collapse" id="navbarToggler">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a
-            class="nav-link"
-            href="https://github.com/sircharlie/gosplit-web"
-            matTooltip="star on github"
-            target="_blank"
-          >
-            <i class="fab fa-github"></i>
-            <p class="d-lg-none">GitHub</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/receipts']"
-            class="nav-link"
-            matTooltip="view all receipts"
-          >
-            <i class="fas fa-receipt"></i>
-            <p class="d-lg-none">Receipts</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/receipts/upload']"
-            class="nav-link"
-            matTooltip="upload a receipt"
-          >
-            <i class="fas fa-upload"></i>
-            <p class="d-lg-none">Upload</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/demo']"
-            class="nav-link"
-            matTooltip="try this demo"
-          >
-            <i class="fas fa-play"></i>
-            <p class="d-lg-none">Demo</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="!isLoggedin()">
-          <a
-            [routerLink]="['/receipts/signup']"
-            class="nav-link"
-            matTooltip="sign up"
-          >
-            <i class="fas fa-sign-in-alt"></i>
-            <p class="d-lg-none">Sign-Up</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/setting']"
-            class="nav-link"
-            matTooltip="setting"
-          >
-            <i class="fas fa-cogs"></i>
-            <p class="d-lg-none">Setting</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/']"
-            (click)="logout()"
-            class="nav-link"
-            matTooltip="log out"
-          >
-            <i class="fas fa-power-off"></i>
-            <p class="d-lg-none">Logout</p>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<!--<section class="example-section">-->
+<!--  <mat-progress-bar [color]="color" [mode]="mode"></mat-progress-bar>-->
+<!--</section>-->
+<!--<nav-->
+<!--  class="navbar navbar-expand-lg fixed-top bg-dark"-->
+<!--  [class.navbar-transparent]="!isReceipt()"-->
+<!--&gt;-->
+<!--  <div class="container">-->
+<!--    <div class="navbar-translate">-->
+<!--      <a class="navbar-brand" [routerLink]="['/']">gosplit</a>-->
+<!--      <button-->
+<!--        class="navbar-toggler navbar-burger"-->
+<!--        type="button"-->
+<!--        data-toggle="collapse"-->
+<!--        data-target="#navbarToggler"-->
+<!--        aria-controls="navbarTogglerDemo02"-->
+<!--        aria-expanded="false"-->
+<!--        aria-label="Toggle navigation"-->
+<!--        (click)="sidebarToggle()"-->
+<!--      >-->
+<!--        <span class="navbar-toggler-bar"></span>-->
+<!--        <span class="navbar-toggler-bar"></span>-->
+<!--        <span class="navbar-toggler-bar"></span>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--    <div class="navbar-collapse" id="navbarToggler">-->
+<!--      <ul class="navbar-nav ml-auto">-->
+<!--        <li class="nav-item">-->
+<!--          <a-->
+<!--            class="nav-link"-->
+<!--            href="https://github.com/sircharlie/gosplit-web"-->
+<!--            matTooltip="star on github"-->
+<!--            target="_blank"-->
+<!--          >-->
+<!--            <i class="fab fa-github"></i>-->
+<!--            <p class="d-lg-none">GitHub</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item" *ngIf="isLoggedin()">-->
+<!--          <a-->
+<!--            [routerLink]="['/receipts']"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="view all receipts"-->
+<!--          >-->
+<!--            <i class="fas fa-receipt"></i>-->
+<!--            <p class="d-lg-none">Receipts</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item" *ngIf="isLoggedin()">-->
+<!--          <a-->
+<!--            [routerLink]="['/receipts/upload']"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="upload a receipt"-->
+<!--          >-->
+<!--            <i class="fas fa-upload"></i>-->
+<!--            <p class="d-lg-none">Upload</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item">-->
+<!--          <a-->
+<!--            [routerLink]="['/demo']"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="try this demo"-->
+<!--          >-->
+<!--            <i class="fas fa-play"></i>-->
+<!--            <p class="d-lg-none">Demo</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item" *ngIf="!isLoggedin()">-->
+<!--          <a-->
+<!--            [routerLink]="['/receipts/signup']"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="sign up"-->
+<!--          >-->
+<!--            <i class="fas fa-sign-in-alt"></i>-->
+<!--            <p class="d-lg-none">Sign-Up</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item" *ngIf="isLoggedin()">-->
+<!--          <a-->
+<!--            [routerLink]="['/setting']"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="setting"-->
+<!--          >-->
+<!--            <i class="fas fa-cogs"></i>-->
+<!--            <p class="d-lg-none">Setting</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="nav-item" *ngIf="isLoggedin()">-->
+<!--          <a-->
+<!--            [routerLink]="['/']"-->
+<!--            (click)="logout()"-->
+<!--            class="nav-link"-->
+<!--            matTooltip="log out"-->
+<!--          >-->
+<!--            <i class="fas fa-power-off"></i>-->
+<!--            <p class="d-lg-none">Logout</p>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</nav>-->

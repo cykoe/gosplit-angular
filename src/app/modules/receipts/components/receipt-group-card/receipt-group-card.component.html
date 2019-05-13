@@ -1,5 +1,12 @@
 <mat-card>
-  <form [formGroup]="group">
+  <mat-card-header>
+    <mat-card-title>
+      {{ name.value|json }}
+      <button mat-raised-button (click)="addName()">Add People</button>
+      <button mat-raised-button (click)="saveGroup()">Save</button>
+    </mat-card-title>
+  </mat-card-header>
+  <form [formGroup]="form">
     <div formArrayName="people">
       <div *ngFor="let person of people.controls; let i = index;">
         <input type="text" [formControlName]="i"/>
