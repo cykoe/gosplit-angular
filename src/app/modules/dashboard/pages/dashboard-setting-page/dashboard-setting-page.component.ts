@@ -20,7 +20,8 @@ export class DashboardSettingPageComponent implements OnInit {
     this.form = this.fb.group({
       groups: this.fb.array([]),
     });
-    this.auth.readFriends().subscribe((res) => {
+    this.auth.listGroups().subscribe((res) => {
+      console.log(res);
       res.forEach((list: any, index) => {
         this.addGroup();
         this.groups.at(index).get('name').setValue(list.name);

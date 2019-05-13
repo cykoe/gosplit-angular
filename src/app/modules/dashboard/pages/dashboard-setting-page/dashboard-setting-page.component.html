@@ -18,6 +18,9 @@
                 <button mat-raised-button [routerLink]="['/receipts', p.value.name]">
                   View
                 </button>
+                <button mat-raised-button [routerLink]="['/receipts', p.value.name]">
+                  Save
+                </button>
                 <button mat-raised-button>{{ p.value.name }}</button>
 <!--                <input type="text" formControlName="name">-->
                 <div *ngFor="let g of p.get('people').controls; let f = index">

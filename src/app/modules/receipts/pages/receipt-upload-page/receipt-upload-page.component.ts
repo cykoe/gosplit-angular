@@ -37,7 +37,7 @@ export class ReceiptUploadPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.readFriends().subscribe((list) => {
+    this.auth.listGroups().subscribe((list) => {
       this.groups = list;
     });
     this.form = this.fb.group({

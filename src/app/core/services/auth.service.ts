@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { AppConfig } from '../../configs/app.config';
 
 import { User } from '../../modules/dashboard/shared/user.model';
+import { Group } from '../../modules/receipts/shared/group.model';
 import { HeaderService } from './header.service';
 
 @Injectable({
@@ -82,15 +83,19 @@ export class AuthService {
     return localStorage.clear();
   }
 
-  readFriends(): Observable<object[]> {
-    return of([
-      {name: 'roommate', people: ['Charlie', 'Emily', 'John', 'Adam']},
-      {name: 'physics', people: ['Joy', 'Lawrence', 'Zach']},
-      {name: 'love', people: ['Charlie', 'Emily', 'John', 'Adam']},
-    ]);
+  listGroups(): Observable<Group[]> | any {
+    return this.http.get<Group[]>(`${this.url}group`)
+      .pipe(
+        map((data) => data.map((group: any) => new Group(group))),
+        catchError((err): any => {
+          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
+          return of([]);
+        }),
+      );
   }
 
-  saveFriends(friendList: object[]): Observable<object[]> {
-    return of(friendList);
+  saveFriends(friendList: object[]): Observable<any> {
+    return this.http.post<any>(`${this.url}group`, friendList);
+    // return of(friendList);
   }
 }

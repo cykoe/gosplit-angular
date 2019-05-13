@@ -9,6 +9,8 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
+import { ReceiptGroupCardComponent } from './components/receipt-group-card/receipt-group-card.component';
+import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-
     ReceiptListCardComponent,
     SignupComponent,
     SigninComponent,
+    ReceiptGroupCardComponent,
+    ReceiptGroupPageComponent,
   ],
   imports: [
     SharedModule,

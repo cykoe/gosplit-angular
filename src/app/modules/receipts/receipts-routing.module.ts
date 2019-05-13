@@ -16,20 +16,20 @@ const routes: Routes = [
     path: AppConfig.routes.home,
     component: ReceiptListPageComponent,
     pathMatch: 'full',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     resolve: {
       receipts: ReceiptListResolverService,
     },
   },
-  {
-    path: ':groupId',
-    component: ReceiptListPageComponent,
-    pathMatch: 'full',
-    canActivate: [AuthGuard],
-    resolve: {
-      receipts: ReceiptListResolverService,
-    },
-  },
+  // {
+  //   path: ':groupId',
+  //   component: ReceiptListPageComponent,
+  //   pathMatch: 'full',
+  //   // canActivate: [AuthGuard],
+  //   resolve: {
+  //     receipts: ReceiptListResolverService,
+  //   },
+  // },
   {
     path: AppConfig.routes.detail,
     component: ReceiptDetailPageComponent,
