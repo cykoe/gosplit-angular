@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import { Socket } from 'ngx-socket-io';
 
@@ -10,6 +10,7 @@ import { Receipt } from './receipt.model';
 
 import { environment } from '../../../../environments/environment';
 import { AppConfig } from '../../../configs/app.config';
+import { Group } from './group.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,10 +26,10 @@ export class ReceiptService {
   }
 
   readonly url: string = environment.api_url;
-  readonly endpoint: string = 'store/';
+  readonly endpoint: string = 'receipt';
 
   create(item: any): Observable<Receipt | {}> {
-    return this.http.post<Receipt>(`${this.url}${this.endpoint}`, item)
+    return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
         map((data) => new Receipt(data)),
         catchError((err): any => {
@@ -39,7 +40,7 @@ export class ReceiptService {
   }
 
   read(itemId: string): Observable<Receipt | {}> {
-    return this.http.get<Receipt>(`${this.url}${this.endpoint}${itemId}`)
+    return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${itemId}`)
       .pipe(
         map((data) => !data ? undefined : new Receipt(data)),
         catchError((err): any => {
@@ -50,18 +51,18 @@ export class ReceiptService {
   }
 
   update(item: Receipt): Observable<Receipt | {}> {
-    return this.http.put<Receipt>(`${this.url}${this.endpoint}${item.id}`, item.toJson())
+    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, item.toJson())
       .pipe(
         map((data) => new Receipt(data)),
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err);
+          return of(undefined);
         }),
       );
   }
 
   delete(item: Receipt): Observable<{}> {
-    return this.http.delete(`${this.url}${this.endpoint}${item.id}`)
+    return this.http.delete(`${this.url}/${this.endpoint}/${item.id}`)
       .pipe(
         catchError((err): any => {
           this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
@@ -70,8 +71,9 @@ export class ReceiptService {
       );
   }
 
-  list(): Observable<Receipt[]> | any {
-    return this.http.get<Receipt[]>(`${this.url}${this.endpoint}`)
+  list(groupId: string): Observable<Receipt[]> | any {
+    const options = {params: new HttpParams().set('groupId', groupId)};
+    return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`, options)
       .pipe(
         map((data) => data.map((receipt: any) => new Receipt(receipt))),
         catchError((err): any => {
@@ -118,6 +120,38 @@ export class ReceiptService {
         }),
       );
   }
+
+  listGroups(): Observable<Group[]> | any {
+    return this.http.get<Group[]>(`${this.url}/group`)
+      .pipe(
+        map((data) => {
+          return data.map((group: any) => new Group(group));
+        }),
+        catchError((err): any => {
+          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
+          return of([]);
+        }),
+      );
+  }
+
+  createGroup(group: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/group`, group);
+  }
+
+  updateGroup(group: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/group`, group);
+  }
+
+  deleteGroup(group: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/group/${group.id}`);
+  }
+
+  // handleError<T>(result?: T) {
+  //   return (err: any): Observable<T> => {
+  //     this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
+  //     return of(result);
+  //   };
+  // }
 
   // getReceipt(id: string) {
   //   this.socket.emit('getRec', id);

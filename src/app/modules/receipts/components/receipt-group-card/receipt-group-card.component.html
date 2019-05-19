@@ -1,16 +1,18 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      {{ name.value|json }}
-      <button mat-raised-button (click)="addName()">Add People</button>
-      <button mat-raised-button (click)="saveGroup()">Save</button>
+      <button mat-button>{{ group.name | titlecase }}</button>
+      <button mat-icon-button [routerLink]="['/receipts/groups', group.id]" color="primary"><mat-icon>pageview</mat-icon></button>
+      <button mat-icon-button (click)="deleteGroup()" color="warn"><mat-icon>delete</mat-icon></button>
     </mat-card-title>
   </mat-card-header>
-  <form [formGroup]="form">
-    <div formArrayName="people">
-      <div *ngFor="let person of people.controls; let i = index;">
-        <input type="text" [formControlName]="i"/>
-      </div>
-    </div>
-  </form>
+  <mat-card-content>
+    <mat-chip-list class="mat-chip-list-stacked">
+      <mat-chip
+        *ngFor="let name of group.people"
+        style="max-width: 90%"
+        >{{ name }}</mat-chip
+      >
+    </mat-chip-list>
+  </mat-card-content>
 </mat-card>

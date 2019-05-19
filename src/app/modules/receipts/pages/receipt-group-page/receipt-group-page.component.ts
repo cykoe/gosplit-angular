@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { AuthService } from '../../../../core/services';
 import { Group } from '../../shared/group.model';
 
@@ -16,22 +17,23 @@ export class ReceiptGroupPageComponent implements OnInit {
 
   ngOnInit() {
     this.authService.listGroups().subscribe((groups: Group[]) => {
-      console.log(groups);
       this.groups = groups;
     });
   }
 
-  addGroup() {
-    this.authService.saveFriends({name: 'sample', people: []})
-      .subscribe((res) => {
-        console.log(res);
+  addGroup(group) {
+    this.authService.createGroup(group)
+      .subscribe((g: Group) => {
+        this.groups.push(g);
       });
   }
 
-  saveGroup(group) {
-    this.authService.updateFriends({groupId: group.id, ...group})
+  deleteGroup(group) {
+    this.authService.deleteGroup(group)
       .subscribe((res) => {
-        console.log(res);
+        if (res.deletedCount === 1) {
+          this.groups = this.groups.filter((g) => g.id !== group.id);
+        }
       });
   }
 }

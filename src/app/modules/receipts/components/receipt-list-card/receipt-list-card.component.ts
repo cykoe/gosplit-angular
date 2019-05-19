@@ -27,7 +27,7 @@ export class ReceiptListCardComponent implements OnInit {
   }
 
   read(receipt: Receipt) {
-    this.router.navigate([`/${AppConfig.routes.receipts}/${receipt.toUrlDate()}/${receipt.store}/${receipt.id}`]);
+    this.router.navigate([`receipts/groups/groupId/${receipt.toUrlDate()}/${receipt.store}/${receipt.id}`]);
   }
 
   delete(receipt: Receipt) {

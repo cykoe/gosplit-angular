@@ -8,8 +8,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AppConfig } from '../../configs/app.config';
 
-import { User } from '../../modules/dashboard/shared/user.model';
 import { Group } from '../../modules/receipts/shared/group.model';
+import { User } from '../../modules/receipts/shared/user.model';
 import { HeaderService } from './header.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ import { HeaderService } from './header.service';
 export class AuthService {
   redirectUrl = '/';
   readonly url: string = environment.api_url;
-  readonly endpoint: string = 'user/';
+  readonly endpoint: string = 'user';
   isAuthenticated = false;
 
   constructor(
@@ -49,7 +49,7 @@ export class AuthService {
   }
 
   register(credentials): Observable<User> | any {
-    return this.http.post(`${this.url}${this.endpoint}register`, credentials)
+    return this.http.post(`${this.url}/${this.endpoint}/register`, credentials)
       .pipe(
         tap((data: any) => this.setAuth(data)),
         map((data: any) => {
@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   login(credentials): Observable<User> | any {
-    return this.http.post(`${this.url}${this.endpoint}login`, credentials)
+    return this.http.post(`${this.url}/${this.endpoint}/login`, credentials)
       .pipe(
         tap((data: any) => this.setAuth(data)),
         map((data: any) => {
@@ -84,10 +84,9 @@ export class AuthService {
   }
 
   listGroups(): Observable<Group[]> | any {
-    return this.http.get<Group[]>(`${this.url}group`)
+    return this.http.get<Group[]>(`${this.url}/group`)
       .pipe(
         map((data) => {
-          console.log(data);
           return data.map((group: any) => new Group(group));
         }),
         catchError((err): any => {
@@ -97,12 +96,15 @@ export class AuthService {
       );
   }
 
-  saveFriends(friendList: any): Observable<any> {
-    return this.http.post<any>(`${this.url}group`, friendList);
+  createGroup(group: any): Observable<any> {
+    return this.http.post<any>(`${this.url}/group`, group);
   }
 
-  updateFriends(friendList: any): Observable<any> {
-    return this.http.put<any>(`${this.url}group`, friendList);
+  updateGroup(group: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/group`, group);
   }
 
+  deleteGroup(group: any): Observable<any> {
+    return this.http.delete<any>(`${this.url}/group/${group.id}`);
+  }
 }

@@ -11,9 +11,10 @@ export class Group {
 
   toJson() {
     return {
-      _id: this.name,
+      _id: this.id,
       name: this.name,
       people: this.people,
+      groupId: this.id,
     };
   }
 }

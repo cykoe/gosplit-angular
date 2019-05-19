@@ -41,7 +41,7 @@ describe('ReceiptService', () => {
     httpTestingController.verify();
   });
 
-  describe('#listReceipts', () => {
+  describe('#list', () => {
     let expectedReceipts: any[];
 
     beforeEach(() => {
@@ -49,50 +49,50 @@ describe('ReceiptService', () => {
       expectedReceipts = testReceipts.map((r) => new Receipt({...r, list: items, people: testPeople}).toJson());
     });
 
-    it('should return all expected receipts (called once)', () => {
-      receiptService.list().subscribe(
+    it('should return all expected receipts - called once', () => {
+      receiptService.list('').subscribe(
         (receipts) => expect(receipts.map((r) => r.toJson())).toEqual(expectedReceipts, 'should return all receipts'),
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint);
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}?groupId=`);
       expect(req.request.method).toEqual('GET');
       req.flush(expectedReceipts);
     });
 
     it('should be Ok returning no receipts', () => {
-      receiptService.list().subscribe(
+      receiptService.list('').subscribe(
         (receipts) => expect(receipts.length).toEqual(0),
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint);
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}?groupId=`);
       expect(req.request.method).toEqual('GET');
 
       req.flush([]);
     });
 
     it('should turn server errors into empty receipts', () => {
-      receiptService.list().subscribe(
+      receiptService.list('').subscribe(
         (receipts) => expect(receipts.length).toEqual(0),
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint);
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}?groupId=`);
       expect(req.request.method).toEqual('GET');
 
       req.flush('err msg', {status: 404, statusText: 'not found'});
     });
 
     it('should return all expected results (called multiple times)', () => {
-      receiptService.list().subscribe();
-      receiptService.list().subscribe();
-      receiptService.list().subscribe(
+      receiptService.list('').subscribe();
+      receiptService.list('').subscribe();
+      receiptService.list('').subscribe(
         (receipts) => expect(receipts.map((r) => r.toJson())).toEqual(expectedReceipts, 'should return expected receipts'),
         fail,
       );
 
-      const reqs = httpTestingController.match(receiptService.url + receiptService.endpoint);
+      const reqs = httpTestingController.match(`${receiptService.url}/${receiptService.endpoint}?groupId=`);
       // tslint:disable-next-line:no-magic-numbers
       expect(reqs.length).toEqual(3);
 
@@ -103,7 +103,7 @@ describe('ReceiptService', () => {
 
   });
 
-  describe('#readReceipt', () => {
+  describe('#read', () => {
     let expectedReceipt: any;
 
     beforeEach(() => {
@@ -113,11 +113,11 @@ describe('ReceiptService', () => {
 
     it('should return a receipt given its id', () => {
       receiptService.read(expectedReceipt.id).subscribe(
-        (receipt) => expect(receipt.toJson()).toEqual(expectedReceipt),
+        (receipt: Receipt) => expect(receipt.toJson()).toEqual(expectedReceipt),
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint + expectedReceipt.id);
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}/` + expectedReceipt.id);
       expect(req.request.method).toEqual('GET');
 
       req.flush(expectedReceipt);
@@ -131,7 +131,7 @@ describe('ReceiptService', () => {
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint + 'wrongId');
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}/wrongId`);
       expect(req.request.method).toEqual('GET');
 
       req.flush(null);
@@ -143,10 +143,30 @@ describe('ReceiptService', () => {
         fail,
       );
 
-      const req = httpTestingController.expectOne(receiptService.url + receiptService.endpoint + 'id');
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}/id`);
       expect(req.request.method).toEqual('GET');
 
       req.flush('err msg', {status: 404, statusText: 'not found'});
+    });
+  });
+
+  describe('#update', () => {
+    let expectedReceipt: any;
+
+    beforeEach(() => {
+      const items = testLists.map((t) => new Item({...t, people: testPeople}).toJson());
+      expectedReceipt = new Receipt({...testReceipts[0], list: items, people: testPeople}).toJson();
+    });
+
+    it('should return the updated receipt', () => {
+      receiptService.update(new Receipt({list: []})).subscribe(
+        (receipt: Receipt) => expect(receipt.toJson()).toEqual(expectedReceipt),
+      );
+
+      const req = httpTestingController.expectOne(`${receiptService.url}/${receiptService.endpoint}/`);
+      expect(req.request.method).toBe('PUT');
+
+      req.flush(expectedReceipt);
     });
   });
 });

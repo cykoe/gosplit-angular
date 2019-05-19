@@ -1,7 +1,5 @@
 import { Person } from './person.model';
 
-const defaultPeople = [{name: 'Charlie'}, {name: 'Xinghan'}, {name: 'Lawrence'}, {name: 'Mohan'}, {name: 'Haowei'}];
-
 export class Item {
   id: string;
   name: string;
@@ -14,9 +12,7 @@ export class Item {
     this.name = item.name || '';
     this.price = item.price || '';
     this.image = item.image || '';
-    this.people = (!item.people || !item.people.length)
-      ? defaultPeople.map((person) => new Person(person))
-      : item.people.map((person) => new Person(person));
+    this.people = item.people ? item.people.map((person) => new Person(person)) : [];
   }
 
   static getPropertyNames() {

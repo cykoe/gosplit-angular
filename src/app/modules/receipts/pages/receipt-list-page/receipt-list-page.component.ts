@@ -2,7 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AppConfig } from '../../../../configs/app.config';
 import { AuthService, HeaderService } from '../../../../core/services';
@@ -35,6 +35,7 @@ export class ReceiptListPageComponent implements OnInit {
     private headerService: HeaderService,
     private receiptService: ReceiptService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {
   }
 
@@ -47,8 +48,8 @@ export class ReceiptListPageComponent implements OnInit {
       }
     });
     this.displayedColumns = ['Select', 'Date'];
-    this.receiptService.list().subscribe((receipts) => {
-      this.receipts = receipts;
+    this.route.data.subscribe((data: {receipts: Receipt[]}) => {
+      this.receipts = data.receipts;
       this.reset(this.receipts);
     });
   }

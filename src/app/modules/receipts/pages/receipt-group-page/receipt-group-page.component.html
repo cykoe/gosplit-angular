@@ -1,4 +1,25 @@
-<mat-card>
-  <button (click)="addGroup()">Add Group</button>
-</mat-card>
-<app-receipt-group-card *ngFor="let group of groups" [group]="group" (saved)="saveGroup($event)"></app-receipt-group-card>
+<div class="wrapper">
+  <div class="page-header" data-parallax="true">
+    <div class="filter"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-11 col-md-10 mr-auto ml-auto">
+          <div *ngIf="groups" style="margin-top: 5%">
+            <div class="row">
+              <app-receipt-group-card
+                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
+                *ngFor="let group of groups"
+                [group]="group"
+                (deleted)="deleteGroup($event)"
+              ></app-receipt-group-card>
+              <app-receipt-group-new-card
+                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
+                (saved)="addGroup($event)"
+              ></app-receipt-group-new-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

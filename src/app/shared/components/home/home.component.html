@@ -6,31 +6,31 @@
   <div class="content-center" style="z-index: 999">
     <div class="container">
       <div class="title-brand">
-        <div class="angular-logo">
-          <img src="assets/img/broccoli-logo.png" alt="" />
-        </div>
         <h1 class="presentation-title">{{ title }}</h1>
-        <div class="fog-low">
-          <img src="assets/img/fog-low.png" alt="" />
-        </div>
-        <div class="fog-low right">
-          <img src="assets/img/fog-low.png" alt="" />
-        </div>
-      </div>
-      <h2 class="presentation-subtitle text-center mt-5">
-        <a class="btn btn-primary btn-round btn-block" [routerLink]="['/demo']"
-          >Demo</a
+        <button
+          style="margin-top: 5%"
+          type="button"
+          class="btn btn-outline-neutral btn-round"
+          [routerLink]="['/receipts/login']"
         >
-      </h2>
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </button>
+        <button
+          style="margin-top: 5%"
+          type="button"
+          class="btn btn-outline-neutral btn-round"
+          [routerLink]="['/demo']"
+        >
+          <i class="fas fa-play"></i>
+          Try the demo
+        </button>
+      </div>
+      <h2 class="presentation-subtitle text-center mt-5"></h2>
     </div>
   </div>
   <div
     class="moving-clouds"
     style="background-image: url('assets/img/clouds.png');"
   ></div>
-  <h6 class=" category-absolute ml-auto mr-auto">
-    <a href="https://www.wdcy.me" target="_blank">
-      Charlie Yang
-    </a>
-  </h6>
 </div>

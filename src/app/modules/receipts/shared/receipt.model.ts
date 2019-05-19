@@ -1,8 +1,6 @@
 import { Item } from './item.model';
 import { Person } from './person.model';
 
-const defaultPeople = [{name: 'Charlie'}, {name: 'Xinghan'}, {name: 'Lawrence'}, {name: 'Mohan'}, {name: 'Haowei'}];
-
 export class Receipt {
   id: string;
   subtotal: number;
@@ -23,11 +21,9 @@ export class Receipt {
     this.date = receipt.date || '';
     this.store = receipt.store || '';
     this.userId = receipt.userId || '';
-    this.list = receipt.list.map((item) => new Item(item));
+    this.list = receipt.list ? receipt.list.map((item) => new Item(item)) : [];
     this.payer = receipt.payer || '';
-    this.people = (!receipt.people || !receipt.people.length)
-      ? defaultPeople.map((person) => new Person(person))
-      : receipt.people.map((person) => new Person(person));
+    this.people = receipt.people ? receipt.people.map((person) => new Person(person)) : [];
   }
 
   isSubtotalRight() {

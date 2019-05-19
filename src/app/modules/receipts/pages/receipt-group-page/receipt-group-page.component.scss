@@ -1,0 +1,31 @@
+.done {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  color: white;
+}
+
+.add {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  color: white;
+}
+
+.receipt-detail-card {
+  margin: 7px 0;
+}
+
+.container {
+  z-index: 2;
+  margin-top: 60px;
+}
+
+.page-header {
+  max-height: none !important;
+}
+
+mat-toolbar-row {
+  height: auto !important;
+  padding-top: 2%;
+}

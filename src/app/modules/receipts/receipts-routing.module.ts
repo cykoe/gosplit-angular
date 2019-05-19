@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AppConfig } from '../../configs/app.config';
 import { AuthGuard } from '../../core/guards/auth-guard.service';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
@@ -14,39 +13,42 @@ import { ReceiptListResolverService } from './shared/receipt-list-resolver.servi
 
 const routes: Routes = [
   {
-    path: AppConfig.routes.home,
+    path: 'groups',
+    component: ReceiptGroupPageComponent,
+    pathMatch: 'full',
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'groups/:groupId',
     component: ReceiptListPageComponent,
     pathMatch: 'full',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     resolve: {
       receipts: ReceiptListResolverService,
     },
   },
-  // {
-  //   path: ':groupId',
-  //   component: ReceiptListPageComponent,
-  //   pathMatch: 'full',
-  //   // canActivate: [AuthGuard],
-  //   resolve: {
-  //     receipts: ReceiptListResolverService,
-  //   },
-  // },
   {
-    path: AppConfig.routes.detail,
+    path: 'groups/:groupId/:mm/:dd/:yy/:store/:id',
     component: ReceiptDetailPageComponent,
     pathMatch: 'full',
+    canActivate: [AuthGuard],
     resolve: {
       receipt: ReceiptDetailResolverService,
     },
   },
   {
-    path: AppConfig.routes.upload,
+    path: 'upload',
     component: ReceiptUploadPageComponent,
     pathMatch: 'full',
   },
-  { path: 'signup', component: SignupComponent},
-  { path: 'signin', component: SigninComponent},
-  { path: 'dashboard', component: ReceiptGroupPageComponent},
+  {
+    path: 'register',
+    component: SignupComponent,
+  },
+  {
+    path: 'login',
+    component: SigninComponent,
+  },
 ];
 
 @NgModule({
