@@ -1,110 +1,103 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import { AppConfig } from '../../configs/app.config';
 
-import { Group } from '../../modules/receipts/shared/group.model';
-import { User } from '../../modules/receipts/shared/user.model';
-import { HeaderService } from './header.service';
+import { User } from '../../modules/receipts/shared/user';
+
+export interface Credential {
+  username: string;
+  password: string;
+}
+
+export interface Availability {
+  success: boolean;
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  redirectUrl = '/';
   readonly url: string = environment.api_url;
-  readonly endpoint: string = 'user';
-  isAuthenticated = false;
+  readonly registerUrl: string = 'user/register';
+  readonly loginUrl: string = 'user/login';
+  readonly checkUsernameUrl: string = 'user';
 
   constructor(
     private http: HttpClient,
-    private headerService: HeaderService,
     private sb: MatSnackBar,
+    private jwtHelper: JwtHelperService,
   ) {
-    if (this.token) {
-      this.isAuthenticated = true;
-    }
   }
 
-  get token() {
-    return localStorage.getItem('token');
+  get isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+
+    return !this.jwtHelper.isTokenExpired(token);
   }
 
-  setAuth(data) {
-    localStorage.setItem('token', data.token);
-    this.isAuthenticated = true;
-  }
-
-  purgeAuth() {
-    this.isAuthenticated = false;
-  }
-
-  checkUsername(login: any) {
-    return this.http.post(`${this.url}/user`, login);
-  }
-
-  register(credentials): Observable<User> | any {
-    return this.http.post(`${this.url}/${this.endpoint}/register`, credentials)
+  /**
+   * Returns an observable to check whether the username is taken or not
+   * @param username - username to check
+   */
+  checkUsername(username: string): Observable<Availability> {
+    return this.http.post<Availability>(`${this.url}/${this.checkUsernameUrl}`, username)
       .pipe(
-        tap((data: any) => this.setAuth(data)),
-        map((data: any) => {
-          data.url = this.redirectUrl;
-          return data;
-        }),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of(err.message);
-        }),
+        catchError(this.handleError<Availability>('check username')),
       );
   }
 
-  login(credentials): Observable<User> | any {
-    return this.http.post(`${this.url}/${this.endpoint}/login`, credentials)
+  /**
+   * Returns an observable to make a POST request to register
+   * an account from the server
+   * @param credential - contains username and password
+   */
+  register(credential: Credential): Observable<User> {
+    return this.http.post<User>(`${this.url}/${this.registerUrl}`, credential)
       .pipe(
-        tap((data: any) => this.setAuth(data)),
-        map((data: any) => {
-          data.url = this.redirectUrl;
-          return data;
-        }),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of(err.message);
-        }),
+        tap((data) => localStorage.setItem('token', data.token)),
+        catchError(this.handleError<User>('register')),
       );
   }
 
+  /**
+   * Returns an observable to make a POST request to login
+   * @param credential - contains username and password
+   */
+  login(credential: Credential): Observable<User> {
+    return this.http.post<User>(`${this.url}/${this.loginUrl}`, credential)
+      .pipe(
+        tap((data: any) => localStorage.setItem('token', data.token)),
+        catchError(this.handleError<User>('login')),
+      );
+  }
+
+  /**
+   * Clear all local storage variables
+   */
   logout() {
-    this.purgeAuth();
     return localStorage.clear();
   }
 
-  listGroups(): Observable<Group[]> | any {
-    return this.http.get<Group[]>(`${this.url}/group`)
-      .pipe(
-        map((data) => {
-          return data.map((group: any) => new Group(group));
-        }),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of([]);
-        }),
-      );
-  }
-
-  createGroup(group: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/group`, group);
-  }
-
-  updateGroup(group: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/group`, group);
-  }
-
-  deleteGroup(group: any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/group/${group.id}`);
+  /**
+   * Returns a function that handle Http operation failures
+   * This error handler lets the app continue to run as if no error occurred
+   * @param operation - name of the operation that failed
+   */
+  private handleError<T>(operation = 'operation') {
+    return (error: HttpErrorResponse): Observable<T> => {
+      console.error(error);
+      const message = (error.error instanceof ErrorEvent) ?
+        error.error.message :
+        `server returned code ${error.status} with body "${error.error}"`;
+      this.sb.open(`${operation} failed: ${message}`, 'OK', {duration: AppConfig.sbDuration});
+      throw new Error(`${operation} failed: ${message}`);
+    };
   }
 }

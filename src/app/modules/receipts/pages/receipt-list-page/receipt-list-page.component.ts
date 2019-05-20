@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AppConfig } from '../../../../configs/app.config';
-import { AuthService, HeaderService } from '../../../../core/services';
+import { AuthService } from '../../../../core/services';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
@@ -32,7 +32,6 @@ export class ReceiptListPageComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private headerService: HeaderService,
     private receiptService: ReceiptService,
     private router: Router,
     private route: ActivatedRoute,
@@ -40,13 +39,6 @@ export class ReceiptListPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.headerService.headerTabChange$.subscribe((tab) => {
-      if (tab === 'Upload') {
-        this.router.navigate([`/${AppConfig.routes.receipts}/${AppConfig.routes.upload}`]);
-      } else if (tab === 'About') {
-        this.router.navigate([`/${AppConfig.routes.accounts}/${AppConfig.routes.login}`]);
-      }
-    });
     this.displayedColumns = ['Select', 'Date'];
     this.route.data.subscribe((data: {receipts: Receipt[]}) => {
       this.receipts = data.receipts;
