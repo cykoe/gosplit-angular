@@ -13,11 +13,10 @@ export abstract class RequestCache {
   abstract put(req: HttpRequest<any>, response: HttpResponse<any>): void;
 }
 
-const maxAge = 30000; // maximum cache age (ms)
-
 @Injectable({providedIn: 'root'})
 export class RequestCacheService implements RequestCache {
   cache = new Map<string, RequestCacheEntry>();
+  maxAge = 30000; // maximum cache age (ms)
 
   constructor() {
   }
@@ -30,8 +29,7 @@ export class RequestCacheService implements RequestCache {
       return undefined;
     }
 
-    const isExpired = cached.lastRead < (Date.now() - maxAge);
-    // const expired = isExpired ? 'expired' : '';
+    const isExpired = cached.lastRead < (Date.now() - this.maxAge);
     return isExpired ? undefined : cached.response;
   }
 
@@ -40,7 +38,7 @@ export class RequestCacheService implements RequestCache {
     const entry = {url, response, lastRead: Date.now()};
     this.cache.set(url, entry);
 
-    const expired = Date.now() - maxAge;
+    const expired = Date.now() - this.maxAge;
     this.cache.forEach((e) => {
       if (e.lastRead < expired) {
         this.cache.delete(e.url);
