@@ -119,7 +119,7 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
   updateReceipt() {
     this.receiptService.update(this.receipt)
       .subscribe((res: Receipt) => {
-        this.sb.open(`Saved!`, 'OK', {duration: AppConfig.sbDuration});
+        console.log('saved!');
       });
   }
 }

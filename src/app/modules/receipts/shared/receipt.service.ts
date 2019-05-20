@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import { Socket } from 'ngx-socket-io';
 
@@ -28,58 +28,43 @@ export class ReceiptService {
   readonly url: string = environment.api_url;
   readonly endpoint: string = 'receipt';
 
-  create(item: any): Observable<Receipt | {}> {
+  create(item: any): Observable<Receipt> {
     return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
       .pipe(
         map((data) => new Receipt(data)),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err);
-        }),
+        catchError(this.handleError<Receipt>('create receipt')),
       );
   }
 
-  read(itemId: string): Observable<Receipt | {}> {
+  read(itemId: string): Observable<Receipt> {
     return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${itemId}`)
       .pipe(
         map((data) => !data ? undefined : new Receipt(data)),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of(undefined);
-        }),
+        catchError(this.handleError<Receipt>('read receipt')),
       );
   }
 
-  update(item: Receipt): Observable<Receipt | {}> {
+  update(item: Receipt): Observable<Receipt> {
     return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, item.toJson())
       .pipe(
         map((data) => new Receipt(data)),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of(undefined);
-        }),
+        catchError(this.handleError<Receipt>('update receipt')),
       );
   }
 
   delete(item: Receipt): Observable<{}> {
     return this.http.delete(`${this.url}/${this.endpoint}/${item.id}`)
       .pipe(
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return throwError(err);
-        }),
+        catchError(this.handleError<{}>('delete receipt')),
       );
   }
 
-  list(groupId: string): Observable<Receipt[]> | any {
+  list(groupId: string): Observable<Receipt[]> {
     const options = {params: new HttpParams().set('groupId', groupId)};
     return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`, options)
       .pipe(
         map((data) => data.map((receipt: any) => new Receipt(receipt))),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of([]);
-        }),
+        catchError(this.handleError<Receipt[]>('list receipts')),
       );
   }
 
@@ -121,16 +106,13 @@ export class ReceiptService {
       );
   }
 
-  listGroups(): Observable<Group[]> | any {
+  listGroups(): Observable<Group[]> {
     return this.http.get<Group[]>(`${this.url}/group`)
       .pipe(
         map((data) => {
           return data.map((group: any) => new Group(group));
         }),
-        catchError((err): any => {
-          this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-          return of([]);
-        }),
+        catchError(this.handleError<Group[]>('list groups')),
       );
   }
 
@@ -160,4 +142,14 @@ export class ReceiptService {
   // editReceipt(receipt: Receipt) {
   //   this.socket.emit('editRec', receipt);
   // }
+
+  private handleError<T>(operation = 'operation') {
+    return (error: HttpErrorResponse): Observable<T> => {
+      const message = (error.error instanceof  ErrorEvent) ?
+        error.error.message :
+        `server returned code ${error.status} with body "${error.error}"`;
+      this.sb.open(`${operation} failed: ${message}`, 'OK');
+      throw new Error(`${operation} failed: ${message}`);
+    };
+  }
 }

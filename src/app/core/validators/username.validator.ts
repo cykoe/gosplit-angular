@@ -3,14 +3,10 @@ import { AbstractControl, AsyncValidator, ValidationErrors } from '@angular/form
 
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
 
-interface CheckedUsername {
-  success: string;
-  message: string;
-}
+import { AuthService, Availability } from '../services';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class UsernameValidator implements AsyncValidator {
   constructor(
     private auth: AuthService,
@@ -21,9 +17,10 @@ export class UsernameValidator implements AsyncValidator {
     ctrl: AbstractControl,
   ): Observable<ValidationErrors | null> |
     Promise<ValidationErrors | null> {
-    return this.auth.checkUsername({username: ctrl.value}).pipe(
-      map((isChecked: CheckedUsername) => isChecked.success ? null : {usernameWrong: true}),
-      catchError(() => null),
-    );
+    return this.auth.checkUsername(ctrl.value)
+      .pipe(
+        map((isChecked: Availability) => isChecked.success ? null : {usernameWrong: true}),
+        catchError(() => null),
+      );
   }
 }

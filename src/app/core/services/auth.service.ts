@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
-import { AppConfig } from '../../configs/app.config';
 
 import { User } from '../../modules/receipts/shared/user';
 
@@ -28,6 +27,7 @@ export class AuthService {
   readonly registerUrl: string = 'user/register';
   readonly loginUrl: string = 'user/login';
   readonly checkUsernameUrl: string = 'user';
+  redirectUrl: string;
 
   constructor(
     private http: HttpClient,
@@ -96,7 +96,7 @@ export class AuthService {
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
         `server returned code ${error.status} with body "${error.error}"`;
-      this.sb.open(`${operation} failed: ${message}`, 'OK', {duration: AppConfig.sbDuration});
+      this.sb.open(`${operation} failed: ${message}`, 'OK');
       throw new Error(`${operation} failed: ${message}`);
     };
   }

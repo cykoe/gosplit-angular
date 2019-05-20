@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AppConfig } from '../../../configs/app.config';
 
 @Component({
   selector: 'app-home',
@@ -8,13 +7,11 @@ import { AppConfig } from '../../../configs/app.config';
 })
 export class HomeComponent implements OnInit {
   title: string;
-  subtitle: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.title = AppConfig.title;
-    this.subtitle = AppConfig.subtitle;
+    this.title = 'Go Split';
   }
 
 }
