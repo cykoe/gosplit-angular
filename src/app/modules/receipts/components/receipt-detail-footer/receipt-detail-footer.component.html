@@ -1,14 +1,11 @@
 <mat-chip-list>
   <mat-chip
     class="col-lg-2 col-sm-12"
-    [matTooltip]="person.status.name"
     *ngFor="let person of receipt.people"
     [color]="person.isDriver ? 'warn' : 'primary'"
     selected
     (click)="toggleDP(person)"
   >
-    <i class="nc-icon nc-delivery-fast" *ngIf="person.isDriver"></i>
-    <i class="nc-icon nc-user-run" *ngIf="person.isPassenger"></i>
     {{ person.name }}: {{ person.price | number: "1.2-2" }}
   </mat-chip>
 </mat-chip-list>

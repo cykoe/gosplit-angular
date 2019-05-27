@@ -12,13 +12,27 @@
   color: white;
 }
 
+.auto-select {
+  position: fixed;
+  bottom: 230px;
+  right: 20px;
+  color: white;
+}
+
+.check-status {
+  position: fixed;
+  bottom: 160px;
+  right: 20px;
+  color: white;
+}
+
 .receipt-detail-card {
   margin: 7px 0;
 }
 
 .container {
   z-index: 2;
-  margin-top: 60px;
+  margin-top: 108px;
 }
 
 .page-header {

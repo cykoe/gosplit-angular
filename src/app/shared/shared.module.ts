@@ -16,6 +16,7 @@ import { DemoComponent } from './components/demo/demo.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { TableDialogComponent } from './components/table-dialog/table-dialog.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     ReceiptDetailFooterComponent,
     ReceiptDetailHeaderComponent,
     DisableControlDirective,
+    TableDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
   entryComponents: [
     DeleteConfirmDialogComponent,
     CreateFormDialogComponent,
+    TableDialogComponent,
   ],
 })
 export class SharedModule {

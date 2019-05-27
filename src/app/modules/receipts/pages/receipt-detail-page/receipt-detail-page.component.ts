@@ -15,11 +15,11 @@ import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
 import { BehaviorSubject } from 'rxjs';
-import { AppConfig } from '../../../../configs/app.config';
 
 import { CreateFormDialogComponent } from '../../../../shared/components/create-form-dialog/create-form-dialog.component';
+import { TableDialogComponent } from '../../../../shared/components/table-dialog/table-dialog.component';
 import { Item } from '../../shared/item.model';
-import { Receipt } from '../../shared/receipt.model';
+import { Person, Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
@@ -27,7 +27,7 @@ import { ReceiptService } from '../../shared/receipt.service';
   templateUrl: './receipt-detail-page.component.html',
   styleUrls: ['./receipt-detail-page.component.scss'],
 })
-export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
+export class ReceiptDetailPageComponent implements OnInit {
   receipt: Receipt;
   keyManager: any;
   key$ = new BehaviorSubject<string>('');
@@ -42,11 +42,11 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private sb: MatSnackBar,
     private dialog: MatDialog,
-    private focusMonitor: FocusMonitor,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private focusTrap: FocusTrapFactory,
   ) {
+  }
+
+  get people() {
+    return this.receipt.people;
   }
 
   ngOnInit() {
@@ -55,71 +55,77 @@ export class ReceiptDetailPageComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.keyManager = new ListKeyManager(this.card);
-    this.keyManager.withWrap();
-    const focusTrap = this.focusTrap.create(this.cardDisplay.nativeElement);
-    focusTrap.focusInitialElement();
-    this.keyManager.setFirstItemActive();
-  }
-
   autoSelect() {
-    this.receiptService.autoSelect(this.receipt)
-      .subscribe((res) => {
-        // console.log(res);
-      });
+    // this.receiptService.autoSelect(this.receipt)
+    //   .subscribe((res) => {
+    //     console.log(res);
+    //   });
   }
 
-  onKeyDown($event) {
-    if ($event.shiftKey && $event.key === 'Tab') {
-      this.keyManager.onKeydown($event);
-      this.keyManager.setPreviousItemActive();
-      this.activeItemId = this.keyManager.activeItemIndex;
-    } else if (!$event.shiftKey && $event.key === 'Tab') {
-      this.keyManager.onKeydown($event);
-      this.keyManager.setNextItemActive();
-      this.activeItemId = this.keyManager.activeItemIndex;
-    } else {
-      this.key$.next($event.key);
-    }
-  }
-
-  select(item: Item) {
-    const found = this.receipt.list.findIndex((i) => i === item);
-    if (found) {
-      this.keyManager.setActiveItem(found);
-      console.log(this.keyManager.activeItemIndex);
-      this.activeItemId = this.keyManager.activeItemIndex;
-    }
-  }
-
-  createReceipt() {
+  /**
+   * create a new item
+   */
+  createReceipt(): void {
     const dialogRef = this.dialog.open(CreateFormDialogComponent, {
       width: '250px',
       data: Item.getPropertyNames(),
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.receipt.createItem(new Item({...result, _id: uuid()}));
-      }
+    dialogRef.afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.receipt.createItem({...result, id: uuid()});
+        }
+      });
+  }
+
+  /**
+   * Check every person's price via a pop-up
+   */
+  checkSplit(): void {
+    const dialogRef = this.dialog.open(TableDialogComponent, {
+      width: '250px',
+      data: this.receipt.people,
     });
+
+    dialogRef.afterClosed()
+      .subscribe((result) => {
+        // console.log(result);
+      });
   }
 
-  updateItem(item: Item) {
-    this.receipt.updateItem();
-    this.receipt.updateSplit(AppConfig.rewards);
+  /**
+   * save an item's information, including name, price, and image
+   * @param $event - contains original item's id and updated item
+   */
+  updateItem($event: { id: string, newItem: Item }) {
+    this.receipt.updateItemById($event.id, $event.newItem);
   }
 
-  deleteItem(item: Item) {
-    this.receipt.deleteItem(item);
-    this.receipt.updateSplit(AppConfig.rewards);
+  /**
+   * delete an item from the receipt list array
+   * @param $event - contains target item's id
+   */
+  deleteItem($event: { id: string }) {
+    this.receipt.deleteItemById($event.id);
   }
 
+  /**
+   * toggle a person's selection of an item
+   * @param $event - contains the target person, item, and
+   * and the item's index in person selection array
+   */
+  toggleItem($event: { person: Person, item: Item, index: number }) {
+    this.receipt.toggleSelection($event.person, $event.item, $event.index);
+  }
+
+  /**
+   * save receipt to the backend
+   */
   updateReceipt() {
     this.receiptService.update(this.receipt)
-      .subscribe((res: Receipt) => {
-        console.log('saved!');
+      .subscribe(() => {
+        this.sb.open('Saved!', 'OK');
       });
   }
 }

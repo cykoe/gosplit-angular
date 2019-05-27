@@ -42,6 +42,10 @@ export class AuthService {
     return !this.jwtHelper.isTokenExpired(token);
   }
 
+  get token(): string {
+    return localStorage.getItem('token');
+  }
+
   /**
    * Returns an observable to check whether the username is taken or not
    * @param username - username to check

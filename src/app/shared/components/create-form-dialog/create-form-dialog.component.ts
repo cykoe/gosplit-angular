@@ -20,7 +20,7 @@ export class CreateFormDialogComponent implements OnInit {
 
   ngOnInit() {
     const formData = {};
-    this.formControlNames =  this.data.filter((d) => d !== 'prototype');
+    this.formControlNames = this.data.filter((d) => d !== 'prototype');
     this.formControlNames.forEach((d) => {
       formData[d] = ['', Validators.required];
     });

@@ -30,7 +30,7 @@
 //     fixture.detectChanges();
 //   });
 //
-//   it('should set selection to true for all people and update the split', () => {
+//   it('should set selection to true for all people and save the split', () => {
 //     component.selectAll();
 //     item.people.forEach((person) => {
 //       expect(person.selection).toEqual(true);
@@ -38,7 +38,7 @@
 //     });
 //   });
 //
-//   it('should set selection to false for all people and update the split', () => {
+//   it('should set selection to false for all people and save the split', () => {
 //     component.deselectAll();
 //     item.people.forEach((person) => {
 //       expect(person.selection).toEqual(false);
@@ -46,7 +46,7 @@
 //     });
 //   });
 //
-//   it('should toggle selection of one person and update the split', () => {
+//   it('should toggle selection of one person and save the split', () => {
 //     const person = item.people[0];
 //     const count = item.people.filter((p) => !!p.selection).length;
 //     if (person.selection) {
@@ -62,11 +62,11 @@
 //     }
 //   });
 //
-//   it('should update the item', () => {
+//   it('should save the item', () => {
 //     component.form.controls['name'].setValue('newName');
 //     component.form.controls['price'].setValue(1);
 //     component.isEdit = true;
-//     component.update();
+//     component.save();
 //
 //     expect(item.name).toEqual('newName');
 //     expect(item.price).toEqual(1);
@@ -88,7 +88,7 @@
 //       fail,
 //     );
 //
-//     component.remove(item);
+//     component.removeItem(item);
 //   });
 //
 // });

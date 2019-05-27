@@ -1,7 +1,9 @@
-import { Item } from './item.model';
-import { Person } from './person.model';
+/**
+ * Recei
+ */
+import { receipt } from '../../../shared/data/receipt.seed';
 
-export class Receipt {
+class Receipt {
   id: string;
   subtotal: number;
   total: number;
@@ -9,21 +11,27 @@ export class Receipt {
   date: string;
   store: string;
   userId: string;
+  groupId: string;
   payer: string;
   list: Item[];
   people: Person[];
 
+  /**
+   *
+   * @param receipt
+   */
   constructor(receipt: any = {}) {
-    this.id = receipt._id || '';
+    this.id = receipt.id || '';
     this.subtotal = receipt.subtotal || 0;
     this.total = receipt.total || 0;
     this.tax = receipt.tax || 0;
     this.date = receipt.date || '';
     this.store = receipt.store || '';
     this.userId = receipt.userId || '';
-    this.list = receipt.list ? receipt.list.map((item) => new Item(item)) : [];
+    this.groupId = receipt.groupId || '';
     this.payer = receipt.payer || '';
-    this.people = receipt.people ? receipt.people.map((person) => new Person(person)) : [];
+    this.list = receipt.list || [];
+    this.people = receipt.people || [];
   }
 
   isSubtotalRight() {
@@ -41,16 +49,27 @@ export class Receipt {
     return `${yy}/${mm}/${dd}`;
   }
 
+  /**
+   * push the new item to receipt's list, as well as create new
+   * slots for each person's selection array
+   * @param item
+   */
   createItem(item: Item) {
     this.list.push(item);
+    this.people.forEach((p) => p.itemSelection.push(false));
   }
 
-  updateItem() {
-    this.isSubtotalRight();
+  updateItemById(id: string, newItem: Item) {
+    const item = this.list.find((i) => i.id === id);
+    if (item) {
+      item.price = newItem.price;
+      item.image = newItem.image;
+      item.name = newItem.name;
+    }
   }
 
-  deleteItem(item: Item) {
-    this.list.splice(this.list.findIndex((i) => i.name === item.name), 1);
+  deleteItemById(id: string) {
+    this.list.splice(this.list.findIndex((i) => i.id === id), 1);
   }
 
   updateSplit(rewards: any = null) {
@@ -58,7 +77,7 @@ export class Receipt {
       this.people.forEach((person) => person.price === 0);
     } else {
       this.people.forEach((person) => {
-        person.price = this.list.map((item) => item.people.find((p) => p.name === person.name).price).reduce((acc, cur) => acc + cur);
+        // person.price = this.list.map((item) => item.people.find((p) => p.name === person.name).price).reduce((acc, cur) => acc + cur);
       });
     }
     this.people.forEach((person) => person.price += this.tax / this.people.length);
@@ -101,16 +120,81 @@ export class Receipt {
 
   toJson(): any {
     return {
-      _id: this.id,
+      id: this.id,
       subtotal: this.subtotal,
       total: this.total,
       tax: this.tax,
       date: this.date,
       userId: this.userId,
+      groupId: this.groupId,
       store: this.store,
       payer: this.payer,
-      list: this.list.map((item) => item.toJson()),
-      people: this.people.map((person) => person.toJson()),
+      list: this.list,
+      people: this.people,
     };
   }
+
+  /**
+   * Based on selected/deselected item of one person, change
+   * the corresponding person's split based on the index number
+   * of the item in the list array.
+   * @param person - the one's price that will change
+   * @param item - the selected/deselected item
+   * @param index - item's index in the person's list array
+   */
+  toggleSelection(person: Person, item: Item, index: number) {
+    // toggle the person's selection of the item
+    person.itemSelection[index] = !person.itemSelection[index];
+
+    // Everyone else's split will be reduced if the toggled selection
+    // is true. It will be increased if the toggled selection is false
+    if (person.itemSelection[index] === true) {
+      const length = this.people.filter((p) => p.itemSelection[index]).length;
+      const newItemSplit = item.price / length;
+      if (length !== 1) {
+        const oldItemSplit = item.price / (length - 1);
+        // decrease everyone else's split
+        this.people.forEach((p) => {
+          if (p.name !== person.name) {
+            if (p.price - (oldItemSplit - newItemSplit) >= 0) {
+              p.price -= oldItemSplit - newItemSplit;
+            }
+          }
+        });
+      }
+      // increase current person's split
+      person.price += newItemSplit;
+    } else {
+      const length = this.people.filter((p) => p.itemSelection[index]).length + 1;
+      const oldItemSplit = item.price / length;
+      if (length !== 1) {
+        const newItemSplit = item.price / (length - 1);
+        // increase everyone else's split
+        this.people.forEach((p) => {
+          if (p.name !== person.name && p.itemSelection[index]) {
+            p.price += newItemSplit - oldItemSplit;
+          }
+        });
+      }
+      // decrease current person's split
+      person.price -= oldItemSplit;
+    }
+  }
+}
+
+export { Receipt };
+
+export interface Person {
+  name: string;
+  price: number;
+  isDriver: boolean;
+  isPassenger: boolean;
+  itemSelection: boolean[];
+}
+
+export interface Item {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
 }

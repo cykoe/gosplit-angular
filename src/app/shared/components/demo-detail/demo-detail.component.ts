@@ -90,18 +90,18 @@ export class DemoDetailComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.receipt.createItem(new Item({...result, _id: uuid()}));
+        this.receipt.createItem(new Item({...result, id: uuid()}));
       }
     });
   }
 
-  updateItem(item: Item) {
-    this.receipt.updateItem();
-    this.receipt.updateSplit(AppConfig.rewards);
-  }
-
-  deleteItem(item: Item) {
-    this.receipt.deleteItem(item);
-    this.receipt.updateSplit(AppConfig.rewards);
-  }
+  // updateItem(item: Item) {
+  //   this.receipt.updateItem();
+  //   this.receipt.updateSplit(AppConfig.rewards);
+  // }
+  //
+  // deleteItem(item: Item) {
+  //   this.receipt.deleteItem(item);
+  //   this.receipt.updateSplit(AppConfig.rewards);
+  // }
 }

@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { AppConfig } from '../../../../configs/app.config';
-import { Person } from '../../shared/person.model';
-import { Receipt } from '../../shared/receipt.model';
+import { Person, Receipt } from '../../shared/receipt.model';
 
 @Component({
   selector: 'app-receipt-detail-footer',
@@ -21,6 +19,5 @@ export class ReceiptDetailFooterComponent {
     } else if (!person.isPassenger && person.isDriver) {
       person.isDriver = false;
     }
-    this.receipt.updateSplit(AppConfig.rewards);
   }
 }

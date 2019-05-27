@@ -29,9 +29,9 @@ export class SigninComponent implements OnInit {
 
   onSubmit() {
     this.auth.login(this.form.value).subscribe((res) => {
-      if (res.url) {
-        this.router.navigate([res.url]);
-      }
+      // if (res.url) {
+      //   this.router.navigate([res.url]);
+      // }
     });
   }
 

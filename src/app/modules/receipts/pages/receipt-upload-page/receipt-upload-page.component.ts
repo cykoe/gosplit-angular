@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../../../../core/services';
 import { Group } from '../../shared/group.model';
-import { Person } from '../../shared/person.model';
-import { Receipt } from '../../shared/receipt.model';
+import { Person, Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../shared/receipt.service';
 
 @Component({
@@ -41,7 +40,7 @@ export class ReceiptUploadPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.auth.listGroups().subscribe((list: Group[]) => {
+    this.receiptService.listGroups().subscribe((list: Group[]) => {
       this.groups = list;
     });
     this.form = this.fb.group({
@@ -65,8 +64,17 @@ export class ReceiptUploadPageComponent implements OnInit {
     this.receiptService.create(formModel)
       .pipe(
         switchMap((receipt: Receipt) => {
-          receipt.people = this.group.value.people.map((name) => new Person({name}));
-          receipt.list.forEach((item) => item.people = this.group.value.people.map((name) => new Person({name})));
+          receipt.people = this.group.value.people.map((name) => {
+            const person: Person = {
+              name,
+              price: 0,
+              isDriver: false,
+              isPassenger: false,
+              itemSelection: new Array(receipt.list.length).fill(false),
+            };
+            return person;
+          });
+          // receipt.list.forEach((item) => item.people = this.group.value.people.map((name) => new Person({name})));
           return this.receiptService.update(receipt);
         }),
       )

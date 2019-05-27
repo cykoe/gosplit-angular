@@ -26,10 +26,10 @@ export class ReceiptService {
   }
 
   readonly url: string = environment.api_url;
-  readonly endpoint: string = 'receipt';
+  readonly receiptUrl: string = 'receipt';
 
   create(item: any): Observable<Receipt> {
-    return this.http.post<Receipt>(`${this.url}/${this.endpoint}`, item)
+    return this.http.post<Receipt>(`${this.url}/${this.receiptUrl}`, item)
       .pipe(
         map((data) => new Receipt(data)),
         catchError(this.handleError<Receipt>('create receipt')),
@@ -37,7 +37,7 @@ export class ReceiptService {
   }
 
   read(itemId: string): Observable<Receipt> {
-    return this.http.get<Receipt>(`${this.url}/${this.endpoint}/${itemId}`)
+    return this.http.get<Receipt>(`${this.url}/${this.receiptUrl}/${itemId}`)
       .pipe(
         map((data) => !data ? undefined : new Receipt(data)),
         catchError(this.handleError<Receipt>('read receipt')),
@@ -45,15 +45,15 @@ export class ReceiptService {
   }
 
   update(item: Receipt): Observable<Receipt> {
-    return this.http.put<Receipt>(`${this.url}/${this.endpoint}/${item.id}`, item.toJson())
+    return this.http.put<Receipt>(`${this.url}/${this.receiptUrl}/${item.id}`, item.toJson())
       .pipe(
         map((data) => new Receipt(data)),
-        catchError(this.handleError<Receipt>('update receipt')),
+        catchError(this.handleError<Receipt>('save receipt')),
       );
   }
 
   delete(item: Receipt): Observable<{}> {
-    return this.http.delete(`${this.url}/${this.endpoint}/${item.id}`)
+    return this.http.delete(`${this.url}/${this.receiptUrl}/${item.id}`)
       .pipe(
         catchError(this.handleError<{}>('delete receipt')),
       );
@@ -61,7 +61,7 @@ export class ReceiptService {
 
   list(groupId: string): Observable<Receipt[]> {
     const options = {params: new HttpParams().set('groupId', groupId)};
-    return this.http.get<Receipt[]>(`${this.url}/${this.endpoint}`, options)
+    return this.http.get<Receipt[]>(`${this.url}/${this.receiptUrl}`, options)
       .pipe(
         map((data) => data.map((receipt: any) => new Receipt(receipt))),
         catchError(this.handleError<Receipt[]>('list receipts')),
@@ -69,7 +69,7 @@ export class ReceiptService {
   }
 
   autoSelect(receipt: Receipt): Observable<Receipt> {
-    return this.http.get<Receipt[]>(`${this.url}${this.endpoint}`)
+    return this.http.get<Receipt[]>(`${this.url}${this.receiptUrl}`)
       .pipe(
         map((data) => {
           // parse to train format
@@ -78,12 +78,12 @@ export class ReceiptService {
             r.list.forEach((item) => {
               if (train.has(item.name)) {
                 const itemN = train.get(item.name);
-                item.people.forEach((person) => person.selection ? itemN[person.name]++ : null);
+                // item.people.forEach((person) => person.selection ? itemN[person.name]++ : null);
                 itemN['length']++;
               } else {
                 train.set(item.name, {});
                 const itemN = train.get(item.name);
-                item.people.forEach((person) => itemN[person.name] = person.selection ? 1 : 0);
+                // item.people.forEach((person) => itemN[person.name] = person.selection ? 1 : 0);
                 itemN['length'] = 1;
               }
             });
@@ -94,8 +94,8 @@ export class ReceiptService {
               const itemN = train.get(item.name);
               for (const person in itemN) {
                 if (itemN.hasOwnProperty(person) && person !== 'length') {
-                  const p = item.people.find((p) => p.name === person);
-                  p.selection = itemN[person] / itemN['length'] >= 0.5;
+                  // const p = item.people.find((p) => p.name === person);
+                  // p.selection = itemN[person] / itemN['length'] >= 0.5;
                 }
               }
             }

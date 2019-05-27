@@ -29,9 +29,9 @@ export class SignupComponent implements OnInit {
 
   onSubmit() {
     this.auth.register(this.form.value).subscribe((res) => {
-      if (res.url) {
-        this.router.navigate([res.url]);
-      }
+      // if (res.url) {
+      //   this.router.navigate([res.url]);
+      // }
     });
   }
 

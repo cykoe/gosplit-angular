@@ -13,6 +13,7 @@ export class ReceiptGroupCardComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    // console.log(this.group);
   }
 
   deleteGroup() {

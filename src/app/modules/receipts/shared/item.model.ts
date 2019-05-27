@@ -8,7 +8,7 @@ export class Item {
   people: Person[];
 
   constructor(item: any = {}) {
-    this.id = item._id || '';
+    this.id = item.id || '';
     this.name = item.name || '';
     this.price = item.price || '';
     this.image = item.image || '';
@@ -21,7 +21,7 @@ export class Item {
 
   toJson() {
     return {
-      _id: this.id,
+      id: this.id,
       name: this.name,
       price: this.price,
       image: this.image,

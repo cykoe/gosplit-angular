@@ -1,23 +1,10 @@
-import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  NgZone,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
-import { combineLatest, Observable } from 'rxjs';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { Item } from '../../shared/item.model';
+
+import { Item, Person } from '../../shared/receipt.model';
 
 @Component({
   selector: 'app-receipt-detail-card',
@@ -25,117 +12,92 @@ import { Item } from '../../shared/item.model';
   styleUrls: ['./receipt-detail-card.component.scss'],
 })
 export class ReceiptDetailCardComponent implements OnInit {
+  // form for updating item
   form: FormGroup;
+
+  // flag for editing and selection
   isEdit = false;
   isSelectAll = false;
 
-  @Input() isSelected: boolean;
-  @Input() key: Observable<string>;
-  @Input() item: Item;
-  @Output() removed = new EventEmitter<Item>();
-  @Output() changed = new EventEmitter<Item>();
-  @Output() selected = new EventEmitter<Item>();
-
-  @ViewChild('card') card: ElementRef<HTMLElement>;
-
-  item_cp: any;
+  @Input() item: [Item, number];
+  @Input() people: Person[];
+  @Output() updated = new EventEmitter();
+  @Output() deleted = new EventEmitter();
+  @Output() toggled = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
   ) {
   }
 
-  ngOnInit() {
+  get width(): number {
+    // tslint:disable-next-line:no-magic-numbers
+    return parseInt(`${12 / this.people.length}`, 10);
+  }
+
+  ngOnInit(): void {
     this.form = this.fb.group({
-      name: [this.item.name],
-      price: [this.item.price],
-      image: [this.item.image],
-    });
-    this.key.subscribe((key) => {
-      if (this.isSelected && key) {
-        const person = this.item.people[Number(key) - 1];
-        if (person) {
-          person.selection = !person.selection;
-          this.updatePrice();
-        }
-        if (key  === 'a') {
-          (this.isSelectAll) ? this.deselectAll() : this.selectAll();
-        }
-      }
+      name: [this.item[0].name, Validators.required],
+      price: [this.item[0].price, Validators.required],
+      image: [this.item[0].image, Validators.required],
     });
   }
 
-  // ngAfterViewInit() {
-  //   this.focusMonitor.monitor(this.card).subscribe(() => this.ngZone.run(() => {
-  //     this.cdr.markForCheck();
-  //   }));
-  // }
-
-  remove(item: Item) {
+  /**
+   * Remove the current item from the receipt list
+   * A pop-up window will show to confirm the deletion
+   * @param item - the item to be deleted
+   */
+  removeItem(item: Item): void {
+    // pop up the confirmation window
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
       width: '250px',
       data: item,
     });
+    // if the pop window returns the current item, then emit deletion
     dialogRef.afterClosed().subscribe((result: Item) => {
       if (result.id && result.id === item.id) {
-        this.removed.emit(item);
+        this.deleted.emit(item);
       }
     });
   }
 
-  change(item: Item) {
-    this.changed.emit(item);
-  }
-
-  update() {
-    this.item_cp = {...this.item};
+  /**
+   * Save the updated item. However, it is not saved
+   * to the backend
+   */
+  save(): void {
     if (this.isEdit) {
-      this.item.name = this.form.get('name').value;
-      this.item.price = this.form.get('price').value;
-      this.item.image = this.form.get('image').value;
-      this.updatePrice();
+      this.updated.emit({id: this.item[0].id, newItem: this.form.value});
     }
     this.isEdit = !this.isEdit;
   }
 
-  undo() {
-    this.item.name = this.item_cp.name;
-    this.item.price = this.item_cp.price;
-    this.item.image = this.item_cp.image;
-    this.form.get('name').setValue(this.item.name);
-    this.form.get('price').setValue(this.item.price);
-    this.form.get('image').setValue(this.item.image);
-    this.isEdit = !this.isEdit;
+  /**
+   * Cancel updating item
+   */
+  cancel(): void {
+    this.isEdit = false;
   }
 
-  focus() {
-    this.selected.emit(this.item);
+  /**
+   * toggle one person' selection of the current item
+   * @param person
+   */
+  toggle(person: Person): void {
+    this.toggled.emit({person, item: this.item[0], index: this.item[1]});
   }
 
-  toggle() {
-    this.updatePrice();
-  }
-
-  selectAll() {
+  /**
+   * toggle all people's selection of the current item
+   */
+  toggleAll(): void {
+    this.people.forEach((person) => {
+      if (person.itemSelection[this.item[1]] === this.isSelectAll) {
+        this.toggled.emit({person, item: this.item[0], index: this.item[1]});
+      }
+    });
     this.isSelectAll = !this.isSelectAll;
-    this.item.people.forEach((person) => person.selection = true);
-    this.updatePrice();
-  }
-
-  deselectAll() {
-    this.isSelectAll = !this.isSelectAll;
-    this.item.people.forEach((person) => person.selection = false);
-    this.updatePrice();
-  }
-
-  updatePrice() {
-    const count = this.item.people.filter((p) => !!p.selection).length;
-    const split = this.item.price / count;
-    this.item.people.forEach((person) => person.price = person.selection ? split : 0);
-    this.change(this.item);
   }
 }
