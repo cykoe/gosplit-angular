@@ -175,7 +175,6 @@ export const testReceipts = [{
   groupId: '678e5def-4204-4c65-9659-2aef8120ce27',
   payer: 'James Rodriguez',
   list: [
-
     {
       id: '1147f29f-13e1-4038-a9e1-cd485e031f9b',
       name: 'Clear Antibacterial Hand',

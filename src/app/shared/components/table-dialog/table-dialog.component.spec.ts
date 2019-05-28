@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
+import { MaterialModule } from '../../modules/material.module';
 import { TableDialogComponent } from './table-dialog.component';
 
 describe('TableDialogComponent', () => {
@@ -8,7 +10,14 @@ describe('TableDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableDialogComponent ]
+      declarations: [ TableDialogComponent ],
+      imports: [MaterialModule],
+      providers: [
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: [{name: 'name', split: '0'}],
+         },
+      ],
     })
     .compileComponents();
   }));
@@ -19,7 +28,7 @@ describe('TableDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should get shared data from the calling component', () => {
+    expect(component.dataSource).toEqual([{name: 'name', split: '0'}]);
   });
 });

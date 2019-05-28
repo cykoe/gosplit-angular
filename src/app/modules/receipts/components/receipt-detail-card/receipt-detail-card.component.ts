@@ -15,22 +15,24 @@ export class ReceiptDetailCardComponent implements OnInit {
   // form for updating item
   form: FormGroup;
 
-  // flag for editing and selection
+  // flag for editing and allSelection
   isEdit = false;
   isSelectAll = false;
 
   @Input() item: [Item, number];
   @Input() people: Person[];
-  @Output() updated = new EventEmitter();
-  @Output() deleted = new EventEmitter();
-  @Output() toggled = new EventEmitter();
+  @Output() updated = new EventEmitter<Item>();
+  @Output() deleted = new EventEmitter<Item>();
+  @Output() toggled = new EventEmitter<{person: Person, item: Item, index: number}>();
 
   constructor(
     private fb: FormBuilder,
     private dialog: MatDialog,
-  ) {
-  }
+  ) {}
 
+  /**
+   * For bootstrap to determine the grid size
+   */
   get width(): number {
     // tslint:disable-next-line:no-magic-numbers
     return parseInt(`${12 / this.people.length}`, 10);
@@ -64,12 +66,13 @@ export class ReceiptDetailCardComponent implements OnInit {
   }
 
   /**
-   * Save the updated item. However, it is not saved
-   * to the backend
+   * Save the updated item to receipt model
+   * Note, it is not saved to the backend yet
    */
   save(): void {
     if (this.isEdit) {
-      this.updated.emit({id: this.item[0].id, newItem: this.form.value});
+      const newItem = {...this.form.value, id: this.item[0].id};
+      this.updated.emit(newItem);
     }
     this.isEdit = !this.isEdit;
   }

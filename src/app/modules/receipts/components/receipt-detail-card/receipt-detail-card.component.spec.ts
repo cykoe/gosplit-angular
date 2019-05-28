@@ -1,94 +1,120 @@
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-// import { SharedModule } from '../../../../shared/shared.module';
-//
-// import { Item } from '../../shared/item.model';
-// import { ReceiptDetailCardComponent } from './receipt-detail-card.component';
-//
-// import { testLists, testPeople } from '../../shared/data';
-//
-// describe('ReceiptDetailCardComponent', () => {
-//   let component: ReceiptDetailCardComponent;
-//   let fixture: ComponentFixture<ReceiptDetailCardComponent>;
-//   let item: Item;
-//
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [
-//         ReceiptDetailCardComponent,
-//       ],
-//       imports: [
-//         SharedModule,
-//       ],
-//     }).compileComponents();
-//   }));
-//
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(ReceiptDetailCardComponent);
-//     component = fixture.componentInstance;
-//     item = new Item({...testLists[0], people: testPeople});
-//     component.item = item;
-//     fixture.detectChanges();
-//   });
-//
-//   it('should set selection to true for all people and save the split', () => {
-//     component.selectAll();
-//     item.people.forEach((person) => {
-//       expect(person.selection).toEqual(true);
-//       expect(person.price).toEqual(item.price / item.people.length);
-//     });
-//   });
-//
-//   it('should set selection to false for all people and save the split', () => {
-//     component.deselectAll();
-//     item.people.forEach((person) => {
-//       expect(person.selection).toEqual(false);
-//       expect(person.price).toEqual(0);
-//     });
-//   });
-//
-//   it('should toggle selection of one person and save the split', () => {
-//     const person = item.people[0];
-//     const count = item.people.filter((p) => !!p.selection).length;
-//     if (person.selection) {
-//       expect(person.price).toEqual(item.price / count);
-//       component.toggle();
-//       expect<any>(person.selection).toEqual(false);
-//       expect(person.price).toEqual(0);
-//     } else {
-//       expect(person.price).toEqual(0);
-//       component.toggle();
-//       expect(person.selection).toEqual(true);
-//       expect(person.price).toEqual(item.price / (count + 1));
-//     }
-//   });
-//
-//   it('should save the item', () => {
-//     component.form.controls['name'].setValue('newName');
-//     component.form.controls['price'].setValue(1);
-//     component.isEdit = true;
-//     component.save();
-//
-//     expect(item.name).toEqual('newName');
-//     expect(item.price).toEqual(1);
-//     expect(component.isEdit).toEqual(false);
-//   });
-//
-//   it('should raise the changed event', () => {
-//     component.changed.subscribe(
-//       (i) => expect(i).toBe(item),
-//       fail,
-//     );
-//
-//     component.change(item);
-//   });
-//
-//   it('should raise the removed event', () => {
-//     component.removed.subscribe(
-//       (i) => expect(i).toBe(item),
-//       fail,
-//     );
-//
-//     component.removeItem(item);
-//   });
-//
-// });
+import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { By } from '@angular/platform-browser';
+
+import { MaterialModule } from '../../../../shared/modules/material.module';
+import { ReceiptDetailCardComponent } from './receipt-detail-card.component';
+
+import { of } from 'rxjs';
+import { Item, Person } from '../../shared/receipt.model';
+
+class MatDialogMock {
+  open() {
+    return {
+      afterClosed: () => of({
+        id: 'c8e5e803-72eb-4b4c-aac1-4b1e1b5d5d9a',
+        name: 'MEDICAL AIR',
+        price: 12,
+        image: 'http://dummyimage.com/174x230.jpg/cc0000/ffffff',
+      }),
+    };
+  }
+}
+
+describe('ReceiptDetailCardComponent', () => {
+  let component: ReceiptDetailCardComponent;
+  let fixture: ComponentFixture<ReceiptDetailCardComponent>;
+  let receiptDe: DebugElement;
+  let receiptEl: HTMLElement;
+  let expectedItem: Item;
+  let expectedPeople: Person[];
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ReceiptDetailCardComponent],
+      imports: [MaterialModule, ReactiveFormsModule],
+      providers: [
+        {provide: MatDialog, useClass: MatDialogMock},
+        FormBuilder,
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ReceiptDetailCardComponent);
+    component = fixture.componentInstance;
+
+    // find the item's DebugElement and HTMLElement
+    receiptDe = fixture.debugElement.query(By.css('.card-title'));
+    receiptEl = receiptDe.nativeElement;
+
+    // mock the item supplied by the parent component
+    expectedItem = {
+      id: 'c8e5e803-72eb-4b4c-aac1-4b1e1b5d5d9a',
+      name: 'MEDICAL AIR',
+      price: 12,
+      image: 'http://dummyimage.com/174x230.jpg/cc0000/ffffff',
+    };
+    expectedPeople = [{
+      name: 'test',
+      price: 0,
+      isDriver: false,
+      isPassenger: false,
+      itemSelection: [false],
+    }];
+
+    // simulate the parent setting the input property with that item
+    component.item = [expectedItem, 0];
+    component.people = expectedPeople;
+
+    // trigger initial data binding
+    fixture.detectChanges();
+  });
+
+  it('should display the item name in title case', () => {
+    const expectedName = expectedItem.name.toLowerCase();
+    expect(receiptEl.textContent.toLowerCase()).toContain(expectedName);
+  });
+
+  it('should raise updated event when clicked', () => {
+    let updatedItem: Item;
+    component.updated.subscribe((item: Item) => {
+      updatedItem = item;
+    });
+    const itemDe = fixture.debugElement.query(By.css('.edit'));
+
+    itemDe.triggerEventHandler('click', null);
+    itemDe.triggerEventHandler('click', null);
+    expect(updatedItem).toEqual(expectedItem);
+  });
+
+  it('should raise deleted event when clicked', () => {
+    let deletedItem: Item;
+    component.deleted.subscribe((item: Item) => {
+      deletedItem = item;
+    });
+
+    const itemDe = fixture.debugElement.query(By.css('.delete'));
+
+    itemDe.triggerEventHandler('click', null);
+    expect(deletedItem).toEqual(expectedItem);
+  });
+
+  it('should raise toggled event when clicked', () => {
+    let toggledRes: { person: Person, item: Item, index: number };
+    component.toggled.subscribe((item) => {
+      toggledRes = item;
+    });
+
+    const itemDe = fixture.debugElement.query(By.css('.toggle'));
+    itemDe.triggerEventHandler('change', null);
+    expect(toggledRes).toEqual({person: expectedPeople[0], item: expectedItem, index: 0});
+  });
+
+  it('should get width for bootstrap grid', () => {
+    // tslint:disable-next-line:no-magic-numbers
+    expect(component.width).toEqual(12);
+  });
+});

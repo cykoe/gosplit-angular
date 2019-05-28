@@ -7,7 +7,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-chip-list #chipList>
-          <mat-chip *ngFor="let person of people" (removed)="remove(person)">
+          <mat-chip *ngFor="let person of people" (removed)="remove(person)" class="remove">
             {{ person }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip>
@@ -18,15 +18,29 @@
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
             (matChipInputTokenEnd)="add($event)"
             [formControl]="person"
+            class="add"
           />
         </mat-chip-list>
       </mat-form-field>
-      <mat-error *ngIf="person.hasError('duplicateName') && (person.touched || person.dirty)">Duplicated name</mat-error>
-      <mat-error *ngIf="person.hasError('required') && (person.touched || person.dirty)">No names</mat-error>
+      <mat-error
+        *ngIf="
+          person.hasError('duplicateName') && (person.touched || person.dirty)
+        "
+        >Duplicated name</mat-error
+      >
+      <mat-error
+        *ngIf="person.hasError('required') && (person.touched || person.dirty)"
+        >No names</mat-error
+      >
     </form>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-raised-button (click)="saveGroup()" [disabled]="person.errors || name.errors">
+    <button
+      mat-raised-button
+      (click)="saveGroup()"
+      [disabled]="person.errors || name.errors"
+      class="save"
+    >
       Save
     </button>
   </mat-card-actions>

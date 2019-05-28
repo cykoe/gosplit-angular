@@ -10,10 +10,10 @@
         {{ item[0].price | currency: "USD":"symbol":"1.2-2" }}
       </button>
       <span class="spacer"></span>
-      <button mat-icon-button (click)="save()" *ngIf="!isEdit">
+      <button mat-icon-button (click)="save()" *ngIf="!isEdit" class="edit">
         <mat-icon color="primary">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="removeItem(item[0])" *ngIf="!isEdit">
+      <button mat-icon-button (click)="removeItem(item[0])" *ngIf="!isEdit" class="delete">
         <mat-icon color="warn">delete</mat-icon>
       </button>
       <button mat-icon-button color="primary" (click)="save()" *ngIf="isEdit">
@@ -67,6 +67,7 @@
           <mat-checkbox
             (change)="toggle(person)"
             [checked]="person.itemSelection[item[1]]"
+            class="toggle"
             >{{ person.name }}
           </mat-checkbox>
         </span>

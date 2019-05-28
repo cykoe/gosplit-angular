@@ -1,17 +1,16 @@
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   AbstractControl,
-  FormArray,
   FormBuilder,
   FormGroup,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import {MatChipInputEvent} from '@angular/material';
+import { MatChipInputEvent } from '@angular/material';
 
 function duplicateNameValidator(people: string[]): ValidatorFn {
-  return (control: FormArray): { [key: string]: any } | null => {
+  return (control: AbstractControl): { [key: string]: any } | null => {
     const duplicate = control.value ? people.includes(control.value.trim()) : false;
     return duplicate ? {duplicateName: {value: control.value}} : null;
   };
@@ -29,8 +28,33 @@ export class ReceiptGroupNewCardComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   people: string[] = [];
 
+  constructor(
+    private fb: FormBuilder,
+  ) {}
+
+  get person() {
+    return this.form.get('person');
+  }
+
+  get name() {
+    return this.form.get('name');
+  }
+
+  ngOnInit(): void {
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      person: ['', [duplicateNameValidator(this.people), Validators.required]],
+    });
+  }
+
+  /**
+   * Add a new person name to people array
+   * @param event
+   */
   add(event: MatChipInputEvent): void {
-    if (this.person.errors) { return; }
+    if (this.person.errors) {
+      return;
+    }
     const input = event.input;
     const value = event.value;
 
@@ -43,34 +67,23 @@ export class ReceiptGroupNewCardComponent implements OnInit {
     }
   }
 
-  remove(person: any): void {
-    const index = this.people.indexOf(person);
+  /**
+   * Remove a person's name from people array
+   * @param name name of the person
+   */
+  remove(name: string): void {
+    const index = this.people.indexOf(name);
 
     if (index >= 0) {
       this.people.splice(index, 1);
     }
   }
 
-  constructor(
-    private fb: FormBuilder,
-  ) { }
-
-  get person() {
-    return this.form.get('person');
-  }
-
-  get name() {
-    return this.form.get('name');
-  }
-
-  ngOnInit() {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      person: ['', [duplicateNameValidator(this.people), Validators.required]],
-    });
-  }
-
-  saveGroup() {
+  /**
+   * Emit the group name and group members to parent component
+   * then clear out current form values
+   */
+  saveGroup(): void {
     const name = this.form.get('name').value;
     const people = this.people;
     const group = {name, people};

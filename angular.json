@@ -90,7 +90,7 @@
               "src/assets/sass/paper-kit.scss",
               "src/assets/styles/styles.scss"
             ],
-            "scripts": [],
+            "scripts": ["node_modules/hammerjs/hammer.min.js"],
             "assets": [
               "src/favicon.ico",
               "src/assets"

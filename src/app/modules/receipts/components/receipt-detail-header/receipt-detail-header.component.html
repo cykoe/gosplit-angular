@@ -1,6 +1,0 @@
-<mat-chip-list>
-  <mat-chip color='primary' selected class="col-lg-2 col-sm-12">{{ receipt.date | date: "shortDate" }}</mat-chip>
-  <mat-chip color='primary' selected class="col-lg-2 col-sm-12">{{ receipt.store | titlecase }}</mat-chip>
- <mat-chip color='primary' selected class="col-lg-2 col-sm-12">Total: {{ receipt.total | number: "1.2-2" }}</mat-chip>
-  <mat-chip color='accent' selected class="col-lg-2 col-sm-12" (click)="autoSelect()">Auto-Select</mat-chip>
-</mat-chip-list>

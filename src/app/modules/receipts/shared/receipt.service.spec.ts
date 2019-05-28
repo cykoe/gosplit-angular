@@ -1,8 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+import { MatSnackBar } from '@angular/material';
+
 // import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { MaterialModule } from '../../../shared/modules/material.module';
 
@@ -19,8 +20,10 @@ describe('ReceiptService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let receiptService: ReceiptService;
+  let matSnackBarSpy: jasmine.SpyObj<MatSnackBar>;
 
   beforeEach(() => {
+    const sbSpy = jasmine.createSpyObj('MatSnackBar', ['open']);
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
@@ -30,11 +33,13 @@ describe('ReceiptService', () => {
       ],
       providers: [
         ReceiptService,
+        {provide: MatSnackBar, useValue: sbSpy},
       ],
     });
     httpClient = TestBed.get(HttpClient);
     httpTestingController = TestBed.get(HttpTestingController);
     receiptService = TestBed.get(ReceiptService);
+    matSnackBarSpy = TestBed.get(MatSnackBar);
   });
 
   afterEach(() => {
