@@ -64,10 +64,8 @@
               >
                 <app-receipt-list-card
                   (deleted)="delete($event)"
-                  [@detailExpand]="
-                    element == expandedElement ? 'expanded' : 'collapsed'
-                  "
-                  [element]="element"
+                  [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                  [receipt]="element"
                   class="example-element-detail"
                 ></app-receipt-list-card>
               </td>
