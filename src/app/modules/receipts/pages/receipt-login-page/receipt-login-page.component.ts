@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { AuthService } from '../../../../core/services';
 
+import { User } from '../../shared/user';
+
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss'],
+  selector: 'app-receipt-login',
+  templateUrl: './receipt-login-page.component.html',
+  styleUrls: ['./receipt-login-page.component.scss'],
 })
-export class SigninComponent implements OnInit {
+export class ReceiptLoginPageComponent implements OnInit {
   form: FormGroup;
   focus;
   focus1;
@@ -20,19 +23,23 @@ export class SigninComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     }, {updateOn: 'blur'});
   }
 
-  onSubmit() {
-    this.auth.login(this.form.value).subscribe((res) => {
-      // if (res.url) {
-      //   this.router.navigate([res.url]);
-      // }
-    });
+  /**
+   * Submit the login credentials to authService
+   * if successful redirect to original requested
+   * url page
+   */
+  onSubmit(): void {
+    this.auth.login(this.form.value)
+      .subscribe((res: User) => {
+        this.router.navigate([res.url]);
+      });
   }
 
 }

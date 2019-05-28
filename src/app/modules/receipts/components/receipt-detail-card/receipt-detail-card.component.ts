@@ -96,7 +96,10 @@ export class ReceiptDetailCardComponent implements OnInit {
    * toggle all people's selection of the current item
    */
   toggleAll(): void {
+    console.log(this.people);
+    console.log('hi');
     this.people.forEach((person) => {
+      console.log(person);
       if (person.itemSelection[this.item[1]] === this.isSelectAll) {
         this.toggled.emit({person, item: this.item[0], index: this.item[1]});
       }

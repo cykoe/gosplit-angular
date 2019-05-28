@@ -20,7 +20,7 @@ class MatDialogMock {
   }
 }
 
-describe('ReceiptCardComponent', () => {
+describe('ReceiptListCardComponent', () => {
   let component: ReceiptListCardComponent;
   let fixture: ComponentFixture<ReceiptListCardComponent>;
   let receiptServiceSpy: jasmine.SpyObj<ReceiptService>;
@@ -54,7 +54,7 @@ describe('ReceiptCardComponent', () => {
     const readDe: DebugElement = fixture.debugElement.query(By.css('.read'));
     readDe.triggerEventHandler('click', null);
 
-    //  args passed to router.navigate spy
+    // args passed to router.navigate spy
     const router = fixture.debugElement.injector.get(Router);
     const spy = router.navigate as jasmine.Spy;
     const navArgs = spy.calls.first().args[0];
@@ -62,15 +62,18 @@ describe('ReceiptCardComponent', () => {
     expect(navArgs[0]).toEqual(`receipts/groups/groupId/${expectedReceipt.toUrlDate()}/${expectedReceipt.store}/${expectedReceipt.id}`);
   });
 
-  it('should raise deleted event after clicked delete', () => {
+  it('should raise deleted event after clicked delete', async(() => {
     receiptServiceSpy.delete.and.returnValue(asyncData(undefined));
     let deletedReceipt: Receipt;
-    component.deleted.subscribe((r: Receipt) => {
-      deletedReceipt = r;
-      expect(deletedReceipt).toEqual(expectedReceipt);
-    });
-
     const deleteDe = fixture.debugElement.query(By.css('.delete'));
     deleteDe.triggerEventHandler('click', expectedReceipt);
-  });
+    component.deleted.subscribe((r: Receipt) => {
+      deletedReceipt = r;
+    });
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(deletedReceipt).toEqual(expectedReceipt);
+    });
+  }));
 });

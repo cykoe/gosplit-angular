@@ -5,8 +5,8 @@ import { ReceiptsRoutingModule } from './receipts-routing.module';
 
 import { ReceiptGroupCardComponent } from './components/receipt-group-card/receipt-group-card.component';
 import { ReceiptListCardComponent } from './components/receipt-list-card/receipt-list-card.component';
-import { SigninComponent } from './components/signin/signin.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
+import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
@@ -19,8 +19,8 @@ import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-car
     ReceiptListPageComponent,
     ReceiptDetailPageComponent,
     ReceiptListCardComponent,
-    SignupComponent,
-    SigninComponent,
+    ReceiptRegisterPageComponent,
+    ReceiptLoginPageComponent,
     ReceiptGroupCardComponent,
     ReceiptGroupPageComponent,
     ReceiptGroupNewCardComponent,

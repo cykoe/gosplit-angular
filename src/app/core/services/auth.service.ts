@@ -65,7 +65,10 @@ export class AuthService {
   register(credential: Credential): Observable<User> {
     return this.http.post<User>(`${this.url}/${this.registerUrl}`, credential)
       .pipe(
-        tap((data) => localStorage.setItem('token', data.token)),
+        tap((data: User) => {
+          localStorage.setItem('token', data.token);
+          data.url = this.redirectUrl;
+        }),
         catchError(this.handleError<User>('register')),
       );
   }
@@ -77,7 +80,10 @@ export class AuthService {
   login(credential: Credential): Observable<User> {
     return this.http.post<User>(`${this.url}/${this.loginUrl}`, credential)
       .pipe(
-        tap((data: any) => localStorage.setItem('token', data.token)),
+        tap((data: User) => {
+          localStorage.setItem('token', data.token);
+          data.url = this.redirectUrl;
+        }),
         catchError(this.handleError<User>('login')),
       );
   }

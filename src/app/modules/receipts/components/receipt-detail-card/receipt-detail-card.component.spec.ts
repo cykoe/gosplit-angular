@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { ReceiptDetailCardComponent } from './receipt-detail-card.component';
@@ -34,7 +35,7 @@ describe('ReceiptDetailCardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ReceiptDetailCardComponent],
-      imports: [MaterialModule, ReactiveFormsModule],
+      imports: [MaterialModule, ReactiveFormsModule, BrowserAnimationsModule],
       providers: [
         {provide: MatDialog, useClass: MatDialogMock},
         FormBuilder,
@@ -113,8 +114,28 @@ describe('ReceiptDetailCardComponent', () => {
     expect(toggledRes).toEqual({person: expectedPeople[0], item: expectedItem, index: 0});
   });
 
+  it('should raise multiple toggled events when clicked selectAll', () => {
+    let toggledRes: { person: Person, item: Item, index: number };
+    component.toggled.subscribe((item) => {
+      toggledRes = item;
+    });
+    console.log(component.people);
+    const itemDe = fixture.debugElement.query(By.css('.toggleAll'));
+    itemDe.triggerEventHandler('click', null);
+    expect(toggledRes).toEqual({person: expectedPeople[0], item: expectedItem, index: 0});
+  });
+
   it('should get width for bootstrap grid', () => {
     // tslint:disable-next-line:no-magic-numbers
     expect(component.width).toEqual(12);
+  });
+
+  it('should change isEdit to false when clicked', () => {
+    component.isEdit = true;
+    fixture.detectChanges();
+    const cancelDe: DebugElement = fixture.debugElement.query(By.css('.cancel'));
+    cancelDe.triggerEventHandler('click', null);
+
+    expect(component.isEdit).toBeFalsy();
   });
 });

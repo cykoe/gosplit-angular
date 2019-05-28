@@ -48,7 +48,7 @@ describe('AuthService', () => {
     let expectedUser: User;
 
     beforeEach(() => {
-      expectedUser = {username: '', token: ''};
+      expectedUser = {username: '', token: '', url: ''};
     });
 
     it('should return user - correct credential', () => {
@@ -162,7 +162,7 @@ describe('AuthService', () => {
     let expectedUser: User;
 
     beforeEach(() => {
-      expectedUser = {username: '', token: ''};
+      expectedUser = {username: '', token: '', url: ''};
     });
 
     it('should return user - correct credential', () => {

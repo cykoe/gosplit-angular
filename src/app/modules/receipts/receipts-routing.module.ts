@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../../core/guards/auth-guard.service';
-import { SigninComponent } from './components/signin/signin.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
+import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
@@ -43,11 +43,11 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    component: SignupComponent,
+    component: ReceiptRegisterPageComponent,
   },
   {
     path: 'login',
-    component: SigninComponent,
+    component: ReceiptLoginPageComponent,
   },
 ];
 
