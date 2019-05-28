@@ -2,10 +2,9 @@ import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from '../../../../shared/modules/material.module';
-import { Group } from '../../shared/group.model';
 import { ReceiptGroupNewCardComponent } from './receipt-group-new-card.component';
 
 describe('ReceiptGroupNewCardComponent', () => {
@@ -15,10 +14,10 @@ describe('ReceiptGroupNewCardComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [MaterialModule, ReactiveFormsModule, BrowserAnimationsModule],
-      declarations: [ ReceiptGroupNewCardComponent ],
+      declarations: [ReceiptGroupNewCardComponent],
       providers: [FormBuilder],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -52,7 +51,7 @@ describe('ReceiptGroupNewCardComponent', () => {
     component.form.controls['name'].setValue('name');
     component.form.controls['person'].setValue('1');
     component.people = ['1', '2'];
-    let savedGroup: {name: string, people: string[]};
+    let savedGroup: { name: string, people: string[] };
 
     component.saved.subscribe((group) => {
       savedGroup = group;
@@ -60,7 +59,6 @@ describe('ReceiptGroupNewCardComponent', () => {
 
     const saveDe: DebugElement = fixture.debugElement.query(By.css('.save'));
     saveDe.triggerEventHandler('click', null);
-    console.log(savedGroup);
     expect(savedGroup).toEqual({name: 'name', people: ['1', '2']});
   });
 });

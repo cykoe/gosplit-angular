@@ -2,10 +2,10 @@ import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { RouterLinkDirectiveStub } from '../../../../../testing';
 import { MaterialModule } from '../../../../shared/modules/material.module';
 import { Group } from '../../shared/group.model';
 import { ReceiptGroupCardComponent } from './receipt-group-card.component';
-import { RouterLinkDirectiveStub } from "../../../../../testing";
 
 describe('ReceiptGroupCardComponent', () => {
   let component: ReceiptGroupCardComponent;
