@@ -38,6 +38,7 @@ export class ReceiptLoginPageComponent implements OnInit {
   onSubmit(): void {
     this.auth.login(this.form.value)
       .subscribe((res: User) => {
+        console.log(res);
         this.router.navigate([res.url]);
       });
   }

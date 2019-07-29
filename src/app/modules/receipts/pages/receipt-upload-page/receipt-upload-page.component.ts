@@ -45,9 +45,12 @@ export class ReceiptUploadPageComponent implements OnInit {
     });
     this.form = this.fb.group({
       receipt: ['', [Validators.required]],
-      payer: ['', [Validators.required]],
-      store: ['', [Validators.required]],
-      group: ['', [Validators.required]],
+      // payer: ['', [Validators.required]],
+      // store: ['', [Validators.required]],
+      // group: ['', [Validators.required]],
+      payer: ['', []],
+      store: ['', []],
+      group: ['', []],
     });
   }
 
@@ -59,31 +62,40 @@ export class ReceiptUploadPageComponent implements OnInit {
   }
 
   onSubmit() {
-    const formModel = this.prepareSave();
-    this.loading = true;
-    this.receiptService.create(formModel)
-      .pipe(
-        switchMap((receipt: Receipt) => {
-          receipt.people = this.group.value.people.map((name) => {
-            const person: Person = {
-              name,
-              price: 0,
-              isDriver: false,
-              isPassenger: false,
-              itemSelection: new Array(receipt.list.length).fill(false),
-            };
-            return person;
-          });
-          // receipt.list.forEach((item) => item.people = this.group.value.people.map((name) => new Person({name})));
-          return this.receiptService.update(receipt);
-        }),
-      )
-      .subscribe((res) => {
-        this.router.navigateByUrl('/receipts/groups');
-        this.loading = false;
-      }, (err) => {
-        this.loading = false;
+    this.receiptService.getUploadUrl().subscribe((res) => {
+      console.log(res);
+      this.receiptService.upload(res.uploadURL, this.form.get('receipt').value).subscribe((hi) => {
+        console.log(hi);
       });
+      this.receiptService.createReceiptNew(this.form)
+      console.log(this.form.value);
+      // this.receiptService.createReceiptNew()
+    });
+    // const formModel = this.prepareSave();
+    // this.loading = true;
+    // this.receiptService.create(formModel)
+    //   .pipe(
+    //     switchMap((receipt: Receipt) => {
+    //       receipt.people = this.group.value.people.map((name) => {
+    //         const person: Person = {
+    //           name,
+    //           price: 0,
+    //           isDriver: false,
+    //           isPassenger: false,
+    //           itemSelection: new Array(receipt.list.length).fill(false),
+    //         };
+    //         return person;
+    //       });
+    //       // receipt.list.forEach((item) => item.people = this.group.value.people.map((name) => new Person({name})));
+    //       return this.receiptService.update(receipt);
+    //     }),
+    //   )
+    //   .subscribe((res) => {
+    //     this.router.navigateByUrl('/receipts/groups');
+    //     this.loading = false;
+    //   }, (err) => {
+    //     this.loading = false;
+    //   });
   }
 
   private prepareSave(): any {

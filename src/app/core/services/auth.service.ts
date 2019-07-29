@@ -27,7 +27,7 @@ export class AuthService {
   readonly registerUrl: string = 'user/register';
   readonly loginUrl: string = 'user/login';
   readonly checkUsernameUrl: string = 'user';
-  redirectUrl: string;
+  redirectUrl = '';
 
   constructor(
     private http: HttpClient,

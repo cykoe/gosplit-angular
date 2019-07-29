@@ -12,6 +12,19 @@ import { environment } from '../../../../environments/environment';
 import { AppConfig } from '../../../configs/app.config';
 import { Group } from './group.model';
 
+export interface UploadUrlFile {
+  uploadURL: string;
+  photoFilename: string;
+}
+
+export interface EmptyReceipt {
+  id: string;
+  userId: string;
+  groupId: string;
+  store: string;
+  payer: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -143,9 +156,21 @@ export class ReceiptService {
   //   this.socket.emit('editRec', receipt);
   // }
 
+  getUploadUrl(): Observable<UploadUrlFile> {
+    return this.http.get<UploadUrlFile>(AppConfig.uploadUrl);
+  }
+
+  createReceiptNew(receipt: EmptyReceipt): Observable<Receipt> {
+    return this.http.post<any>(AppConfig.createReceiptUrl, receipt);
+  }
+
+  uploadReceipt(url: string, file): Observable<any> {
+    return this.http.put<any>(url, file);
+  }
+
   private handleError<T>(operation = 'operation') {
     return (error: HttpErrorResponse): Observable<T> => {
-      const message = (error.error instanceof  ErrorEvent) ?
+      const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
         `server returned code ${error.status} with body "${error.error}"`;
       this.sb.open(`${operation} failed: ${message}`, 'OK');
