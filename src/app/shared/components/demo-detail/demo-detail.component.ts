@@ -10,7 +10,8 @@ import {
   ViewChild,
   ViewChildren,
 } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { v4 as uuid } from 'uuid';
 
@@ -35,7 +36,7 @@ export class DemoDetailComponent implements OnInit, AfterViewInit {
   activeItemId = 0;
 
   @ViewChildren('card') card: QueryList<any>;
-  @ViewChild('cardDisplay') cardDisplay: ElementRef<HTMLElement>;
+  @ViewChild('cardDisplay', {static: false}) cardDisplay: ElementRef<HTMLElement>;
 
   constructor(
     private route: ActivatedRoute,

@@ -17,7 +17,7 @@ export class ReceiptUploadPageComponent implements OnInit {
   loading = false;
   groups: Group[];
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   constructor(
     private fb: FormBuilder,

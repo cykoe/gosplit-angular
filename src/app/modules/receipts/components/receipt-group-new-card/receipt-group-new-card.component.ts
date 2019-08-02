@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 function duplicateNameValidator(people: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
