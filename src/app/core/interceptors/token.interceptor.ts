@@ -16,7 +16,7 @@ export class TokenInterceptor implements HttpInterceptor {
     if (this.auth.token) {
       return next.handle(req.clone({setHeaders: {Authorization: `Bearer ${this.auth.token}`}}));
     } else {
-      return next.handle(req);
+      return next.handle(req.clone({setHeaders: {'x-api-key': 'd41d8cd98f00b204e9800998ecf8427e'}}));
     }
   }
 }

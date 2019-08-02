@@ -64,10 +64,10 @@ export class ReceiptUploadPageComponent implements OnInit {
   onSubmit() {
     this.receiptService.getUploadUrl().subscribe((res) => {
       console.log(res);
-      this.receiptService.upload(res.uploadURL, this.form.get('receipt').value).subscribe((hi) => {
-        console.log(hi);
-      });
-      this.receiptService.createReceiptNew(this.form)
+      // this.receiptService.upload(res.uploadURL, this.form.get('receipt').value).subscribe((hi) => {
+      //   console.log(hi);
+      // });
+      // this.receiptService.createReceiptNew(this.form);
       console.log(this.form.value);
       // this.receiptService.createReceiptNew()
     });

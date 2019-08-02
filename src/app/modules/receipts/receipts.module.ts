@@ -4,14 +4,14 @@ import { SharedModule } from '../../shared/shared.module';
 import { ReceiptsRoutingModule } from './receipts-routing.module';
 
 import { ReceiptGroupCardComponent } from './components/receipt-group-card/receipt-group-card.component';
+import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-card/receipt-group-new-card.component';
 import { ReceiptListCardComponent } from './components/receipt-list-card/receipt-list-card.component';
-import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
-import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
 import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
+import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
+import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
-import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-card/receipt-group-new-card.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,10 @@ import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-car
     ReceiptGroupPageComponent,
     ReceiptGroupNewCardComponent,
   ],
-  imports: [SharedModule, ReceiptsRoutingModule, A11yModule],
+  imports: [
+    SharedModule,
+    ReceiptsRoutingModule,
+    A11yModule,
+  ],
 })
 export class ReceiptsModule {}

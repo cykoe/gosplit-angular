@@ -148,7 +148,7 @@ export class ReceiptService {
   //   };
   // }
 
-  // getReceipt(id: string) {
+  // getReceipt(id: st  ring) {
   //   this.socket.emit('getRec', id);
   // }
 
