@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '../core/guards/auth-guard.service';
-import { ReceiptListContainerComponent } from './container/receipt-list-container/receipt-list-container.component';
-import { ReceiptDetailPageComponent } from './pages/receipt-detail-page/receipt-detail-page.component';
+import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
+import { ItemListShellComponent } from './containers/item-list-shell/item-list-shell.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
@@ -21,7 +21,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: ReceiptListContainerComponent,
+    component: ReceiptListShellComponent,
     pathMatch: 'full',
   },
   // {
@@ -35,7 +35,7 @@ const routes: Routes = [
   // },
   {
     path: 'groups/:groupId/:mm/:dd/:yy/:store/:id',
-    component: ReceiptDetailPageComponent,
+    component: ItemListShellComponent,
     pathMatch: 'full',
     canActivate: [AuthGuard],
     resolve: {

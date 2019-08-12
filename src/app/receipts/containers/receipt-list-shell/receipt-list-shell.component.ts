@@ -8,10 +8,10 @@ import * as receiptActions from '../../state/receipt.actions';
 
 @Component({
   selector: 'app-receipt-list-container',
-  templateUrl: './receipt-list-container.component.html',
-  styleUrls: ['./receipt-list-container.component.scss'],
+  templateUrl: './receipt-list-shell.component.html',
+  styleUrls: ['./receipt-list-shell.component.scss'],
 })
-export class ReceiptListContainerComponent implements OnInit {
+export class ReceiptListShellComponent implements OnInit {
   receipts$: Observable<IReceipt[]>;
   selectedReceipt$: Observable<IReceipt>;
 

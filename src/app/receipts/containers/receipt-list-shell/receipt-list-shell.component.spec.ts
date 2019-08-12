@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReceiptListContainerComponent } from './receipt-list-container.component';
+import { ReceiptListShellComponent } from './receipt-list-shell.component';
 
 describe('ReceiptListContainerComponent', () => {
-  let component: ReceiptListContainerComponent;
-  let fixture: ComponentFixture<ReceiptListContainerComponent>;
+  let component: ReceiptListShellComponent;
+  let fixture: ComponentFixture<ReceiptListShellComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReceiptListContainerComponent ]
+      declarations: [ ReceiptListShellComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptListContainerComponent);
+    fixture = TestBed.createComponent(ReceiptListShellComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
