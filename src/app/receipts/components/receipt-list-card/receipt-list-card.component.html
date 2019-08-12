@@ -1,0 +1,30 @@
+<mat-card *ngIf="receipt" class="receipt-card">
+  <mat-card-actions fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="1px">
+    <button
+      fxFlex="0 1 calc(25% - 1px)"
+      mat-button
+      (click)="receiptSelected(receipt)"
+      color="primary"
+      class="read"
+    >
+      View
+    </button>
+    <button fxFlex="0 1 calc(25% - 1px)" mat-button class="verified-icon">
+      {{ receipt.payer | titlecase }}
+      <mat-icon>monetization_on</mat-icon>
+    </button>
+    <button fxFlex="0 1 calc(25% - 1px)" mat-button class="verified-icon">
+      {{ receipt.store | titlecase }}
+      <mat-icon>verified_user</mat-icon>
+    </button>
+    <button
+      fxFlex="0 1 calc(25% - 1px)"
+      mat-button
+      (click)="receiptDeleted(receipt)"
+      color="warn"
+      class="delete"
+    >
+      Delete
+    </button>
+  </mat-card-actions>
+</mat-card>

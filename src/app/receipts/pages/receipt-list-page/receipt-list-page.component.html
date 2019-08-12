@@ -1,0 +1,118 @@
+<div class="row">
+  <div class="col-lg-8 col-sm-10 mr-auto ml-auto">
+    <table
+      *ngIf="dataSource$ | async as dataSource"
+      [dataSource]="dataSource"
+      mat-table
+      multiTemplateDataRows
+    >
+      <ng-container matColumnDef="Select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            (change)="$event ? masterToggle(dataSource) : null"
+            [checked]="selection.hasValue() && isAllSelected(dataSource)"
+            [indeterminate]="selection.hasValue() && !isAllSelected(dataSource)"
+          ></mat-checkbox>
+        </th>
+        <!-- Master toggle-->
+
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox
+            (change)="$event ? rowToggle(row) : null"
+            (click)="$event.stopPropagation()"
+            [checked]="selection.isSelected(row)"
+          >
+          </mat-checkbox>
+        </td>
+        <!-- Child toggle -->
+
+        <td *matFooterCellDef mat-footer-cell>Total</td>
+      </ng-container>
+      <!-- Checkbox column -->
+
+      <ng-container
+        *ngFor="let column of displayedColumns.slice(1); let i = index"
+        matColumnDef="{{ column }}"
+      >
+        <ng-container *ngIf="i === 0">
+          <th *matHeaderCellDef mat-header-cell>Date</th>
+          <td *matCellDef="let element" class="date-column" mat-cell>
+            {{ element.date | date: "MM/dd" }}
+          </td>
+          <td *matFooterCellDef mat-footer-cell></td>
+        </ng-container>
+        <!-- Date column-->
+
+        <ng-container>
+          <th *matHeaderCellDef mat-header-cell>
+            {{ column | titlecase | slice: 0:6 }}
+          </th>
+          <td *matCellDef="let element" mat-cell>
+            {{ getPriceByName(element, column) | number: "2.2-2" }}
+          </td>
+          <td *matFooterCellDef mat-footer-cell>
+            {{ footer[i - 1] | number: "2.2-2" }}
+          </td>
+        </ng-container>
+        <!-- User columns -->
+
+      </ng-container>
+      <!-- Other columns -->
+
+      <ng-container matColumnDef="expandedDetail">
+        <td
+          *matCellDef="let element"
+          [attr.colspan]="displayedColumns.length"
+          mat-cell
+        >
+          <div [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'" class="element-detail">
+            <mat-card
+              class="receipt-card row">
+              <mat-card-actions>
+                <button mat-button class="verified-icon col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  {{ element.payer | titlecase }}
+                  <mat-icon>monetization_on</mat-icon>
+                </button>
+                <button mat-button class="verified-icon col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  {{ element.store | titlecase }}
+                  <mat-icon>verified_user</mat-icon>
+                </button>
+                <button
+                  mat-button
+                  color="primary"
+                  (click)="receiptSelected(element)"
+                  class="col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  View
+                </button>
+                <button
+                  mat-button
+                  (click)="receiptDeleted(element)"
+                  color="warn"
+                  class="delete col-lg-3 col-md-3 col-6 mr-auto ml-auto"
+                >
+                  Delete
+                </button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </td>
+      </ng-container>
+      <!-- Expanded detail -->
+
+      <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+      <tr
+        (click)="expandedElement = expandedElement === element ? null : element"
+        *matRowDef="let element; columns: displayedColumns"
+        [class.example-expanded-row]="expandedElement === element"
+        class="example-element-row"
+        mat-row
+      ></tr>
+      <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+      <tr
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="example-detail-row"
+        mat-row
+      ></tr>
+    </table>
+  </div>
+</div>

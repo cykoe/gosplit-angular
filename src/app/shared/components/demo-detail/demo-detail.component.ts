@@ -18,13 +18,13 @@ import { v4 as uuid } from 'uuid';
 import { BehaviorSubject } from 'rxjs';
 import { AppConfig } from '../../../configs/app.config';
 
-import { Item } from '../../../modules/receipts/shared/item.model';
-import { Receipt } from '../../../modules/receipts/shared/receipt.model';
+import { Item } from '../../../receipts/shared/item.model';
+import { Receipt } from '../../../receipts/shared/receipt.model';
 import { receipt } from '../../data/receipt.seed';
 import { CreateFormDialogComponent } from '../create-form-dialog/create-form-dialog.component';
 
 @Component({
-  selector: 'app-receipt-detail',
+  selector: 'app-receipt-detail-demo',
   templateUrl: './demo-detail.component.html',
   styleUrls: ['./demo-detail.component.scss'],
 })

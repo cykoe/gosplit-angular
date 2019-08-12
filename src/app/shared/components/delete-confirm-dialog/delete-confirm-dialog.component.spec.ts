@@ -1,6 +1,6 @@
 // import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 //
-// import { DeleteConfirmDialogComponent } from './delete-confirm-dialog.component';
+// import { DeleteConfirmDialogComponent } from './receiptDeleted-confirm-dialog.component';
 //
 // describe('DeleteConfirmDialogComponent', () => {
 //   let component: DeleteConfirmDialogComponent;

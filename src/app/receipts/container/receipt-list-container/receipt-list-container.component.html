@@ -1,0 +1,18 @@
+<div class="wrapper">
+  <div class="page-header" data-parallax="true">
+    <div class="filter"></div>
+    <div class="container">
+      <app-receipt-detail
+        *ngIf="selectedReceipt$ | async as selectedReceipt; else table"
+        [selectedReceipt]="selectedReceipt$ | async"
+      ></app-receipt-detail>
+      <ng-template #table>
+        <app-receipt-table
+          [receipts$]="receipts$"
+          (selected)="receiptSelected($event)"
+          (deleted)="deleteReceipt($event)"
+        ></app-receipt-table>
+      </ng-template>
+    </div>
+  </div>
+</div>

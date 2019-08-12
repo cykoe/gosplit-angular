@@ -1,0 +1,23 @@
+.container {
+  z-index: 2;
+  max-height: 74vh;
+  overflow: auto;
+}
+
+.container::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+.container {
+  overflow: -moz-scrollbars-none;
+}
+
+.container {
+  -ms-overflow-style: none;
+}
+
+.page-header {
+  max-height: none !important;
+  background-color: #2d3436;
+  background-image: linear-gradient(315deg, #2d3436 0%, #000000 74%);
+}

@@ -6,7 +6,7 @@
 // import { SharedModule } from '../../../../shared/shared.module';
 //
 // import { ReceiptDetailCardComponent } from '../../components/receipt-detail-card/receipt-detail-card.component';
-// import { DemoDetailComponent } from './demo-detail.component';
+// import { ReceiptDetailPageComponent } from './receipt-detail-page.component';
 //
 // import { ActivatedRoute, ActivatedRouteStub, asyncData } from '../../../../../testing';
 // import { testLists, testPeople, testReceipts } from '../../shared/data';
@@ -15,8 +15,8 @@
 // import { ReceiptService } from '../../shared/receipt.service';
 //
 // describe('DemoDetailComponent', () => {
-//   let component: DemoDetailComponent;
-//   let fixture: ComponentFixture<DemoDetailComponent>;
+//   let component: ReceiptDetailPageComponent;
+//   let fixture: ComponentFixture<ReceiptDetailPageComponent>;
 //   let receipt: Receipt;
 //
 //   const activatedRoute: ActivatedRouteStub = new ActivatedRouteStub();
@@ -26,7 +26,7 @@
 //   beforeEach(async(() => {
 //     TestBed.configureTestingModule({
 //       declarations: [
-//         DemoDetailComponent,
+//         ReceiptDetailPageComponent,
 //         ReceiptDetailCardComponent,
 //       ],
 //       imports: [
@@ -42,7 +42,7 @@
 //   }));
 //
 //   beforeEach(() => {
-//     fixture = TestBed.createComponent(DemoDetailComponent);
+//     fixture = TestBed.createComponent(ReceiptDetailPageComponent);
 //     component = fixture.componentInstance;
 //     const items = testLists.map((t) => new Item({...t, people: testPeople}).toJson());
 //     receipt = new Receipt({...testReceipts[0], list: items, people: testPeople});
