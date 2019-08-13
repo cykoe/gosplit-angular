@@ -16,7 +16,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { v4 as uuid } from 'uuid';
 import * as fromReceipt from '../../state';
 import * as receiptActions from '../../state/receipt.actions';
@@ -51,21 +51,34 @@ export class ItemListShellComponent implements OnInit {
   ) {
   }
 
-  newItem(item: IItem, receiptId: string): void {
+  ngOnInit(): void {
+    this.selectedReceipt$ = this.store.pipe(select(fromReceipt.getCurrentReceipt));
+  }
+
+  newItem($event: {item: IItem, receiptId: string}): void {
+    const {item, receiptId} = $event;
     this.store.dispatch(receiptActions.createItem({item, receiptId}));
   }
 
-  updateItem(item: IItem, receiptId: string): void {
+  updateItem($event: {item: IItem, receiptId: string}): void {
+    const {item, receiptId} = $event;
     this.store.dispatch(receiptActions.updateItem({item, receiptId}));
   }
 
-  deleteItem(item: IItem, receiptId: string): void {
+  deleteItem($event: {item: IItem, receiptId: string}): void {
+    const {item, receiptId} = $event;
     this.store.dispatch(receiptActions.deleteItem({item, receiptId}));
   }
 
-  toggleItem(person: IPerson, item: IItem, index: number, receiptId: string) {
+  toggleItem($event: {person: IPerson, item: IItem, index: number, receiptId: string}) {
+    const {person, item, index, receiptId} = $event;
     this.store.dispatch(receiptActions.toggleSelection({person, item, index, receiptId}));
     // this.receipt.toggleSelection($event.person, $event.item, $event.index);
+  }
+
+  toggleAllItems($event: {selection: boolean, item: IItem, index: number, receiptId: string}) {
+    const {selection, item, index, receiptId} = $event;
+    this.store.dispatch(receiptActions.toggleAllSelection({selection, item, index, receiptId}));
   }
 
   // autoSelect() {
@@ -91,7 +104,7 @@ export class ItemListShellComponent implements OnInit {
   // }
   //
   // /**
-  //  * save receipt to the backend
+  //  * updateItem receipt to the backend
   //  */
   // updateReceipt() {
   //   this.receiptService.update({} as IReceipt)

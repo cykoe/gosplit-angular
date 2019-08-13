@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -17,16 +18,18 @@ export class ReceiptListShellComponent implements OnInit {
 
   constructor(
     private store: Store<fromReceipt.State>,
+    private router: Router,
   ) { }
 
   ngOnInit() {
     this.store.dispatch(receiptActions.listReceipt({groupId: '5d4dcea461c38304963e2923'}));
     this.receipts$ = this.store.pipe(select(fromReceipt.getReceipts));
-    this.selectedReceipt$ = this.store.pipe(select(fromReceipt.getCurrentReceipt));
   }
 
   receiptSelected(receipt: IReceipt): void {
     this.store.dispatch(receiptActions.setCurrentReceipt({receipt}));
+    console.log('called');
+    this.router.navigate(['receipts/items']);
   }
 
   deleteReceipt(receipt: IReceipt): void {

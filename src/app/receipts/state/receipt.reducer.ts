@@ -28,14 +28,13 @@ export const receiptReducer = createReducer(
     return {...state, receipts: state.receipts.filter((receipt) => receipt.id !== action.id), currentReceiptId: null};
   }),
   on(ReceiptActions.deleteReceiptFail, (state, action) => ({...state, error: action})),
-  on(ReceiptActions.listReceiptSuccess, (state, {receipts}) => {
-    console.log(receipts);
-    return {...state, receipts};
-  }),
+  on(ReceiptActions.listReceiptSuccess, (state, {receipts}) => ({...state, receipts})),
   on(ReceiptActions.listReceiptFail, (state, action) => ({...state, error: action})),
   on(ReceiptActions.createItem, (state, {item, receiptId}) => {
     const updatedReceipts = state.receipts.map(
-      (receipt) => receiptId === receipt.id ? receipt.list.concat(item) : receipt);
+      (receipt) => receiptId === receipt.id
+        ? {...receipt, list: receipt.list.concat(item)}
+        : receipt);
     return {
       ...state,
       receipts: updatedReceipts,
@@ -44,7 +43,7 @@ export const receiptReducer = createReducer(
   on(ReceiptActions.updateItem, (state, {item, receiptId}) => {
     const updatedReceipts = state.receipts.map(
       (receipt) => receiptId === receipt.id
-        ? receipt.list.map((i) => i.id === item.id ? item : i)
+        ? {...receipt, list: receipt.list.map((i) => i.id === item.id ? item : i)}
         : receipt);
     return {
       ...state,
@@ -54,18 +53,112 @@ export const receiptReducer = createReducer(
   on(ReceiptActions.deleteItem, (state, {item, receiptId}) => {
     const updatedReceipts = state.receipts.map(
       (receipt) => receiptId === receipt.id
-        ? receipt.list.filter((i) => i.id !== item.id)
+        ? {...receipt, list: receipt.list.filter((i) => i.id !== item.id)}
         : receipt);
     return {
       ...state,
       receipts: updatedReceipts,
     };
   }),
-  on(ReceiptActions.toggleSelection, (state, payload) => {
-    console.log('toggle called!');
-    console.log({payload});
+  on(ReceiptActions.toggleSelection, (state, {person, item, index, receiptId}) => {
+    let updatedPeople;
+
+    if (!person.selection) {
+      const length = item.people.filter((p) => p.selection).length + 1;
+      const newItemSplit = item.price / length;
+      if (length !== 1) {
+        const oldItemSplit = item.price / (length - 1);
+        updatedPeople = item.people.map((p) => {
+            if (p.name !== person.name && p.selection) {
+              return {...p, price: p.price - (oldItemSplit - newItemSplit)};
+            } else if (p.name === person.name) {
+              return {...p, price: p.price + newItemSplit, selection: true};
+            } else {
+              return {...p};
+            }
+          },
+        );
+      }
+    } else {
+      const length = item.people.filter((p) => p.selection).length;
+      const oldItemSplit = item.price / length;
+      if (length !== 1) {
+        const newItemSplit = item.price / (length - 1);
+        updatedPeople = item.people.map((p) => {
+            if (p.name !== person.name && p.selection) {
+              return {...p, price: p.price + newItemSplit - oldItemSplit};
+            } else if (p.name === person.name) {
+              return {...p, price: p.price - oldItemSplit, selection: false};
+            } else {
+              return {...p};
+            }
+          },
+        );
+      }
+    }
+
+    let oldPeople;
+
+    const updatedReceipts = state.receipts.map(
+      (receipt) => receiptId === receipt.id
+        ? {
+          ...receipt,
+          list: receipt.list.map(
+            (it, ind) => {
+              if (ind === index) {
+                oldPeople = it.people;
+                return {...it, people: updatedPeople};
+              } else {
+                return {...it};
+              }
+            }),
+          people: receipt.people.map(
+            (p, i) => ({...p, price: p.price - oldPeople[i].price + updatedPeople[i].price}
+            )),
+        }
+        : {...receipt});
+
     return {
       ...state,
+      receipts: updatedReceipts,
+    };
+  }),
+  on(ReceiptActions.toggleAllSelection, (state, {selection, item, index, receiptId}) => {
+    const updatedPeople = item.people.map(
+      (person) => ({
+        ...person,
+        price: selection
+          ? 0
+          : item.price / item.people.length,
+        selection,
+      }),
+    );
+
+    let oldPeople;
+
+    const updatedReceipt = state.receipts.map(
+      (receipt) => receiptId === receipt.id
+        ? {
+          ...receipt,
+          list: receipt.list.map(
+            (it, ind) => {
+              if (ind === index) {
+                oldPeople = it.people;
+                return {...it, people: updatedPeople};
+              } else {
+                return {...it};
+              }
+            },
+          ),
+          people: receipt.people.map(
+            (p, i) => ({...p, price: p.price - oldPeople[i].price + updatedPeople[i].price}
+            )),
+        }
+        : {...receipt},
+    );
+    return {
+      ...state,
+      receipts: updatedReceipt,
     };
   }),
 );

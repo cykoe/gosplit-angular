@@ -13,10 +13,10 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
+import { httpInterceptorProviders } from './core/interceptors';
 import { ReceiptInMemDataService } from './receipt-in-mem-data.service';
+import { ReceiptModule } from './receipts/receipt.module';
 import { SharedModule } from './shared/shared.module';
-import { httpInterceptorProviders } from "./core/interceptors";
-import { ReceiptModule } from "./receipts/receipt.module";
 
 export function tokenGetter() {return localStorage.getItem('access_token'); }
 

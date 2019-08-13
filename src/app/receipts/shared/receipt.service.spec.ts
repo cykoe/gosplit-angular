@@ -194,7 +194,7 @@ describe('ReceiptService', () => {
   //   });
   // });
   //
-  // describe('#save', () => {
+  // describe('#updateItem', () => {
   //   let expectedReceipt: any;
   //
   //   beforeEach(() => {
@@ -203,7 +203,7 @@ describe('ReceiptService', () => {
   //   });
   //
   //   it('should return the updated receipt', () => {
-  //     receiptService.save(new Receipt({list: []})).subscribe(
+  //     receiptService.updateItem(new Receipt({list: []})).subscribe(
   //       (receipt: Receipt) => expect(receipt.toJson()).toEqual(expectedReceipt),
   //     );
   //

@@ -3,44 +3,14 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-11 col-md-10 mr-auto ml-auto">
-          <div *ngIf="selectedReceipt">
-            <div class="row">
-              <app-receipt-detail-card
-                *ngFor="let item of selectedReceipt.list; let i = index"
-                (updated)="updateItem($event)"
-                (deleted)="deleteItem($event)"
-                (toggled)="toggleItem($event)"
-                [item]="[item, i]"
-                [people]="selectedReceipt.people"
-                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
-              ></app-receipt-detail-card>
-            </div>
-          </div>
-          <!--end of main list page-->
-          <span class="add">
-            <button (click)="createReceipt()" mat-fab>
-              <mat-icon>add circle</mat-icon>
-            </button>
-          </span>
-          <!--end of add button-->
-          <span class="done">
-            <button (click)="updateReceipt()" mat-fab>
-              <mat-icon>check circle</mat-icon>
-            </button>
-          </span>
-          <!--end of update button-->
-<!--          <span class="auto-select">-->
-<!--            <button (click)="autoSelect()" mat-fab>-->
-<!--              <mat-icon>android</mat-icon>-->
-<!--            </button>-->
-<!--          </span>-->
-          <!--end of auto-select button-->
-          <span class="check-status">
-            <button (click)="checkSplit()" mat-fab>
-              <mat-icon>attach_money</mat-icon>
-            </button>
-          </span>
-          <!--end of auto-select button-->
+          <app-item-list
+            [selectedReceipt]="selectedReceipt$ | async"
+            (create)="newItem($event)"
+            (update)="updateItem($event)"
+            (delete)="deleteItem($event)"
+            (toggle)="toggleItem($event)"
+            (toggleAll)="toggleAllItems($event)"
+          ></app-item-list>
         </div>
       </div>
     </div>

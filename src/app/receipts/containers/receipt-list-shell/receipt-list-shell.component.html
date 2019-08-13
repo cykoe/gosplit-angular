@@ -2,17 +2,11 @@
   <div class="page-header" data-parallax="true">
     <div class="filter"></div>
     <div class="container">
-      <app-receipt-detail
-        *ngIf="selectedReceipt$ | async as selectedReceipt; else table"
-        [selectedReceipt]="selectedReceipt$ | async"
-      ></app-receipt-detail>
-      <ng-template #table>
-        <app-receipt-table
-          [receipts$]="receipts$"
-          (selected)="receiptSelected($event)"
-          (deleted)="deleteReceipt($event)"
-        ></app-receipt-table>
-      </ng-template>
+      <app-receipt-table
+        [receipts$]="receipts$"
+        (selected)="receiptSelected($event)"
+        (deleted)="deleteReceipt($event)"
+      ></app-receipt-table>
     </div>
   </div>
 </div>

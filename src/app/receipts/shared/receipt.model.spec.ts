@@ -64,7 +64,7 @@
 //     expect(receipt.list.find((i) => i.id === newItem.id)).toBeDefined();
 //   });
 //
-//   it('should save an item', () => {
+//   it('should updateItem an item', () => {
 //     const oldItem = receipt.list[getRand(receipt.list.length)];
 //     oldItem.price = 1;
 //     const expectedLength = receipt.list.length;

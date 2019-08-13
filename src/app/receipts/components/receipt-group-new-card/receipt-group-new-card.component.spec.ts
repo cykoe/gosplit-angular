@@ -57,7 +57,7 @@ describe('ReceiptGroupNewCardComponent', () => {
       savedGroup = group;
     });
 
-    const saveDe: DebugElement = fixture.debugElement.query(By.css('.save'));
+    const saveDe: DebugElement = fixture.debugElement.query(By.css('.updateItem'));
     saveDe.triggerEventHandler('click', null);
     expect(savedGroup).toEqual({name: 'name', people: ['1', '2']});
   });

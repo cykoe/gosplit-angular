@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Item, Person, Receipt } from '../shared/receipt.model';
-import { IError, IReceipt, IItem, IPerson } from './models';
+import { IError, IItem, IPerson, IReceipt } from './models';
 
 export const setCurrentReceipt = createAction('[Receipt] Set Current Receipt', props<{receipt: IReceipt}>());
 export const createReceipt = createAction('[Receipt] Create', props<IReceipt>());
@@ -21,5 +21,7 @@ export const listReceiptFail = createAction('[Receipt] List Receipt Fail', props
 export const createItem = createAction('[Item] Create Item', props<{item: IItem, receiptId: string}>());
 export const updateItem = createAction('[Item] Update Item', props<{item: IItem, receiptId: string}>());
 export const deleteItem = createAction('[Item] Delete Item', props<{item: IItem, receiptId: string}>());
-export const toggleSelection = createAction('[Selection] Toggle Selection', props<{person: IPerson, item: IItem, index: number, receiptId: string}>());
-
+export const toggleSelection = createAction('[Selection] Toggle Selection',
+  props<{person: IPerson, item: IItem, index: number, receiptId: string}>());
+export const toggleAllSelection = createAction('[Selection] Toggle All Selection',
+  props<{selection: boolean, item: IItem, index: number, receiptId: string}>());

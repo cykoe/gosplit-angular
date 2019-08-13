@@ -9,6 +9,7 @@ import { ReceiptGroupCardComponent } from './components/receipt-group-card/recei
 import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-card/receipt-group-new-card.component';
 import { ReceiptListCardComponent } from './components/receipt-list-card/receipt-list-card.component';
 import { ItemListShellComponent } from './containers/item-list-shell/item-list-shell.component';
+import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
 import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
 import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
@@ -16,7 +17,6 @@ import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/rece
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
 import { ReceiptEffects } from './state/receipt.effects';
 import * as fromReceipt from './state/receipt.reducer';
-import { ReceiptListShellComponent } from "./containers/receipt-list-shell/receipt-list-shell.component";
 
 @NgModule({
   declarations: [
@@ -29,7 +29,7 @@ import { ReceiptListShellComponent } from "./containers/receipt-list-shell/recei
     ReceiptGroupCardComponent,
     ReceiptGroupPageComponent,
     ReceiptGroupNewCardComponent,
-    ReceiptListShellComponent
+    ReceiptListShellComponent,
   ],
   imports: [
     SharedModule,

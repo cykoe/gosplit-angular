@@ -1,22 +1,23 @@
-<mat-card>
+<div *ngIf="selectedReceipt" class="row">
+<mat-card *ngFor="let item of selectedReceipt.list; let i = index" class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto receipt-detail-card">
   <mat-card-content>
     <div class="header">
       <button mat-button class="card-title">
-        {{ item[0].name | titlecase }}
+        {{ item.name | titlecase }}
       </button>
     </div>
     <div class="header">
       <button mat-button class="money-color">
-        {{ item[0].price | currency: "USD":"symbol":"1.2-2" }}
+        {{ item.price | currency: "USD":"symbol":"1.2-2" }}
       </button>
       <span class="spacer"></span>
-      <button mat-icon-button (click)="save()" *ngIf="!isEdit" class="edit">
+      <button mat-icon-button (click)="updateItem(item)" *ngIf="!isEdit" class="edit">
         <mat-icon color="primary">edit</mat-icon>
       </button>
-      <button mat-icon-button (click)="removeItem(item[0])" *ngIf="!isEdit" class="delete">
+      <button mat-icon-button (click)="deleteItem(item)" *ngIf="!isEdit" class="delete">
         <mat-icon color="warn">delete</mat-icon>
       </button>
-      <button mat-icon-button color="primary" (click)="save()" *ngIf="isEdit">
+      <button mat-icon-button color="primary" (click)="updateItem()" *ngIf="isEdit">
         <mat-icon>check</mat-icon>
       </button>
       <button mat-icon-button color="warn" (click)="cancel()" *ngIf="isEdit" class="cancel">
@@ -24,55 +25,81 @@
       </button>
       <button
         mat-icon-button
-        (click)="toggleAll()"
-        *ngIf="!isSelectAll && !isEdit"
+        (click)="toggleAllItems(item, i)"
         matTooltip="Select All"
         class="toggleAll"
       >
         <mat-icon color="primary">select_all</mat-icon>
       </button>
-      <button
-        mat-icon-button
-        (click)="toggleAll()"
-        *ngIf="isSelectAll && !isEdit"
-        matTooltip="Remove All"
-      >
-        <mat-icon color="warn">remove_circle</mat-icon>
-      </button>
+<!--      <button-->
+<!--        mat-icon-button-->
+<!--        (click)="toggleAllItems(item, i)"-->
+<!--        *ngIf="isSelectAll && !isEdit"-->
+<!--        matTooltip="Remove All"-->
+<!--      >-->
+<!--        <mat-icon color="warn">remove_circle</mat-icon>-->
+<!--      </button>-->
     </div>
-    <ng-container *ngIf="isEdit">
-      <form [formGroup]="form" autocomplete="off">
-        <mat-form-field>
-          <input matInput formControlName="name" placeholder="Name" />
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput formControlName="price" placeholder="Price" />
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput formControlName="image" placeholder="Image(url)" />
-        </mat-form-field>
-      </form>
-    </ng-container>
+<!--    <ng-container *ngIf="isEdit">-->
+<!--      <form [formGroup]="form" autocomplete="off">-->
+<!--        <mat-form-field>-->
+<!--          <input matInput formControlName="name" placeholder="Name"/>-->
+<!--        </mat-form-field>-->
+<!--        <mat-form-field>-->
+<!--          <input matInput formControlName="price" placeholder="Price"/>-->
+<!--        </mat-form-field>-->
+<!--        <mat-form-field>-->
+<!--          <input matInput formControlName="image" placeholder="Image(url)"/>-->
+<!--        </mat-form-field>-->
+<!--      </form>-->
+<!--    </ng-container>-->
     <ng-container *ngIf="!isEdit">
       <div style="display: flex; justify-content: center">
         <img
-          [src]="item[0].image"
+          [src]="item.image"
           style="height: 200px; max-width: 200px;display: inline-block; padding: 1.5rem 0"
-          [alt]="item[0].name"
+          [alt]="item.name"
         />
       </div>
       <div>
         <span
-          *ngFor="let person of people"
+          *ngFor="let person of item.people"
           class="col-{{ width }}">
           <mat-checkbox
-            (change)="toggle(person)"
-            [checked]="person.itemSelection[item[1]]"
+            (change)="toggleItem(person, item, i)"
+            [checked]="person.selection"
             class="toggle"
-            >{{ person.name }}
+          >{{ person.name }}
           </mat-checkbox>
         </span>
       </div>
     </ng-container>
   </mat-card-content>
 </mat-card>
+
+<span class="add">
+            <button (click)="createItem()" mat-fab>
+              <mat-icon>add circle</mat-icon>
+            </button>
+          </span>
+<!--end of add button-->
+<!--<span class="done">-->
+<!--            <button (click)="updateReceipt()" mat-fab>-->
+<!--              <mat-icon>check circle</mat-icon>-->
+<!--            </button>-->
+<!--          </span>-->
+<!--end of update button-->
+<!-- todo: remove update button -->
+<!--          <span class="auto-select">-->
+<!--            <button (click)="autoSelect()" mat-fab>-->
+<!--              <mat-icon>android</mat-icon>-->
+<!--            </button>-->
+<!--          </span>-->
+<!--end of auto-select button-->
+<span class="check-status">
+            <button (click)="checkSplit()" mat-fab>
+              <mat-icon>attach_money</mat-icon>
+            </button>
+          </span>
+<!--end of auto-select button-->
+</div>
