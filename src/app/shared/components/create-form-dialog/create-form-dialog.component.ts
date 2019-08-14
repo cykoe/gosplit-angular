@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IItem, IReceipt } from '../../../receipts/state/models';
+import { IItem, IReceipt } from '../../../constants/models';
 
 @Component({
   selector: 'app-create-form-dialog',
@@ -23,7 +23,7 @@ export class CreateFormDialogComponent implements OnInit {
     const formData = {};
     this.formControlNames = Object.keys(this.data).filter((d) => d !== 'id' && d !== 'people');
     this.formControlNames.forEach((prop) => {
-        formData[prop] = [this.data[prop], Validators.required];
+      formData[prop] = [this.data[prop], Validators.required];
     });
     this.form = this.fb.group(formData);
   }

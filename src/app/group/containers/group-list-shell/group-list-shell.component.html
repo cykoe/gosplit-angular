@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <div class="page-header" data-parallax="true">
+    <div class="filter"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-11 col-md-10 mr-auto ml-auto">
+          <div *ngIf="groups" style="margin-top: 5%">
+            <div class="row" *ngIf="groups$ | async as groups">
+              <app-group-card
+                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
+                *ngFor="let group of groups"
+                [group]="groups"
+                (update)="updateGroup($event)"
+                (delete)="deleteGroup($event)"
+              ></app-group-card>
+              <app-group-new-card
+                class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
+                (create)="createGroup($event)"
+              ></app-group-new-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

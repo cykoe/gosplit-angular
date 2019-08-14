@@ -11,6 +11,7 @@ export class DeleteConfirmDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<DeleteConfirmDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) {
+  }
 
 }

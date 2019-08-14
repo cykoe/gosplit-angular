@@ -1,5 +1,5 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { IReceipt } from './receipts/state/models';
+import { IGroup, IReceipt } from './constants/models';
 
 export class ReceiptInMemDataService implements InMemoryDbService {
   createDb() {
@@ -922,6 +922,18 @@ export class ReceiptInMemDataService implements InMemoryDbService {
         payer: 'Feiyang ',
       },
     ];
-    return {receipts};
+    const groups: IGroup[] = [
+      {
+        id: 'adhuigduiw',
+        name: 'group Alpha',
+        people: ['charlie', 'emily', 'george'],
+      },
+      {
+        id: 'asdo1j23',
+        name: 'group beta',
+        people: ['tim', 'sam', 'will'],
+      },
+    ];
+    return {receipts, groups};
   }
 }

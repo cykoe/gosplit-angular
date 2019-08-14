@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { User } from '../../receipts/shared/user';
+import { User } from '../../receipt/shared/user';
 import { AuthService, Availability, Credential } from './auth.service';
 
 describe('AuthService', () => {

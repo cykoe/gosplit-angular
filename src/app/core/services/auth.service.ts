@@ -8,7 +8,7 @@ import { catchError, tap } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 
-import { User } from '../../receipts/shared/user';
+import { User } from '../../receipt/shared/user';
 
 export interface Credential {
   username: string;

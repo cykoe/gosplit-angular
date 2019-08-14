@@ -10,16 +10,16 @@ describe('TableDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableDialogComponent ],
+      declarations: [TableDialogComponent],
       imports: [MaterialModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
           useValue: [{name: 'name', split: '0'}],
-         },
+        },
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

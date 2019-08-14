@@ -11,10 +11,12 @@ import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime } from 'rxjs/operators';
 import { AuthService } from '../../../core/services';
 import { ProgressBarService } from '../../../core/services/progress-bar.service';
+
 enum Direction {
   Up = 'Up',
   Down = 'Down',
 }
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -23,11 +25,11 @@ enum Direction {
     trigger('toggle', [
       state(
         'hidden',
-        style({ opacity: 0, transform: 'translateY(-100%)' }),
+        style({opacity: 0, transform: 'translateY(-100%)'}),
       ),
       state(
         'visible',
-        style({ opacity: 1, transform: 'translateY(0)' }),
+        style({opacity: 1, transform: 'translateY(0)'}),
       ),
       transition('* => *', animate('200ms ease-in')),
     ]),

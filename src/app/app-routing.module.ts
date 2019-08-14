@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: 'demo/receipt', component: DemoDetailComponent, pathMatch: 'full' },
   {
     path: 'receipts',
-    loadChildren: () => import('./receipts/receipt.module').then(m => m.ReceiptModule),
+    loadChildren: () => import('./receipt/receipt.module').then(m => m.ReceiptModule),
   },
   { path: '**', redirectTo: '' },
 ];
