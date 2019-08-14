@@ -8,10 +8,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Receipt } from './shared/receipt.model';
 
-import { environment } from '../../environments/environment';
 import { AppConfig } from '../configs/app.config';
 import { Group } from './shared/group.model';
-import { IReceipt } from './state/models';
+import { IGroup, IReceipt } from './state/models';
 
 export interface UploadUrlFile {
   uploadURL: string;
@@ -118,7 +117,7 @@ export class ReceiptService {
   // }
 
   listGroups(): Observable<Group[]> {
-    return this.http.get<Group[]>(`${this.url}/group/list`)
+    return this.http.get<IGroup[]>(`${this.url}/group/list`)
       .pipe(
         map((data) => {
           return data.map((group: any) => new Group(group));

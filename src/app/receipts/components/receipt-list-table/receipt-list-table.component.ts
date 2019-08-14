@@ -7,13 +7,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { Receipt } from '../../shared/receipt.model';
 import { IReceipt } from '../../state/models';
 
 @Component({
   selector: 'app-receipt-table',
-  templateUrl: './receipt-list-page.component.html',
-  styleUrls: ['./receipt-list-page.component.scss'],
+  templateUrl: './receipt-list-table.component.html',
+  styleUrls: ['./receipt-list-table.component.scss'],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),
@@ -22,7 +21,7 @@ import { IReceipt } from '../../state/models';
     ]),
   ],
 })
-export class ReceiptListPageComponent implements OnInit {
+export class ReceiptListTableComponent implements OnInit {
   @Input() receipts$: Observable<IReceipt[]>;
   @Output() deleted = new EventEmitter<IReceipt>();
   @Output() selected = new EventEmitter<IReceipt>();
@@ -52,11 +51,6 @@ export class ReceiptListPageComponent implements OnInit {
     );
   }
 
-  /**
-   * Get the price for each person on current row
-   * @param receipt
-   * @param name
-   */
   private getPriceByName(receipt: IReceipt, name: string): number {
     const foundPerson = receipt.people.find((p) => p.name === name);
     return foundPerson ? foundPerson.price : 0;
@@ -79,19 +73,11 @@ export class ReceiptListPageComponent implements OnInit {
         }
       });
   }
-  /**
-   * Whether the number of selected elements matches the total number of rows
-   * @param dataSource
-   */
+
   private isAllSelected(dataSource: MatTableDataSource<IReceipt>): boolean {
     return this.selection.selected.length === dataSource.data.length;
   }
 
-  /**
-   * Select all rows if they are not all selected; otherwise clear selection
-   * and then trigger calculateTotal
-   * @param dataSource
-   */
   private masterToggle(dataSource: MatTableDataSource<IReceipt>): void {
     this.isAllSelected(dataSource)
       ? this.selection.clear()
@@ -99,20 +85,11 @@ export class ReceiptListPageComponent implements OnInit {
     this.footer = this.calculateTotal(this.selection.selected, this.displayedColumns.length);
   }
 
-  /**
-   * Toggle a row selection, and then trigger calculateTotal
-   * @param row
-   */
   private rowToggle(row: IReceipt): void {
     this.selection.toggle(row);
     this.footer = this.calculateTotal(this.selection.selected, this.displayedColumns.length);
   }
 
-  /**
-   * Calculate total price for each column (person)
-   * @param selectedArr
-   * @param displayedColLen
-   */
   private calculateTotal(selectedArr: any[], displayedColLen: number): number[] {
     return selectedArr
       .map((t) => {

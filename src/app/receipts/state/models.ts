@@ -31,3 +31,9 @@ export interface IReceipt {
 export interface IError {
   message: string;
 }
+
+export interface IGroup {
+  id: string;
+  name: string;
+  people: string[];
+}

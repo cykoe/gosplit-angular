@@ -55,13 +55,13 @@
 //   });
 //
 //   it('should create an item', () => {
-//     const newItem = {id: 'id', name: 'name', price: 0, image: 'image'};
+//     const createItem = {id: 'id', name: 'name', price: 0, image: 'image'};
 //     const expectedLength = receipt.list.length + 1;
 //
-//     receipt.createItem(newItem);
+//     receipt.createItem(createItem);
 //
 //     expect(receipt.list.length).toBeDefined(expectedLength);
-//     expect(receipt.list.find((i) => i.id === newItem.id)).toBeDefined();
+//     expect(receipt.list.find((i) => i.id === createItem.id)).toBeDefined();
 //   });
 //
 //   it('should updateItem an item', () => {

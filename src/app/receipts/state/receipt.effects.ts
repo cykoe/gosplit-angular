@@ -42,10 +42,26 @@ export class ReceiptEffects {
           return ReceiptActions.listReceiptSuccess({receipts});
         }),
         catchError((err) => {
-          console.error({err});
-          return of(ReceiptActions.listReceiptFail({message: 'failed'}));
+          const error = {message: 'failed'};
+          return of(ReceiptActions.listReceiptFail({error}));
         }),
       ),
     ),
   ));
+
+  listGroups$ = createEffect(() => this.actions$.pipe(
+    ofType(ReceiptActions.listGroup.type),
+    mergeMap((action) => this.receiptService.listGroups()
+      .pipe(
+        map((groups) => {
+          return ReceiptActions.listGroupSuccess({groups});
+        }),
+        catchError((err) => {
+          const error = {message: 'failed'};
+          return of(ReceiptActions.listReceiptFail({error}));
+        }),
+      ),
+    ),
+  ));
+
 }

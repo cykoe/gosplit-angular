@@ -5,7 +5,7 @@
         <div class="col-sm-11 col-md-10 mr-auto ml-auto">
           <app-item-list
             [selectedReceipt]="selectedReceipt$ | async"
-            (create)="newItem($event)"
+            (create)="createItem($event)"
             (update)="updateItem($event)"
             (delete)="deleteItem($event)"
             (toggle)="toggleItem($event)"

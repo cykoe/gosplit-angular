@@ -1,35 +1,39 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { IError, IReceipt } from './models';
+import { IError, IGroup, IReceipt } from './models';
 import * as ReceiptActions from './receipt.actions';
 
 export interface ReceiptState {
   currentReceiptId: string | null;
+  currentGroupId: string | null;
   receipts: IReceipt[];
+  groups: IGroup[];
   error: IError;
 }
 
 export const initState: ReceiptState = {
   currentReceiptId: null,
+  currentGroupId: null,
   receipts: [],
+  groups: [],
   error: {message: ''},
 };
 
 export const receiptReducer = createReducer(
   initState,
   on(ReceiptActions.setCurrentReceipt, (state, {receipt}) => ({...state, currentReceiptId: receipt.id})),
-  on(ReceiptActions.createReceiptSuccess, (state, action) => ({...state, receipts: [...state.receipts, action]})),
-  on(ReceiptActions.createReceiptFail, (state, action) => ({...state, error: action})),
-  on(ReceiptActions.updateReceiptSuccess, (state, action) => {
-    const updatedReceipts = state.receipts.map((receipt) => receipt.id === action.id ? action : receipt);
-    return {...state, receipts: updatedReceipts, currentReceiptId: action.id};
+  on(ReceiptActions.createReceiptSuccess, (state, {receipt}) => ({...state, receipts: [...state.receipts, receipt]})),
+  on(ReceiptActions.createReceiptFail, (state, {error}) => ({...state, error})),
+  on(ReceiptActions.updateReceiptSuccess, (state, {receipt}) => {
+    const updatedReceipts = state.receipts.map((r) => r.id === receipt.id ? receipt : r);
+    return {...state, receipts: updatedReceipts, currentReceiptId: receipt.id};
   }),
-  on(ReceiptActions.updateReceiptFail, (state, action) => ({...state, error: action})),
+  on(ReceiptActions.updateReceiptFail, (state, {error}) => ({...state, error})),
   on(ReceiptActions.deleteReceiptSuccess, (state, action) => {
     return {...state, receipts: state.receipts.filter((receipt) => receipt.id !== action.id), currentReceiptId: null};
   }),
-  on(ReceiptActions.deleteReceiptFail, (state, action) => ({...state, error: action})),
+  on(ReceiptActions.deleteReceiptFail, (state, {error}) => ({...state, error})),
   on(ReceiptActions.listReceiptSuccess, (state, {receipts}) => ({...state, receipts})),
-  on(ReceiptActions.listReceiptFail, (state, action) => ({...state, error: action})),
+  on(ReceiptActions.listReceiptFail, (state, {error}) => ({...state, error})),
   on(ReceiptActions.createItem, (state, {item, receiptId}) => {
     const updatedReceipts = state.receipts.map(
       (receipt) => receiptId === receipt.id
@@ -66,35 +70,31 @@ export const receiptReducer = createReducer(
     if (!person.selection) {
       const length = item.people.filter((p) => p.selection).length + 1;
       const newItemSplit = item.price / length;
-      if (length !== 1) {
-        const oldItemSplit = item.price / (length - 1);
-        updatedPeople = item.people.map((p) => {
-            if (p.name !== person.name && p.selection) {
-              return {...p, price: p.price - (oldItemSplit - newItemSplit)};
-            } else if (p.name === person.name) {
-              return {...p, price: p.price + newItemSplit, selection: true};
-            } else {
-              return {...p};
-            }
-          },
-        );
-      }
+      const oldItemSplit = item.price / (length - 1);
+      updatedPeople = item.people.map((p) => {
+          if (p.name !== person.name && p.selection) {
+            return {...p, price: p.price - (oldItemSplit - newItemSplit)};
+          } else if (p.name === person.name) {
+            return {...p, price: p.price + newItemSplit, selection: true};
+          } else {
+            return {...p};
+          }
+        },
+      );
     } else {
       const length = item.people.filter((p) => p.selection).length;
       const oldItemSplit = item.price / length;
-      if (length !== 1) {
-        const newItemSplit = item.price / (length - 1);
-        updatedPeople = item.people.map((p) => {
-            if (p.name !== person.name && p.selection) {
-              return {...p, price: p.price + newItemSplit - oldItemSplit};
-            } else if (p.name === person.name) {
-              return {...p, price: p.price - oldItemSplit, selection: false};
-            } else {
-              return {...p};
-            }
-          },
-        );
-      }
+      const newItemSplit = item.price / (length - 1);
+      updatedPeople = item.people.map((p) => {
+          if (p.name !== person.name && p.selection) {
+            return {...p, price: p.price + newItemSplit - oldItemSplit};
+          } else if (p.name === person.name) {
+            return {...p, price: p.price - oldItemSplit, selection: false};
+          } else {
+            return {...p};
+          }
+        },
+      );
     }
 
     let oldPeople;
@@ -113,8 +113,11 @@ export const receiptReducer = createReducer(
               }
             }),
           people: receipt.people.map(
-            (p, i) => ({...p, price: p.price - oldPeople[i].price + updatedPeople[i].price}
-            )),
+            (p, i) => {
+              console.log({p, i, updatedPeople, oldPeople});
+              console.log(updatedPeople[i], oldPeople[i]);
+              return {...p, price: p.price - oldPeople[i].price + updatedPeople[i].price};
+            }),
         }
         : {...receipt});
 
@@ -123,13 +126,14 @@ export const receiptReducer = createReducer(
       receipts: updatedReceipts,
     };
   }),
-  on(ReceiptActions.toggleAllSelection, (state, {selection, item, index, receiptId}) => {
+  on(ReceiptActions.toggleAllSelection, (state, {item, index, receiptId}) => {
+    const selection = !item.people.every((p) => p.selection);
     const updatedPeople = item.people.map(
       (person) => ({
         ...person,
         price: selection
-          ? 0
-          : item.price / item.people.length,
+          ? item.price / item.people.length
+          : 0,
         selection,
       }),
     );
@@ -161,6 +165,43 @@ export const receiptReducer = createReducer(
       receipts: updatedReceipt,
     };
   }),
+  on(ReceiptActions.createGroupSuccess, (state, {group}) => {
+    return {
+      ...state,
+      groups: [...state.groups, group],
+    };
+  }),
+  on(ReceiptActions.createGroupFail, (state, {error}) => {
+    return {
+      ...state,
+      error,
+    };
+  }),
+  on(ReceiptActions.deleteGroupSuccess, (state, {id}) => {
+    return {
+      ...state,
+    };
+  }),
+  on(ReceiptActions.deleteGroupFail, (state, {error}) => {
+    return {
+      ...state,
+      error,
+    };
+  }),
+  on(ReceiptActions.listGroupSuccess, (state, {groups}) => {
+    return {
+      ...state,
+      groups,
+    };
+  }),
+  on(ReceiptActions.listGroupFail, (state, {error}) => {
+    return {
+      ...state,
+      error,
+    };
+  }),
+  on(ReceiptActions.setCurrentGroup, (state, {group}) => ({...state, currentGroupId: group.id})),
+
 );
 
 export function reducer(state: ReceiptState | undefined, action: Action) {

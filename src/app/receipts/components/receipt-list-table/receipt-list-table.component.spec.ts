@@ -3,16 +3,16 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MaterialModule } from '../../../shared/modules/material.module';
-import { ReceiptListPageComponent } from './receipt-list-page.component';
+import { ReceiptListTableComponent } from './receipt-list-table.component';
 
 describe('LibraryComponent', () => {
-  let component: ReceiptListPageComponent;
-  let fixture: ComponentFixture<ReceiptListPageComponent>;
+  let component: ReceiptListTableComponent;
+  let fixture: ComponentFixture<ReceiptListTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        ReceiptListPageComponent,
+        ReceiptListTableComponent,
       ],
       imports: [
         HttpClientTestingModule,
@@ -25,7 +25,7 @@ describe('LibraryComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptListPageComponent);
+    fixture = TestBed.createComponent(ReceiptListTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

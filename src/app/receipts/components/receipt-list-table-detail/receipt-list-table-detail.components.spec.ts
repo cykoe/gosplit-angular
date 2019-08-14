@@ -10,7 +10,7 @@ import { MaterialModule } from '../../../shared/modules/material.module';
 import { testReceipts } from '../../shared/data';
 import { Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../receipt.service';
-import { ReceiptListCardComponent } from './receipt-list-card.component';
+import { ReceiptListTableDetailComponent } from './receipt-list-table-detail.component';
 
 class MatDialogMock {
   open() {
@@ -21,8 +21,8 @@ class MatDialogMock {
 }
 
 describe('ReceiptListCardComponent', () => {
-  let component: ReceiptListCardComponent;
-  let fixture: ComponentFixture<ReceiptListCardComponent>;
+  let component: ReceiptListTableDetailComponent;
+  let fixture: ComponentFixture<ReceiptListTableDetailComponent>;
   let receiptServiceSpy: jasmine.SpyObj<ReceiptService>;
   let expectedReceipt: Receipt;
 
@@ -30,7 +30,7 @@ describe('ReceiptListCardComponent', () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const rsSpy = jasmine.createSpyObj('ReceiptService', ['delete']);
     TestBed.configureTestingModule({
-      declarations: [ReceiptListCardComponent],
+      declarations: [ReceiptListTableDetailComponent],
       providers: [
         {provide: Router, useValue: routerSpy},
         {provide: MatDialog, useClass: MatDialogMock},
@@ -42,7 +42,7 @@ describe('ReceiptListCardComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptListCardComponent);
+    fixture = TestBed.createComponent(ReceiptListTableDetailComponent);
     component = fixture.componentInstance;
     receiptServiceSpy = TestBed.get(ReceiptService);
     expectedReceipt = new Receipt(testReceipts[0]);

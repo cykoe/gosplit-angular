@@ -8,10 +8,10 @@ import { IReceipt } from '../../state/models';
 
 @Component({
   selector: 'app-receipt-list-card',
-  templateUrl: './receipt-list-card.component.html',
-  styleUrls: ['./receipt-list-card.component.scss'],
+  templateUrl: './receipt-list-table-detail.component.html',
+  styleUrls: ['./receipt-list-table-detail.component.scss'],
 })
-export class ReceiptListCardComponent implements OnInit {
+export class ReceiptListTableDetailComponent implements OnInit {
   @Input() receipt: IReceipt;
   @Output() deleted = new EventEmitter<IReceipt>();
   @Output() selected = new EventEmitter<IReceipt>();
@@ -24,7 +24,6 @@ export class ReceiptListCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.receipt);
   }
 
   receiptSelected(receipt: IReceipt): void {

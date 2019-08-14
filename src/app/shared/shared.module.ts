@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './modules/material.module';
 
-import { ReceiptDetailCardComponent } from '../receipts/components/receipt-detail-card/receipt-detail-card.component';
+import { ReceiptItemListComponent } from '../receipts/components/receipt-item-list/receipt-item-list.component';
 import { CreateFormDialogComponent } from './components/create-form-dialog/create-form-dialog.component';
 import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { DemoDetailComponent } from './components/demo-detail/demo-detail.component';
@@ -26,7 +26,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     NavbarComponent,
     DemoComponent,
     DemoDetailComponent,
-    ReceiptDetailCardComponent,
+    ReceiptItemListComponent,
     DisableControlDirective,
     TableDialogComponent,
   ],
@@ -51,7 +51,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     NavbarComponent,
     DemoComponent,
     DemoDetailComponent,
-    ReceiptDetailCardComponent,
+    ReceiptItemListComponent,
     DisableControlDirective,
   ],
   entryComponents: [

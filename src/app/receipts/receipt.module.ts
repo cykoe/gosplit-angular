@@ -7,11 +7,11 @@ import { ReceiptRoutingModule } from './receipt-routing.module';
 import { EffectsModule } from '@ngrx/effects';
 import { ReceiptGroupCardComponent } from './components/receipt-group-card/receipt-group-card.component';
 import { ReceiptGroupNewCardComponent } from './components/receipt-group-new-card/receipt-group-new-card.component';
-import { ReceiptListCardComponent } from './components/receipt-list-card/receipt-list-card.component';
-import { ItemListShellComponent } from './containers/item-list-shell/item-list-shell.component';
+import { ReceiptListTableDetailComponent } from './components/receipt-list-table-detail/receipt-list-table-detail.component';
+import { ReceiptItemListShellComponent } from './containers/receipt-item-list-shell/receipt-item-list-shell.component';
 import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
 import { ReceiptGroupPageComponent } from './pages/receipt-group-page/receipt-group-page.component';
-import { ReceiptListPageComponent } from './pages/receipt-list-page/receipt-list-page.component';
+import { ReceiptListTableComponent } from './components/receipt-list-table/receipt-list-table.component';
 import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
 import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
 import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
@@ -21,9 +21,9 @@ import * as fromReceipt from './state/receipt.reducer';
 @NgModule({
   declarations: [
     ReceiptUploadPageComponent,
-    ReceiptListPageComponent,
-    ItemListShellComponent,
-    ReceiptListCardComponent,
+    ReceiptListTableComponent,
+    ReceiptItemListShellComponent,
+    ReceiptListTableDetailComponent,
     ReceiptRegisterPageComponent,
     ReceiptLoginPageComponent,
     ReceiptGroupCardComponent,
@@ -39,7 +39,7 @@ import * as fromReceipt from './state/receipt.reducer';
     EffectsModule.forFeature([ReceiptEffects]),
   ],
   exports: [
-    ReceiptListPageComponent,
+    ReceiptListTableComponent,
   ],
 })
 export class ReceiptModule {}

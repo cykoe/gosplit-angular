@@ -14,7 +14,6 @@ import * as receiptActions from '../../state/receipt.actions';
 })
 export class ReceiptListShellComponent implements OnInit {
   receipts$: Observable<IReceipt[]>;
-  selectedReceipt$: Observable<IReceipt>;
 
   constructor(
     private store: Store<fromReceipt.State>,
@@ -28,7 +27,6 @@ export class ReceiptListShellComponent implements OnInit {
 
   receiptSelected(receipt: IReceipt): void {
     this.store.dispatch(receiptActions.setCurrentReceipt({receipt}));
-    console.log('called');
     this.router.navigate(['receipts/items']);
   }
 
