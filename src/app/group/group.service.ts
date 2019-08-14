@@ -3,14 +3,15 @@ import { Injectable } from '@angular/core';
 
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Group } from '../receipt/shared/group.model';
+import { environment } from '../../environments/environment';
 import { IGroup } from '../constants/models';
+import { Group } from '../receipt/shared/group.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GroupService {
-  readonly url: string = `api/groups`;
+  readonly url: string = `${environment.api_url}/group`;
 
   constructor(
     private http: HttpClient,

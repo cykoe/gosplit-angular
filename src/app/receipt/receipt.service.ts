@@ -7,9 +7,10 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Receipt } from './shared/receipt.model';
 
+import { environment } from '../../environments/environment';
 import { Config } from '../constants/config';
-import { Group } from './shared/group.model';
 import { IGroup, IReceipt } from '../constants/models';
+import { Group } from './shared/group.model';
 
 export interface UploadUrlFile {
   uploadURL: string;
@@ -28,7 +29,7 @@ export interface EmptyReceipt {
   providedIn: 'root',
 })
 export class ReceiptService {
-  readonly url: string = `api/receipts`;
+  readonly url: string = `${environment.api_url}/receipt`;
 
   constructor(
     private http: HttpClient,
@@ -69,9 +70,9 @@ export class ReceiptService {
   }
 
   list(groupId: string): Observable<IReceipt[]> {
-    return this.http.get<IReceipt[]>(`${this.url}`)
+    return this.http.post<IReceipt[]>(`${this.url}/list`, {groupId})
       .pipe(
-        // tap((data) => console.log({data})),
+        tap((data) => console.log({data})),
         catchError(this.handleError<IReceipt[]>('list receipts')),
       );
   }
@@ -123,33 +124,6 @@ export class ReceiptService {
         catchError(this.handleError<Group[]>('list groups')),
       );
   }
-
-  createGroup(group: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/group`, group);
-  }
-
-  updateGroup(group: any): Observable<any> {
-    return this.http.put<any>(`${this.url}/group`, group);
-  }
-
-  deleteGroup(group: any): Observable<any> {
-    return this.http.delete<any>(`${this.url}/group/${group.id}`);
-  }
-
-  // handleError<T>(result?: T) {
-  //   return (err: any): Observable<T> => {
-  //     this.sb.open(err.message, 'OK', {duration: AppConfig.sbDuration});
-  //     return of(result);
-  //   };
-  // }
-
-  // getReceipt(id: st  ring) {
-  //   this.socket.emit('getRec', id);
-  // }
-
-  // editReceipt(receipt: Receipt) {
-  //   this.socket.emit('editRec', receipt);
-  // }
 
   getUploadUrl(): Observable<UploadUrlFile> {
     return this.http.get<UploadUrlFile>(Config.uploadUrl);

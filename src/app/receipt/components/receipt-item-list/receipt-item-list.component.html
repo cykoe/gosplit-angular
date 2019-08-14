@@ -48,7 +48,6 @@
         <span *ngFor="let person of item.people" class="col-{{ width }}">
           <mat-checkbox
             (change)="toggleItem(person, item, i)"
-            [checked]="person.selection"
             class="toggle"
           >{{ person.name }}
           </mat-checkbox>

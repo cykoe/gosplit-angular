@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IError, IGroup, IItem, IPerson, IReceipt } from '../../constants/models';
 
 export const setCurrentReceipt = createAction('[Receipt] Set Current Receipt', props<{ receipt: IReceipt }>());
-export const createReceipt = createAction('[Receipt] Create', props<IReceipt>());
+export const createReceipt = createAction('[Receipt] Create', props<{receipt: IReceipt}>());
 export const createReceiptSuccess = createAction('[Receipt] Create Receipt Success', props<{ receipt: IReceipt }>());
 export const createReceiptFail = createAction('[Receipt] Create Receipt Fail', props<{ error: IError }>());
 export const readReceipt = createAction('[Receipt] Read Receipt', props<{ receipt: IReceipt }>());

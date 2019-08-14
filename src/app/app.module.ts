@@ -31,7 +31,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
     SharedModule,
     HttpClientModule,
     UserModule,
-    HttpClientInMemoryWebApiModule.forRoot(ReceiptInMemDataService, {dataEncapsulation: false}),
+    // HttpClientInMemoryWebApiModule.forRoot(ReceiptInMemDataService, {dataEncapsulation: false}),
     AppRoutingModule,
     CoreModule,
     JwtModule.forRoot({
@@ -54,7 +54,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 3000}},
-    // httpInterceptorProviders,
+    httpInterceptorProviders,
   ],
 })
 export class AppModule {
