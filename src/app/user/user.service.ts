@@ -6,9 +6,9 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '../../environments/environment';
 
-import { User } from '../../receipt/shared/user';
+import { User } from '../receipt/shared/user';
 
 export interface Credential {
   username: string;
@@ -22,7 +22,7 @@ export interface Availability {
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export class UserService {
   readonly url: string = environment.api_url;
   readonly registerUrl: string = 'user/register';
   readonly loginUrl: string = 'user/login';

@@ -4,12 +4,12 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-11 col-md-10 mr-auto ml-auto">
-          <div *ngIf="groups" style="margin-top: 5%">
+          <div style="margin-top: 5%">
             <div class="row" *ngIf="groups$ | async as groups">
               <app-group-card
                 class="col-lg-4 col-md-6 col-sm-12 ml-auto mr-auto md-3 receipt-detail-card"
                 *ngFor="let group of groups"
-                [group]="groups"
+                [group]="group"
                 (update)="updateGroup($event)"
                 (delete)="deleteGroup($event)"
               ></app-group-card>

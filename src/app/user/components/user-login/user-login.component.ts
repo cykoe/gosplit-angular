@@ -2,20 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../core/services';
+import { UserService } from '../../user.service';
 
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '../../shared/user';
-import * as ReceiptActions from '../../state/receipt.actions';
-import { ReceiptState } from '../../state/receipt.reducer';
+import { User } from '../../../receipt/shared/user';
+import * as ReceiptActions from '../../../receipt/state/receipt.actions';
+import { ReceiptState } from '../../../receipt/state/receipt.reducer';
 
 @Component({
-  selector: 'app-receipt-login',
-  templateUrl: './receipt-login-page.component.html',
-  styleUrls: ['./receipt-login-page.component.scss'],
+  selector: 'app-user-login',
+  templateUrl: './user-login.component.html',
+  styleUrls: ['./user-login.component.scss'],
 })
-export class ReceiptLoginPageComponent implements OnInit {
+export class UserLoginComponent implements OnInit {
   form: FormGroup;
   focus;
   focus1;
@@ -23,7 +23,7 @@ export class ReceiptLoginPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
+    private auth: UserService,
     private router: Router,
   ) {
   }

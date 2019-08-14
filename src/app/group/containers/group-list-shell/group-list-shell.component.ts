@@ -5,10 +5,9 @@ import { Observable } from 'rxjs';
 import * as fromGroup from '../../state';
 import * as groupActions from '../../state/group.actions';
 
-import { ReceiptService } from '../../../receipt/receipt.service';
-import { Group } from '../../../receipt/shared/group.model';
-import * as fromReceipt from '../../../receipt/state';
 import { IGroup } from '../../../constants/models';
+import { ReceiptService } from '../../../receipt/receipt.service';
+import * as fromReceipt from '../../../receipt/state';
 
 @Component({
   selector: 'app-group-list-shell',
@@ -16,7 +15,6 @@ import { IGroup } from '../../../constants/models';
   styleUrls: ['./group-list-shell.component.scss'],
 })
 export class GroupListShellComponent implements OnInit {
-  groups: Group[];
   groups$: Observable<IGroup[]>;
 
   constructor(
@@ -28,9 +26,6 @@ export class GroupListShellComponent implements OnInit {
   ngOnInit() {
     this.store.dispatch(groupActions.listGroup());
     this.groups$ = this.store.pipe(select(fromGroup.getGroups));
-    this.receiptService.listGroups().subscribe((groups: Group[]) => {
-      this.groups = groups;
-    });
   }
 
   createGroup(group: IGroup) {

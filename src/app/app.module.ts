@@ -17,6 +17,7 @@ import { httpInterceptorProviders } from './core/interceptors';
 import { ReceiptInMemDataService } from './receipt-in-mem-data.service';
 import { ReceiptModule } from './receipt/receipt.module';
 import { SharedModule } from './shared/shared.module';
+import { UserModule } from './user/user.module';
 
 export function tokenGetter() {return localStorage.getItem('access_token'); }
 
@@ -29,6 +30,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
+    UserModule,
     HttpClientInMemoryWebApiModule.forRoot(ReceiptInMemDataService, {dataEncapsulation: false}),
     AppRoutingModule,
     CoreModule,

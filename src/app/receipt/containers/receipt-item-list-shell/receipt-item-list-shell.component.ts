@@ -43,4 +43,7 @@ export class ReceiptItemListShellComponent implements OnInit {
   toggleAllItems($event: { item: IItem; index: number; receiptId: string }) {
     this.store.dispatch(receiptActions.toggleAllSelection($event));
   }
+  updateReceipt(): void {
+    this.store.dispatch(receiptActions.updateReceipt());
+  }
 }

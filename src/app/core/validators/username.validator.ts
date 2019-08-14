@@ -4,12 +4,12 @@ import { AbstractControl, AsyncValidator, ValidationErrors } from '@angular/form
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { AuthService, Availability } from '../services';
+import { UserService, Availability } from '../services';
 
 @Injectable({providedIn: 'root'})
 export class UsernameValidator implements AsyncValidator {
   constructor(
-    private auth: AuthService,
+    private auth: UserService,
   ) {
   }
 

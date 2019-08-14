@@ -8,9 +8,7 @@ import { ReceiptListTableDetailComponent } from './components/receipt-list-table
 import { ReceiptListTableComponent } from './components/receipt-list-table/receipt-list-table.component';
 import { ReceiptItemListShellComponent } from './containers/receipt-item-list-shell/receipt-item-list-shell.component';
 import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
-import { ReceiptLoginPageComponent } from './pages/receipt-login-page/receipt-login-page.component';
-import { ReceiptRegisterPageComponent } from './pages/receipt-register-page/receipt-register-page.component';
-import { ReceiptUploadPageComponent } from './pages/receipt-upload-page/receipt-upload-page.component';
+import { ReceiptUploadPageComponent } from './components/receipt-upload-page/receipt-upload-page.component';
 import { ReceiptRoutingModule } from './receipt-routing.module';
 import { ReceiptEffects } from './state/receipt.effects';
 import * as fromReceipt from './state/receipt.reducer';
@@ -21,8 +19,6 @@ import * as fromReceipt from './state/receipt.reducer';
     ReceiptListTableComponent,
     ReceiptItemListShellComponent,
     ReceiptListTableDetailComponent,
-    ReceiptRegisterPageComponent,
-    ReceiptLoginPageComponent,
     ReceiptListShellComponent,
   ],
   imports: [

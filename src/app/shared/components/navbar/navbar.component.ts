@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, HostBinding, OnInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime } from 'rxjs/operators';
-import { AuthService } from '../../../core/services';
+import { UserService } from '../../../core/services';
 import { ProgressBarService } from '../../../core/services/progress-bar.service';
 
 enum Direction {
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   constructor(
     public location: Location,
     private element: ElementRef,
-    private auth: AuthService,
+    private auth: UserService,
     private progressBarService: ProgressBarService,
   ) {
     this.sidebarVisible = false;

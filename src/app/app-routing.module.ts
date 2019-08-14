@@ -13,6 +13,10 @@ const routes: Routes = [
     path: 'receipts',
     loadChildren: () => import('./receipt/receipt.module').then(m => m.ReceiptModule),
   },
+  {
+    path: 'groups',
+    loadChildren: () => import('./group/group.module').then(m => m.GroupModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 

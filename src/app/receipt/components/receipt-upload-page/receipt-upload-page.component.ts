@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { AuthService } from '../../../core/services';
+import { UserService } from '../../../core/services';
 import { Group } from '../../shared/group.model';
 import { Person, Receipt } from '../../shared/receipt.model';
 import { ReceiptService } from '../../receipt.service';
@@ -23,7 +23,7 @@ export class ReceiptUploadPageComponent implements OnInit {
     private fb: FormBuilder,
     private receiptService: ReceiptService,
     private router: Router,
-    private auth: AuthService,
+    private auth: UserService,
   ) {
   }
 

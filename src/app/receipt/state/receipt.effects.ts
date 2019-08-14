@@ -24,8 +24,8 @@ export class ReceiptEffects {
   //   ),
   // ));
 
-  // readReceipts$ = createEffect(() => this.actions$.pipe(
-  //   ofType(ReceiptActions.readReceipt),
+  // updateReceipts$ = createEffect(() => this.actions$.pipe(
+  //   ofType(ReceiptActions.updateReceipt),
   //   mergeMap(() => this.receiptService.receiptSelected('adsa')
   //     .pipe(
   //       map((receipt) => ReceiptActions.readReceiptSuccess(receipt)),

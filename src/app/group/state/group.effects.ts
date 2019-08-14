@@ -17,9 +17,7 @@ export class GroupEffects {
     ofType(GroupActions.listGroup.type),
     mergeMap(() => this.groupService.listGroups()
       .pipe(
-        map((groups) => {
-          return GroupActions.listGroupSuccess({groups});
-        }),
+        map((groups) => GroupActions.listGroupSuccess({groups})),
         catchError((err) => {
           const error = {message: err.message};
           return of(GroupActions.listGroupFail({error}));

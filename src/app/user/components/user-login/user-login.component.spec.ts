@@ -4,26 +4,26 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../core/services';
-import { ReceiptLoginPageComponent } from './receipt-login-page.component';
+import { UserService } from '../../../core/services';
+import { UserLoginComponent } from './user-login.component';
 
 import { asyncData, RouterLinkDirectiveStub } from '../../../../testing';
-import { User } from '../../shared/user';
+import { User } from '../../../receipt/shared/user';
 
 describe('ReceiptLoginPageComponent', () => {
-  let component: ReceiptLoginPageComponent;
-  let fixture: ComponentFixture<ReceiptLoginPageComponent>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
+  let component: UserLoginComponent;
+  let fixture: ComponentFixture<UserLoginComponent>;
+  let authServiceSpy: jasmine.SpyObj<UserService>;
 
   beforeEach(async(() => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     const authSpy = jasmine.createSpyObj('AuthService', ['login']);
     TestBed.configureTestingModule({
-      declarations: [ReceiptLoginPageComponent, RouterLinkDirectiveStub],
+      declarations: [UserLoginComponent, RouterLinkDirectiveStub],
       providers: [
         FormBuilder,
         {provide: Router, useValue: routerSpy},
-        {provide: AuthService, useValue: authSpy},
+        {provide: UserService, useValue: authSpy},
       ],
       imports: [ReactiveFormsModule],
     })
@@ -31,9 +31,9 @@ describe('ReceiptLoginPageComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReceiptLoginPageComponent);
+    fixture = TestBed.createComponent(UserLoginComponent);
     component = fixture.componentInstance;
-    authServiceSpy = TestBed.get(AuthService);
+    authServiceSpy = TestBed.get(UserService);
     fixture.detectChanges();
   });
 

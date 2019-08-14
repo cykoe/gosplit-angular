@@ -30,6 +30,6 @@ export class GroupService {
   }
 
   listGroups(): Observable<IGroup[]> {
-    return this.http.get<IGroup[]>(`${this.url}/list`);
+    return this.http.get<IGroup[]>(`${this.url}`);
   }
 }

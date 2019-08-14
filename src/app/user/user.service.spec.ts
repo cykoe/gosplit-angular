@@ -5,13 +5,13 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-import { User } from '../../receipt/shared/user';
-import { AuthService, Availability, Credential } from './auth.service';
+import { User } from '../receipt/shared/user';
+import { UserService, Availability, Credential } from './user.service';
 
 describe('AuthService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let authService: AuthService;
+  let authService: UserService;
   let jwtHelperServiceSpy: jasmine.SpyObj<JwtHelperService>;
   let matSnackBarSpy: jasmine.SpyObj<MatSnackBar>;
 
@@ -23,7 +23,7 @@ describe('AuthService', () => {
         HttpClientTestingModule,
       ],
       providers: [
-        AuthService,
+        UserService,
         {provide: JwtHelperService, useValue: helperSpy},
         {provide: MatSnackBar, useValue: sbSpy},
       ],
@@ -32,7 +32,7 @@ describe('AuthService', () => {
     // Inject the http service and test controller for each test
     httpClient = TestBed.get(HttpClient);
     httpTestingController = TestBed.get(HttpTestingController);
-    authService = TestBed.get(AuthService);
+    authService = TestBed.get(UserService);
     jwtHelperServiceSpy = TestBed.get(JwtHelperService);
     matSnackBarSpy = TestBed.get(MatSnackBar);
   });

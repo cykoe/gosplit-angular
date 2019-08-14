@@ -2,23 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../core/services';
+import { UserService } from '../../user.service';
 
-import { User } from '../../shared/user';
+import { User } from '../../../receipt/shared/user';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './receipt-register-page.component.html',
-  styleUrls: ['./receipt-register-page.component.scss'],
+  selector: 'app-user-register',
+  templateUrl: './user-register.component.html',
+  styleUrls: ['./user-register.component.scss'],
 })
-export class ReceiptRegisterPageComponent implements OnInit {
+export class UserRegisterComponent implements OnInit {
   form: FormGroup;
   focus;
   focus1;
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService,
+    private auth: UserService,
     private router: Router,
   ) {
   }

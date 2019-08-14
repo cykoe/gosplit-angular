@@ -110,8 +110,6 @@ export const receiptReducer = createReducer(
             }),
           people: receipt.people.map(
             (p, i) => {
-              console.log({p, i, updatedPeople, oldPeople});
-              console.log(updatedPeople[i], oldPeople[i]);
               return {...p, price: p.price - oldPeople[i].price + updatedPeople[i].price};
             }),
         }
