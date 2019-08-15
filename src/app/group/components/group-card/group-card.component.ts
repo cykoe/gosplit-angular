@@ -16,7 +16,6 @@ export class GroupCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.group);
   }
 
   updateGroup() {

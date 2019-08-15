@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IError, IGroup, IItem, IPerson, IReceipt } from '../../constants/models';
+import { IError, IGroup, IItem, IPerson, IReceipt, UploadUrlInfo } from '../../constants/models';
 
 export const setCurrentReceipt = createAction('[Receipt] Set Current Receipt', props<{ receipt: IReceipt }>());
 export const createReceipt = createAction('[Receipt] Create', props<{receipt: IReceipt}>());
@@ -24,3 +24,11 @@ export const toggleSelection = createAction('[Selection] Toggle Selection',
   props<{ person: IPerson, item: IItem, index: number, receiptId: string }>());
 export const toggleAllSelection = createAction('[Selection] Toggle All Selection',
   props<{ item: IItem, index: number, receiptId: string }>());
+export const uploadReceipt = createAction('[Receipt] Upload Receipt', props<{receipt: Partial<IReceipt>}>());
+export const uploadReceiptSuccess = createAction('[Receipt] Upload Receipt Success', props());
+export const uploadReceiptFail = createAction('[Receipt] Upload Receipt Fail', props<{ error: IError }>());
+
+// TODO: remove to a shared module
+export const listGroup = createAction('[Group] List Group');
+export const listGroupSuccess = createAction('[Group] List Group Success', props<{ groups: IGroup[] }>());
+export const listGroupFail = createAction('[Group] List Group Fail', props<{ error: IError }>());

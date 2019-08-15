@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpBackend  } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,13 +9,7 @@ import { Receipt } from './shared/receipt.model';
 
 import { environment } from '../../environments/environment';
 import { Config } from '../constants/config';
-import { IGroup, IReceipt } from '../constants/models';
-import { Group } from './shared/group.model';
-
-export interface UploadUrlFile {
-  uploadURL: string;
-  photoFilename: string;
-}
+import { IReceipt, UploadUrlInfo } from '../constants/models';
 
 export interface EmptyReceipt {
   id: string;
@@ -31,13 +25,17 @@ export interface EmptyReceipt {
 export class ReceiptService {
   readonly url: string = `${environment.api_url}/receipt`;
 
+  private httpClientSkip: HttpClient;
+
   constructor(
     private http: HttpClient,
     private sb: MatSnackBar,
+    private handler: HttpBackend,
   ) {
+    this.httpClientSkip = new HttpClient(handler);
   }
 
-  create(item: IReceipt): Observable<IReceipt> {
+  create(item: Partial<IReceipt>): Observable<IReceipt> {
     return this.http.post<IReceipt>(`${this.url}/create`, item)
       .pipe(
         // tap((data) => console.log({data})),
@@ -115,26 +113,16 @@ export class ReceiptService {
   //     );
   // }
 
-  listGroups(): Observable<Group[]> {
-    return this.http.get<IGroup[]>(`${this.url}/group/list`)
-      .pipe(
-        map((data) => {
-          return data.map((group: any) => new Group(group));
-        }),
-        catchError(this.handleError<Group[]>('list groups')),
-      );
-  }
-
-  getUploadUrl(): Observable<UploadUrlFile> {
-    return this.http.get<UploadUrlFile>(Config.uploadUrl);
+  getUploadUrl(): Observable<UploadUrlInfo> {
+    return this.http.get<UploadUrlInfo>(`${this.url}/getUploadUrl`);
   }
 
   createReceiptNew(receipt: EmptyReceipt): Observable<Receipt> {
     return this.http.post<any>(Config.createReceiptUrl, receipt);
   }
 
-  uploadReceipt(url: string, file): Observable<any> {
-    return this.http.put<any>(url, file);
+  upload(url: string, file): Observable<any> {
+    return this.httpClientSkip.put<any>(url, file);
   }
 
   private handleError<T>(operation = 'operation') {

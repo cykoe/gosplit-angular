@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../core/guards';
 import { UserLoginComponent } from '../user/components/user-login/user-login.component';
 import { UserRegisterComponent } from '../user/components/user-register/user-register.component';
-import { ReceiptUploadPageComponent } from './containers/receipt-upload-page/receipt-upload-page.component';
+import { ReceiptUploadShellComponent } from './containers/receipt-upload-shell/receipt-upload-shell.component';
 import { ReceiptItemListShellComponent } from './containers/receipt-item-list-shell/receipt-item-list-shell.component';
 import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
 import { ReceiptDetailResolverService } from './shared/receipt-detail-resolver.service';
@@ -16,15 +16,6 @@ const routes: Routes = [
     component: ReceiptListShellComponent,
     pathMatch: 'full',
   },
-  // {
-  //   path: 'groups/:groupId',
-  //   component: ReceiptListPageComponent,
-  //   pathMatch: 'full',
-  //   canActivate: [AuthGuard],
-  //   resolve: {
-  //     receipts: ReceiptListResolverService,
-  //   },
-  // },
   {
     // path: 'groups/:groupId/:mm/:dd/:yy/:store/:id',
     path: 'items',
@@ -37,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'upload',
-    component: ReceiptUploadPageComponent,
+    component: ReceiptUploadShellComponent,
     pathMatch: 'full',
   },
 ];

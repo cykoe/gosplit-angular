@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import * as fromReceipt from './index';
 
+import { GroupService } from '../../group/group.service';
 import { ReceiptService } from '../receipt.service';
 import * as ReceiptActions from './receipt.actions';
 
@@ -13,6 +14,8 @@ export class ReceiptEffects {
   constructor(
     private actions$: Actions,
     private receiptService: ReceiptService,
+    // TODO: remove to a shared module
+    private groupService: GroupService,
     private store: Store<fromReceipt.State>,
   ) {
   }
@@ -66,4 +69,29 @@ export class ReceiptEffects {
     ),
   ));
 
+  getUploadUrl$ = createEffect(() => this.actions$.pipe(
+    ofType(ReceiptActions.uploadReceipt),
+    switchMap((action) => forkJoin(of(action), this.receiptService.getUploadUrl())),
+    switchMap(([{receipt}, uploadUrlInfo]) => {
+      const formModel = new FormData();
+      formModel.append('receipt', receipt.image);
+      return forkJoin(
+        this.receiptService.create({...receipt, name: uploadUrlInfo.name}),
+        this.receiptService.upload(uploadUrlInfo.uploadURL, formModel));
+    }),
+    map(([receipt, upload]) => ReceiptActions.uploadReceiptSuccess(receipt)),
+    catchError((error) => of(ReceiptActions.uploadReceiptFail({error}))),
+    ),
+  );
+
+  // TODO: remove to a shared module
+  listGroups$ = createEffect(() => this.actions$.pipe(
+    ofType(ReceiptActions.listGroup.type),
+    mergeMap(() => this.groupService.listGroups()
+      .pipe(
+        map((groups) => ReceiptActions.listGroupSuccess({groups})),
+        catchError((error) => of(ReceiptActions.listGroupFail({error}))),
+      ),
+    ),
+  ));
 }

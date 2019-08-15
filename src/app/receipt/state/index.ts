@@ -18,6 +18,11 @@ export const getCurrentReceiptId = createSelector(
   (state) => state.currentReceiptId,
 );
 
+export const getGroups = createSelector(
+  getReceiptFeatureState,
+  (state) => state.groups,
+);
+
 export const getError = createSelector(
   getReceiptFeatureState,
   (state) => state.error,

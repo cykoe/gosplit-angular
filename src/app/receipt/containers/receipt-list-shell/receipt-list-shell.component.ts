@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import * as fromReceipt from '../../state';
 import { IReceipt } from '../../../constants/models';
+import * as fromReceipt from '../../state';
 import * as receiptActions from '../../state/receipt.actions';
 
 @Component({

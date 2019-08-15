@@ -5,12 +5,16 @@ import * as ReceiptActions from './receipt.actions';
 export interface ReceiptState {
   currentReceiptId: string | null;
   receipts: IReceipt[];
+  // TODO: remove for shared module
+  groups: any[];
   error: IError;
 }
 
 export const initState: ReceiptState = {
   currentReceiptId: null,
   receipts: [],
+  // TODO: remove for shared module
+  groups: [],
   error: {message: ''},
 };
 
@@ -157,6 +161,31 @@ export const receiptReducer = createReducer(
     return {
       ...state,
       receipts: updatedReceipt,
+    };
+  }),
+  on(ReceiptActions.uploadReceiptSuccess, (state, action) => {
+    console.log({action});
+    return {
+      ...state,
+    };
+  }),
+  on(ReceiptActions.uploadReceiptFail, (state, action) => {
+    console.log({action});
+    return {
+      ...state,
+    };
+  }),
+  // TODO: remove to a shared module
+  on(ReceiptActions.listGroupSuccess, (state, {groups}) => {
+    return {
+      ...state,
+      groups,
+    };
+  }),
+  on(ReceiptActions.listGroupFail, (state, {error}) => {
+    return {
+      ...state,
+      error,
     };
   }),
 );

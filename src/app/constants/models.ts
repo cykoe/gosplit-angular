@@ -26,6 +26,8 @@ export interface IReceipt {
   payer: string;
   list: IItem[];
   people: IPerson[];
+  image?: any;
+  name?: string;
 }
 
 export interface IError {
@@ -36,4 +38,9 @@ export interface IGroup {
   id: string;
   name: string;
   people: string[];
+}
+
+export interface UploadUrlInfo {
+  uploadURL: string;
+  name: string;
 }

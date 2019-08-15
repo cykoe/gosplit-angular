@@ -27,10 +27,10 @@ export class GroupService {
   }
 
   deleteGroup(group: IGroup): Observable<IGroup> {
-    return this.http.post<IGroup>(`${this.url}/delete/`, group);
+    return this.http.post<IGroup>(`${this.url}/delete`, group);
   }
 
   listGroups(): Observable<IGroup[]> {
-    return this.http.get<IGroup[]>(`${this.url}`);
+    return this.http.post<IGroup[]>(`${this.url}/list`, {});
   }
 }

@@ -37,7 +37,7 @@
         </li>
         <li class="nav-item" *ngIf="isLoggedin()">
           <a
-            [routerLink]="['/receipts/groups']"
+            [routerLink]="['/receipts']"
             class="nav-link"
             matTooltip="view all receipts"
           >
@@ -67,7 +67,7 @@
         </li>
         <li class="nav-item" *ngIf="!isLoggedin()">
           <a
-            [routerLink]="['/receipts/register']"
+            [routerLink]="['/register']"
             class="nav-link"
             matTooltip="sign up"
           >
