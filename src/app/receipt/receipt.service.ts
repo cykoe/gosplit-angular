@@ -122,6 +122,7 @@ export class ReceiptService {
   }
 
   upload(url: string, file): Observable<any> {
+    console.log(file);
     return this.httpClientSkip.put<any>(url, file);
   }
 

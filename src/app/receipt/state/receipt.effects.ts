@@ -77,7 +77,7 @@ export class ReceiptEffects {
       formModel.append('receipt', receipt.image);
       return forkJoin(
         this.receiptService.create({...receipt, name: uploadUrlInfo.name}),
-        this.receiptService.upload(uploadUrlInfo.uploadURL, formModel));
+        this.receiptService.upload(uploadUrlInfo.uploadURL, receipt.image));
     }),
     map(([receipt, upload]) => ReceiptActions.uploadReceiptSuccess(receipt)),
     catchError((error) => of(ReceiptActions.uploadReceiptFail({error}))),

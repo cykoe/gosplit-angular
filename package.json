@@ -33,6 +33,7 @@
     "@auth0/angular-jwt": "^2.1.0",
     "@ng-bootstrap/ng-bootstrap": "^4.2.1",
     "@ngrx/effects": "^8.2.0",
+    "@ngrx/entity": "^8.2.0",
     "@ngrx/store": "^8.2.0",
     "@ngrx/store-devtools": "^8.2.0",
     "ajv": "^6.10.2",

@@ -37,7 +37,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
     JwtModule.forRoot({
       config: {
         tokenGetter,
-        whitelistedDomains: ['example.com'],
+        whitelistedDomains: ['example.com', 'https://g76cvz4t6c.execute-api.us-east-2.amazonaws.com'],
         blacklistedRoutes: ['example.com/examplebadroute/'],
       },
     }),
