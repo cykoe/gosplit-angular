@@ -24,29 +24,19 @@
     </div>
     <div class="navbar-collapse" id="navbarToggler">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="isLoggedin()">
           <a
-            class="nav-link"
             [routerLink]="['/groups']"
-            matTooltip="View all groups"
+            class="nav-link"
+            matTooltip="view all groups"
           >
-            <i class="fab fa-github"></i>
+            <i class="fas fa-receipt"></i>
             <p class="d-lg-none">Groups</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedin()">
           <a
-            [routerLink]="['/receipts']"
-            class="nav-link"
-            matTooltip="view all receipts"
-          >
-            <i class="fas fa-receipt"></i>
-            <p class="d-lg-none">Receipts</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/receipts/upload']"
+            [routerLink]="['/invoices/upload']"
             class="nav-link"
             matTooltip="upload a receipt"
           >

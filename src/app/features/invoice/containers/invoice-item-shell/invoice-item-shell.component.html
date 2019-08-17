@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-sm-11 col-md-10 mr-auto ml-auto">
+    <app-item-list
+      [items]="items$ | async"
+      [people]="people$ | async"
+      (create)="createItem($event)"
+      (update)="updateItem($event)"
+      (delete)="deleteItem($event)"
+      (toggle)="toggleItem($event)"
+    ></app-item-list>
+    <app-item-info
+      [selectedReceipt]="selectedReceipt$ | async"
+      [people]="people$ | async"
+      (update)="updateReceipt($event)"
+    ></app-item-info>
+  </div>
+</div>

@@ -3,19 +3,32 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from './modules/material.module';
 
-import { ReceiptItemListComponent } from '../receipt/components/receipt-item-list/receipt-item-list.component';
 import { CreateFormDialogComponent } from './components/create-form-dialog/create-form-dialog.component';
 import { DeleteConfirmDialogComponent } from './components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { DemoDetailComponent } from './components/demo-detail/demo-detail.component';
-import { DemoComponent } from './components/demo/demo.component';
+// TODO: fix demo app
+// import { DemoDetailComponent } from './components/demo-detail/demo-detail.component';
+// import { DemoComponent } from './components/demo/demo.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TableDialogComponent } from './components/table-dialog/table-dialog.component';
+import { UserLoginComponent } from './components/user-login/user-login.component';
+import { UserRegisterComponent } from './components/user-register/user-register.component';
 import { DisableControlDirective } from './directives/disable-control.directive';
+
+const routes: Routes = [
+  {
+    path: 'register',
+    component: UserRegisterComponent,
+  },
+  {
+    path: 'login',
+    component: UserLoginComponent,
+  },
+];
 
 @NgModule({
   declarations: [
@@ -24,9 +37,11 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     CreateFormDialogComponent,
     HomeComponent,
     NavbarComponent,
-    DemoComponent,
-    DemoDetailComponent,
-    ReceiptItemListComponent,
+    UserLoginComponent,
+    UserRegisterComponent,
+    // DemoComponent,
+    // DemoDetailComponent,
+    // ReceiptItemListComponent,
     DisableControlDirective,
     TableDialogComponent,
   ],
@@ -38,6 +53,7 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     FormsModule,
     RouterModule,
     FlexLayoutModule,
+    RouterModule.forChild(routes),
   ],
   exports: [
     CommonModule,
@@ -49,9 +65,9 @@ import { DisableControlDirective } from './directives/disable-control.directive'
     FlexLayoutModule,
     FooterComponent,
     NavbarComponent,
-    DemoComponent,
-    DemoDetailComponent,
-    ReceiptItemListComponent,
+    // DemoComponent,
+    // DemoDetailComponent,
+    // ReceiptItemListComponent,
     DisableControlDirective,
   ],
   entryComponents: [

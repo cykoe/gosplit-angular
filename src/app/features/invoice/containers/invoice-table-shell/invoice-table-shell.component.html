@@ -1,0 +1,8 @@
+<div class="container">
+  <app-receipt-table-list
+    [receipts$]="receipts$"
+    [people]="people$ | async"
+    (selected)="receiptSelected($event)"
+    (deleted)="deleteReceipt($event)"
+  ></app-receipt-table-list>
+</div>

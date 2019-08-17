@@ -3,21 +3,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { UserService } from '../../user/user.service';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
   constructor(
-    private auth: UserService,
+    private authService: AuthService,
   ) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.auth.token) {
+    if (this.authService.token) {
       return next.handle(req.clone({
         setHeaders: {
-          'Authorization': `Bearer ${this.auth.token}`,
+          'Authorization': `Bearer ${this.authService.token}`,
           'x-api-key': environment.api_key,
         },
       }));
