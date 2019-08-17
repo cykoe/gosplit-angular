@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { IReceipt } from '../../../constants/models';
+import { IPerson, IReceipt } from '../../../constants/models';
 
 @Component({
   selector: 'app-receipt-table',
@@ -23,6 +23,7 @@ import { IReceipt } from '../../../constants/models';
 })
 export class ReceiptListTableComponent implements OnInit {
   @Input() receipts$: Observable<IReceipt[]>;
+  @Input() people: IPerson[];
   @Output() deleted = new EventEmitter<IReceipt>();
   @Output() selected = new EventEmitter<IReceipt>();
 
@@ -40,13 +41,12 @@ export class ReceiptListTableComponent implements OnInit {
   ngOnInit() {
     this.dataSource$ = this.receipts$.pipe(
       map((receipts: IReceipt[]) => {
-        const sortedReceipts = receipts.sort((val1, val2) => +new Date(val2.date) - +new Date(val1.date));
         const defaultCols = ['Select', 'Date'];
         receipts.length
-          ? this.displayedColumns = [...defaultCols, ...sortedReceipts[0].people.map((p) => p.name)]
+          ? this.displayedColumns = [...defaultCols, ...this.people.map((p) => p.name)]
           : this.displayedColumns = [...defaultCols];
         this.footer = new Array(this.displayedColumns.length - defaultCols.length).fill(0);
-        return new MatTableDataSource<IReceipt>(sortedReceipts);
+        return new MatTableDataSource<IReceipt>(receipts);
       }),
     );
   }

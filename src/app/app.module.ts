@@ -12,8 +12,10 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { reducers } from './app.state';
 import { CoreModule } from './core/core.module';
 import { httpInterceptorProviders } from './core/interceptors';
+import { GroupModule } from './group/group.module';
 import { ReceiptInMemDataService } from './receipt-in-mem-data.service';
 import { ReceiptModule } from './receipt/receipt.module';
 import { SharedModule } from './shared/shared.module';
@@ -30,6 +32,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
     BrowserAnimationsModule,
     SharedModule,
     HttpClientModule,
+    GroupModule,
     UserModule,
     // HttpClientInMemoryWebApiModule.forRoot(ReceiptInMemDataService, {dataEncapsulation: false}),
     AppRoutingModule,
@@ -41,7 +44,7 @@ export function tokenGetter() {return localStorage.getItem('access_token'); }
         blacklistedRoutes: ['example.com/examplebadroute/'],
       },
     }),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

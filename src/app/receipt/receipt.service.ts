@@ -38,7 +38,6 @@ export class ReceiptService {
   create(item: Partial<IReceipt>): Observable<IReceipt> {
     return this.http.post<IReceipt>(`${this.url}/create`, item)
       .pipe(
-        // tap((data) => console.log({data})),
         catchError(this.handleError<IReceipt>('create receipt')),
       );
   }
@@ -54,7 +53,6 @@ export class ReceiptService {
   update(item: IReceipt): Observable<IReceipt> {
     return this.http.post<IReceipt>(`${this.url}/update`, item)
       .pipe(
-        // tap((data) => console.log({data})),
         catchError(this.handleError<IReceipt>('updateItem receipt')),
       );
   }
@@ -62,7 +60,6 @@ export class ReceiptService {
   delete(item: IReceipt): Observable<{}> {
     return this.http.post(`${this.url}/delete`, item)
       .pipe(
-        tap((data) => console.log({data})),
         catchError(this.handleError<{}>('receiptDeleted receipt')),
       );
   }
@@ -70,7 +67,6 @@ export class ReceiptService {
   list(groupId: string): Observable<IReceipt[]> {
     return this.http.post<IReceipt[]>(`${this.url}/list`, {groupId})
       .pipe(
-        tap((data) => console.log({data})),
         catchError(this.handleError<IReceipt[]>('list receipts')),
       );
   }
@@ -122,7 +118,6 @@ export class ReceiptService {
   }
 
   upload(url: string, file): Observable<any> {
-    console.log(file);
     return this.httpClientSkip.put<any>(url, file);
   }
 

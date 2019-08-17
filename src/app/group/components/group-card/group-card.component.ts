@@ -9,6 +9,7 @@ import { IGroup } from '../../../constants/models';
 })
 export class GroupCardComponent implements OnInit {
   @Input() group: IGroup;
+  @Output() selectCard = new EventEmitter<IGroup>();
   @Output() update = new EventEmitter<IGroup>();
   @Output() delete = new EventEmitter<IGroup>();
 
@@ -24,5 +25,9 @@ export class GroupCardComponent implements OnInit {
 
   deleteGroup() {
     this.delete.emit(this.group);
+  }
+
+  selectGroup() {
+    this.selectCard.emit(this.group);
   }
 }

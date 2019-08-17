@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
+import { IReceipt } from '../../../constants/models';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { ReceiptService } from '../../receipt.service';
-import { IReceipt } from '../../../constants/models';
 
 @Component({
   selector: 'app-receipt-list-card',

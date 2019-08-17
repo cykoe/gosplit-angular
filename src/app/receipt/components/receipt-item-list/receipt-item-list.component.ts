@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { v4 as uuid } from 'uuid';
 
 import { Config } from '../../../constants/config';
+import { IItem, IPerson, IReceipt } from '../../../constants/models';
 import { CreateFormDialogComponent } from '../../../shared/components/create-form-dialog/create-form-dialog.component';
 import { DeleteConfirmDialogComponent } from '../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
 import { TableDialogComponent } from '../../../shared/components/table-dialog/table-dialog.component';
-import { IItem, IPerson, IReceipt } from '../../../constants/models';
 
 @Component({
   selector: 'app-item-list',
@@ -14,7 +14,8 @@ import { IItem, IPerson, IReceipt } from '../../../constants/models';
   styleUrls: ['./receipt-item-list.component.scss'],
 })
 export class ReceiptItemListComponent implements OnInit {
-  @Input() selectedReceipt: IReceipt;
+  @Input() items: IItem[];
+  @Input() people: IPerson[];
 
   @Output() create = new EventEmitter<any>();
   @Output() update = new EventEmitter<any>();
@@ -23,7 +24,15 @@ export class ReceiptItemListComponent implements OnInit {
   @Output() toggleAll = new EventEmitter<any>();
 
   get width(): number {
-    return parseInt(`${Config.GRID_SIZE / this.selectedReceipt.people.length}`, 10);
+    return parseInt(`${Config.GRID_SIZE / this.people.length}`, 10);
+  }
+
+  getChecked(item: IItem, name: string): boolean {
+    // TODO: take out in future
+    if (!item.personIds) {
+      item.personIds = [];
+    }
+    return item.personIds.includes(name);
   }
 
   constructor(
@@ -40,13 +49,14 @@ export class ReceiptItemListComponent implements OnInit {
       name: '',
       price: 0,
       image: '',
-      people: this.selectedReceipt.people.map((p) => ({
-        name: p.name,
-        selection: false,
-        price: 0,
-        isDriver: false,
-        isPassenger: false,
-      })),
+      // TODO: add people
+      // people: this.selectedReceipt.people.map((p) => ({
+      //   name: p.name,
+      //   selection: false,
+      //   price: 0,
+      //   isDriver: false,
+      //   isPassenger: false,
+      // })),
     };
 
     const dialogRef = this.dialog.open(CreateFormDialogComponent, {
@@ -57,7 +67,7 @@ export class ReceiptItemListComponent implements OnInit {
     dialogRef.afterClosed()
       .subscribe((result) => {
         if (result) {
-          this.create.emit({item: result, receiptId: this.selectedReceipt.id});
+          this.create.emit({item: result, receiptId: result.id});
         }
       });
   }
@@ -70,7 +80,7 @@ export class ReceiptItemListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: IItem) => {
       if (result.id && result.id === item.id) {
-        this.update.emit({item: result, receiptId: this.selectedReceipt.id});
+        this.update.emit({item: result, receiptId: result.id});
       }
     });
   }
@@ -82,23 +92,27 @@ export class ReceiptItemListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result: IItem) => {
       if (result.id && result.id === item.id) {
-        this.delete.emit({item, receiptId: this.selectedReceipt.id});
+        this.delete.emit({item, receiptId: result.id});
       }
     });
   }
 
-  toggleItem(person: IPerson, item: IItem, index: number): void {
-    this.toggle.emit({person, item, index, receiptId: this.selectedReceipt.id});
+  toggleItem(person: IPerson, item: IItem, index: number, event): void {
+    const personIds = event.checked
+      ? [...item.personIds, person.id]
+      : item.personIds.filter((id) => id !== person.id);
+    this.toggle.emit({item: {...item, personIds}, index, receiptId: item.id});
   }
 
   toggleAllItems(item: IItem, index: number): void {
-    this.toggleAll.emit({item, index, receiptId: this.selectedReceipt.id});
+    const newItem = {...item, personIds: item.personIds.length === this.people.length ? [] : this.people.map((p) => p.id)};
+    this.toggle.emit({item: newItem, index, receiptId: item.id});
   }
 
   checkSplit(): void {
     this.dialog.open(TableDialogComponent, {
       width: Config.DIALOG_WIDTH,
-      data: this.selectedReceipt.people,
+      data: this.people,
     });
   }
 }

@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import * as fromReceipt from '../../state';
 import { IItem, IPerson, IReceipt } from '../../../constants/models';
+import * as fromGroup from '../../../group/state';
+import * as personActions from '../../../group/state/person.actions';
+import * as fromReceipt from '../../state';
+import * as itemActions from '../../state/item.actions';
 import * as receiptActions from '../../state/receipt.actions';
 
 @Component({
@@ -13,6 +16,8 @@ import * as receiptActions from '../../state/receipt.actions';
 })
 export class ReceiptItemListShellComponent implements OnInit {
   selectedReceipt$: Observable<IReceipt>;
+  people$: Observable<IPerson[]>;
+  items$: Observable<IItem[]>;
 
   constructor(
     private store: Store<fromReceipt.State>,
@@ -21,6 +26,8 @@ export class ReceiptItemListShellComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectedReceipt$ = this.store.pipe(select(fromReceipt.getCurrentReceipt));
+    this.items$ = this.store.pipe(select(fromReceipt.getItem));
+    this.people$ = this.store.pipe(select(fromGroup.getPeople));
   }
 
   createItem($event: { item: IItem; receiptId: string }): void {
@@ -37,7 +44,8 @@ export class ReceiptItemListShellComponent implements OnInit {
   }
 
   toggleItem($event: { person: IPerson; item: IItem; index: number; receiptId: string }) {
-    this.store.dispatch(receiptActions.toggleSelection($event));
+    this.store.dispatch(itemActions.updateItem({item: $event.item}));
+    this.store.dispatch(personActions.updatePeopleSplit());
   }
 
   toggleAllItems($event: { item: IItem; index: number; receiptId: string }) {
@@ -45,6 +53,8 @@ export class ReceiptItemListShellComponent implements OnInit {
   }
 
   updateReceipt(): void {
-    this.store.dispatch(receiptActions.updateReceipt());
+    this.selectedReceipt$.subscribe((receipt) => {
+      this.store.dispatch(receiptActions.updateReceipt({receipt}));
+    });
   }
 }

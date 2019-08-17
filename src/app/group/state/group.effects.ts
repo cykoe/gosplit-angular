@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { IPerson } from '../../constants/models';
 import { GroupService } from '../group.service';
 import * as GroupActions from './group.actions';
+import * as PersonActions from './person.actions';
 
 @Injectable()
 export class GroupEffects {
@@ -50,7 +52,16 @@ export class GroupEffects {
     ofType(GroupActions.listGroup.type),
     mergeMap(() => this.groupService.listGroups()
       .pipe(
-        map((groups) => GroupActions.listGroupSuccess({groups})),
+        switchMap((groups) => {
+          const actions = [];
+          groups.forEach((g) => {
+            g.people.forEach((person) => {
+              actions.push(PersonActions.createPerson({person: {name: person, id: person, groupId: g.id}}));
+            });
+          });
+          actions.push(GroupActions.listGroupSuccess({groups}));
+          return actions;
+        }),
         catchError((error) => of(GroupActions.listGroupFail({error}))),
       ),
     ),

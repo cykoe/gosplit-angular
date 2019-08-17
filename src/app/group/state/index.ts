@@ -1,30 +1,43 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import * as fromRoot from '../../app.state';
+import { IPerson } from '../../constants/models';
 import * as fromGroups from './group.reducer';
-
-export interface State extends fromRoot.State {
-  groups: fromGroups.GroupState;
-}
+import * as fromPeople from './person.reducer';
 
 const getGroupFeatureState = createFeatureSelector<fromGroups.GroupState>(fromGroups.groupFeatureKey);
+const getPersonFeatureState = createFeatureSelector<fromPeople.PersonState>(fromPeople.personFeatureKey);
+
+export const getAllPeople = createSelector(
+  getPersonFeatureState,
+  fromPeople.selectAll,
+);
 
 export const getGroups = createSelector(
   getGroupFeatureState,
-  (state) => state.groups,
+  fromGroups.selectAll,
 );
 
 export const getCurrentGroupId = createSelector(
   getGroupFeatureState,
-  (state) => state.currentGroupId,
+  fromGroups.getSelectGroupId,
 );
 
-export const getError = createSelector(
+export const getPeople = createSelector(
+  getAllPeople,
+  getCurrentGroupId,
+  (people, groupId) => people.filter((p) => p.groupId === groupId),
+);
+// export const getError = createSelector(
+//   getGroupFeatureState,
+//   (state) => state.error,
+// );
+
+export const selectGroupEntities = createSelector(
   getGroupFeatureState,
-  (state) => state.error,
+  fromGroups.selectEntities,
 );
 
 export const getCurrentGroup = createSelector(
-  getGroupFeatureState,
+  selectGroupEntities,
   getCurrentGroupId,
-  (state, currentGroupId) => currentGroupId ? state.groups.find((g) => g.id === currentGroupId) : null,
+  (userEntities, groupId) => userEntities[groupId],
 );

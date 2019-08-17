@@ -1,9 +1,10 @@
 import { Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 
 import { IGroup, IReceipt } from '../../../constants/models';
+import * as fromGroup from '../../../group/state';
 import * as fromReceipt from '../../state/';
 import * as receiptActions from '../../state/receipt.actions';
 
@@ -23,7 +24,7 @@ export class ReceiptUploadShellComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(receiptActions.listGroup());
-    this.groups$ = this.store.pipe(select(fromReceipt.getGroups));
+    this.groups$ = this.store.pipe(select(fromGroup.getGroups));
   }
 
   submitReceipt(receipt: Partial<IReceipt>) {

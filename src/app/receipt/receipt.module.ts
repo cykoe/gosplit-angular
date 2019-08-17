@@ -11,6 +11,7 @@ import { ReceiptItemListShellComponent } from './containers/receipt-item-list-sh
 import { ReceiptListShellComponent } from './containers/receipt-list-shell/receipt-list-shell.component';
 import { ReceiptUploadShellComponent } from './containers/receipt-upload-shell/receipt-upload-shell.component';
 import { ReceiptRoutingModule } from './receipt-routing.module';
+import * as fromItem from './state/item.reducer';
 import { ReceiptEffects } from './state/receipt.effects';
 import * as fromReceipt from './state/receipt.reducer';
 
@@ -28,6 +29,7 @@ import * as fromReceipt from './state/receipt.reducer';
     ReceiptRoutingModule,
     A11yModule,
     StoreModule.forFeature(fromReceipt.receiptFeatureKey, fromReceipt.receiptReducer),
+    StoreModule.forFeature(fromItem.itemFeatureKey, fromItem.itemReducer),
     EffectsModule.forFeature([ReceiptEffects]),
   ],
   exports: [

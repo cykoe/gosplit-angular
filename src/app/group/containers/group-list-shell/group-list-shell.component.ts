@@ -38,6 +38,9 @@ export class GroupListShellComponent implements OnInit {
 
   deleteGroup(group: IGroup) {
     this.store.dispatch(groupActions.deleteGroup({group}));
+  }
 
+  selectGroup(group: IGroup) {
+    this.store.dispatch(groupActions.setCurrentGroup({group}));
   }
 }

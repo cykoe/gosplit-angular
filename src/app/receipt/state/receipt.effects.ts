@@ -3,10 +3,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
+import * as fromPerson from '../../group/state';
 import * as fromReceipt from './index';
 
-import { GroupService } from '../../group/group.service';
+import * as PersonActions from '../../group/state/person.actions';
 import { ReceiptService } from '../receipt.service';
+import * as ItemActions from './item.actions';
 import * as ReceiptActions from './receipt.actions';
 
 @Injectable()
@@ -14,8 +16,6 @@ export class ReceiptEffects {
   constructor(
     private actions$: Actions,
     private receiptService: ReceiptService,
-    // TODO: remove to a shared module
-    private groupService: GroupService,
     private store: Store<fromReceipt.State>,
   ) {
   }
@@ -30,14 +30,40 @@ export class ReceiptEffects {
     ),
   ));
 
+  updateSplit$ = createEffect(() => this.actions$.pipe(
+    ofType(PersonActions.updatePeopleSplit),
+    withLatestFrom(
+      this.store.pipe(select(fromReceipt.getItem)),
+      this.store.pipe(select(fromPerson.getPeople)),
+    ),
+    mergeMap(([action, items, people]) => {
+        people.forEach((p) => p.price = 0);
+        items.forEach((item) => {
+          const split = item.price / item.personIds.length;
+          item.personIds.forEach((id) => {
+            people.find((p) => p.name === id).price += split;
+          });
+        });
+        return of(PersonActions.updatePeopleSuccess({people}));
+      },
+    ),
+  ));
+
   updateReceipts$ = createEffect(() => this.actions$.pipe(
     ofType(ReceiptActions.updateReceipt),
-    withLatestFrom(this.store.pipe(select(fromReceipt.getCurrentReceipt))),
-    mergeMap(([action, r]) => this.receiptService.update(r)
-      .pipe(
-        map((receipt) => ReceiptActions.updateReceiptSuccess({receipt})),
-        catchError((error) => of(ReceiptActions.updateReceiptFail({error}))),
+    withLatestFrom(
+      this.store.pipe(select(fromReceipt.getItem)),
+      this.store.pipe(select(fromPerson.getPeople)),
       ),
+    mergeMap(([{receipt}, items, people]) => {
+      const newReceipt = {...receipt, list: items, people};
+      console.log({newReceipt});
+      return this.receiptService.update({...receipt, list: items, people})
+          .pipe(
+            map((receipt) => ReceiptActions.updateReceiptSuccess({receipt})),
+            catchError((error) => of(ReceiptActions.updateReceiptFail({error}))),
+          );
+      },
     ),
   ));
 
@@ -56,16 +82,33 @@ export class ReceiptEffects {
 
   listReceipts$ = createEffect(() => this.actions$.pipe(
     ofType(ReceiptActions.listReceipt),
-    mergeMap((action) => this.receiptService.list(action.groupId)
-      .pipe(
-        map((receipts) => {
-          return ReceiptActions.listReceiptSuccess({receipts});
-        }),
-        catchError((err) => {
-          const error = {message: err.message};
-          return of(ReceiptActions.listReceiptFail({error}));
-        }),
-      ),
+    withLatestFrom(this.store.pipe(select(fromPerson.getCurrentGroupId))),
+    mergeMap(([action, groupId]) => {
+      console.log({groupId});
+      return this.receiptService.list(groupId)
+          .pipe(
+            switchMap((receipts) => {
+              const actions = [];
+              receipts.forEach((receipt) => {
+                receipt.list.forEach((item) => {
+                  actions.push(ItemActions.createItem({item: {...item, receiptId: receipt.id}}));
+                });
+                // for newly generated receipt
+                if (receipt.people && receipt.people[0]) {
+                  const people = receipt.people.slice(0);
+                  actions.push(PersonActions.updatePeople({people}));
+                }
+              });
+              actions.push(ReceiptActions.listReceiptSuccess({receipts}));
+
+              return actions;
+            }),
+            catchError((err) => {
+              const error = {message: err.message};
+              return of(ReceiptActions.listReceiptFail({error}));
+            }),
+          )
+      },
     ),
   ));
 
@@ -85,13 +128,13 @@ export class ReceiptEffects {
   );
 
   // TODO: remove to a shared module
-  listGroups$ = createEffect(() => this.actions$.pipe(
-    ofType(ReceiptActions.listGroup.type),
-    mergeMap(() => this.groupService.listGroups()
-      .pipe(
-        map((groups) => ReceiptActions.listGroupSuccess({groups})),
-        catchError((error) => of(ReceiptActions.listGroupFail({error}))),
-      ),
-    ),
-  ));
+  // listGroups$ = createEffect(() => this.actions$.pipe(
+  //   ofType(ReceiptActions.listGroup.type),
+  //   mergeMap(() => this.groupService.listGroups()
+  //     .pipe(
+  //       map((groups) => ReceiptActions.listGroupSuccess({groups})),
+  //       catchError((error) => of(ReceiptActions.listGroupFail({error}))),
+  //     ),
+  //   ),
+  // ));
 }

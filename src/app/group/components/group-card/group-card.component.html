@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>
       <button mat-button class="name">{{ group.name | titlecase }}</button>
-      <button mat-icon-button [routerLink]="['/receipts/groups', group.id]" color="primary">
+      <button mat-icon-button [routerLink]="['/receipts']" color="primary" (click)="selectGroup()">
         <mat-icon>pageview</mat-icon>
       </button>
       <button mat-icon-button (click)="deleteGroup()" color="warn" class="delete">

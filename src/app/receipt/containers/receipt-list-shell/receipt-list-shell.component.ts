@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { IReceipt } from '../../../constants/models';
+import { IPerson, IReceipt } from '../../../constants/models';
+import * as fromGroup from '../../../group/state';
 import * as fromReceipt from '../../state';
 import * as receiptActions from '../../state/receipt.actions';
 
@@ -14,6 +15,7 @@ import * as receiptActions from '../../state/receipt.actions';
 })
 export class ReceiptListShellComponent implements OnInit {
   receipts$: Observable<IReceipt[]>;
+  people$: Observable<IPerson[]>;
 
   constructor(
     private store: Store<fromReceipt.State>,
@@ -22,12 +24,13 @@ export class ReceiptListShellComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(receiptActions.listReceipt({groupId: '5d4dcea461c38304963e2923'}));
+    this.store.dispatch(receiptActions.listReceipt());
     this.receipts$ = this.store.pipe(select(fromReceipt.getReceipts));
+    this.people$ = this.store.pipe(select(fromGroup.getPeople));
   }
 
   receiptSelected(receipt: IReceipt): void {
-    this.store.dispatch(receiptActions.setCurrentReceipt({receipt}));
+    this.store.dispatch(receiptActions.setCurrentReceiptId({receipt}));
     this.router.navigate(['receipts/items']);
   }
 

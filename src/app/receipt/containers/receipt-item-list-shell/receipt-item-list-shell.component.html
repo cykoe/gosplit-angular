@@ -4,7 +4,8 @@
       <div class="row">
         <div class="col-sm-11 col-md-10 mr-auto ml-auto">
           <app-item-list
-            [selectedReceipt]="selectedReceipt$ | async"
+            [items]="items$ | async"
+            [people]="people$ | async"
             (create)="createItem($event)"
             (update)="updateItem($event)"
             (delete)="deleteItem($event)"

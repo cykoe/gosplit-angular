@@ -1,35 +1,46 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromRoot from '../../app.state';
+import * as fromItems from './item.reducer';
 import * as fromReceipts from './receipt.reducer';
 
 export interface State extends fromRoot.State {
-  receipts: fromReceipts.ReceiptState;
+  receipt: fromReceipts.ReceiptState;
+  item: fromItems.ItemState;
 }
 
-const getReceiptFeatureState = createFeatureSelector<fromReceipts.ReceiptState>(fromReceipts.receiptFeatureKey);
+const getReceiptFeatureState = createFeatureSelector<
+  fromReceipts.ReceiptState>(fromReceipts.receiptFeatureKey);
+const getItemFeatureState = createFeatureSelector<
+  fromItems.ItemState>(fromItems.itemFeatureKey);
 
 export const getReceipts = createSelector(
   getReceiptFeatureState,
-  (state) => state.receipts,
+  fromReceipts.selectAll,
 );
 
 export const getCurrentReceiptId = createSelector(
   getReceiptFeatureState,
-  (state) => state.currentReceiptId,
+  fromReceipts.getSelectReceiptId,
 );
 
-export const getGroups = createSelector(
-  getReceiptFeatureState,
-  (state) => state.groups,
+export const getAllItem = createSelector(
+  getItemFeatureState,
+  fromItems.selectAll,
 );
 
-export const getError = createSelector(
+export const getItem = createSelector(
+  getAllItem,
+  getCurrentReceiptId,
+  (items, receiptId) => items.filter(i => i.receiptId = receiptId),
+);
+
+export const selectReceiptEntities = createSelector(
   getReceiptFeatureState,
-  (state) => state.error,
+  fromReceipts.selectEntities,
 );
 
 export const getCurrentReceipt = createSelector(
-  getReceiptFeatureState,
+  selectReceiptEntities,
   getCurrentReceiptId,
-  (state, currentReceiptId) => currentReceiptId ? state.receipts.find((r) => r.id === currentReceiptId) : null,
+  (userEntities, receiptId) => userEntities[receiptId],
 );

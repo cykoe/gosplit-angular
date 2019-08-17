@@ -27,12 +27,11 @@
         <li class="nav-item">
           <a
             class="nav-link"
-            href="https://github.com/sircharlie/gosplit-web"
-            matTooltip="star on github"
-            target="_blank"
+            [routerLink]="['/groups']"
+            matTooltip="View all groups"
           >
             <i class="fab fa-github"></i>
-            <p class="d-lg-none">GitHub</p>
+            <p class="d-lg-none">Groups</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedin()">

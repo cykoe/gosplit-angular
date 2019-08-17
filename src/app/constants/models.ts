@@ -1,9 +1,11 @@
 export interface IPerson {
+  id?: string;
   name: string;
-  selection: boolean;
-  price: number;
-  isDriver: boolean;
-  isPassenger: boolean;
+  selection?: boolean;
+  price?: number;
+  isDriver?: boolean;
+  isPassenger?: boolean;
+  groupId?: string;
 }
 
 export interface IItem {
@@ -11,7 +13,10 @@ export interface IItem {
   name: string;
   price: number;
   image: string;
-  people: IPerson[];
+  receiptId?: string;
+  // TODO: remove in future
+  people?: IPerson[];
+  personIds?: string[];
 }
 
 export interface IReceipt {
