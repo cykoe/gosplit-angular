@@ -28,40 +28,20 @@
           <a
             [routerLink]="['/groups']"
             class="nav-link"
-            matTooltip="view all groups"
-          >
-            <i class="fas fa-receipt"></i>
-            <p class="d-lg-none">Groups</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="isLoggedin()">
-          <a
-            [routerLink]="['/invoices/upload']"
-            class="nav-link"
-            matTooltip="upload a receipt"
-          >
-            <i class="fas fa-upload"></i>
-            <p class="d-lg-none">Upload</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            [routerLink]="['/demo']"
-            class="nav-link"
-            matTooltip="try this demo"
+            matTooltip="Get Started"
           >
             <i class="fas fa-play"></i>
-            <p class="d-lg-none">Demo</p>
+            <p class="d-lg-none">Groups</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="!isLoggedin()">
           <a
             [routerLink]="['/register']"
             class="nav-link"
-            matTooltip="sign up"
+            matTooltip="Register"
           >
             <i class="fas fa-sign-in-alt"></i>
-            <p class="d-lg-none">Sign-Up</p>
+            <p class="d-lg-none">Register</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="isLoggedin()">

@@ -29,8 +29,8 @@ export class InvoiceItemShellComponent implements OnInit {
     this.people$ = this.store.pipe(select(fromInvoice.selectAllPeople));
   }
 
-  createItem($event: { item: IItem; receiptId: string }): void {
-    this.store.dispatch(itemActions.createItem($event));
+  createItem(item: IItem): void {
+    this.store.dispatch(itemActions.createItem({item}));
   }
 
   updateItem($event: { item: IItem; receiptId: string }): void {

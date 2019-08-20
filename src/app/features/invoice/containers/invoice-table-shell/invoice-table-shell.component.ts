@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { IPerson, IReceipt } from '../../../../constants/models';
 import * as fromInvoice from '../../store/invoice.state';
+import { IPerson, IReceipt } from '../../store/models';
 import * as receiptActions from '../../store/receipt.actions';
 
 @Component({
@@ -23,7 +23,6 @@ export class InvoiceTableShellComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(receiptActions.listReceipt());
     this.receipts$ = this.store.pipe(select(fromInvoice.selectAllReceipts));
     this.people$ = this.store.pipe(select(fromInvoice.selectAllPeople));
   }

@@ -1,30 +1,27 @@
-<div class="header">
-  <button mat-dialog-close mat-icon-button>
-    <mat-icon>close</mat-icon>
-  </button>
-</div>
-<mat-dialog-content>
+<h1 mat-dialog-title>Item Update</h1>
+<hr />
+<div mat-dialog-content>
   <form [formGroup]="form">
-    <mat-form-field *ngFor="let name of formControlNames">
-      <input
-        matInput
-        [formControlName]="name"
-        [placeholder]="name"
-        autocomplete="off"
-      />
+    <mat-form-field class="w-100">
+      <input matInput [formControl]="name" placeholder="Item Name" />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <input matInput [formControl]="price" placeholder="Price" />
+    </mat-form-field>
+    <mat-form-field class="w-100">
+      <input matInput [formControl]="image" placeholder="Image, only URL right now :("/>
     </mat-form-field>
   </form>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button mat-dialog-close color="accent" cdkFocusInitial>
-    Cancel
-  </button>
+</div>
+<hr />
+<div mat-dialog-actions>
+  <button mat-raised-button mat-dialog-close cdkFocusInitial>Cancel</button>
   <button
-    mat-button
-    [mat-dialog-close]="form.value"
+    mat-raised-button
+    [mat-dialog-close]="returnValue"
     color="primary"
     [disabled]="!form.valid"
   >
-    Ok
+    Update
   </button>
-</mat-dialog-actions>
+</div>

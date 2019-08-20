@@ -41,3 +41,9 @@ button:focus {
 mat-form-field {
   line-height: 2rem !important;
 }
+
+mat-card-header > .mat-card-header-text {
+  margin: 0 !important;
+  width: 100%;
+}
+

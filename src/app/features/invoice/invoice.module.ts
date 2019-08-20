@@ -4,11 +4,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { SharedModule } from '../../shared/shared.module';
-import { InvoiceItemInfoComponent } from './components/invoice-item-info/invoice-item-info.component';
-import { InvoiceItemListComponent } from './components/invoice-item-list/invoice-item-list.component';
-import { InvoiceTableDetailComponent } from './components/invoice-table-detail/invoice-table-detail.component';
 import { InvoiceTableListComponent } from './components/invoice-table-list/invoice-table-list.component';
 import { InvoiceUploadBoxComponent } from './components/invoice-upload-box/invoice-upload-box.component';
+import { ItemCardComponent } from './components/item-card/item-card.component';
+import { ItemNewCardComponent } from './components/item-new-card/item-new-card.component';
 import { InvoiceItemShellComponent } from './containers/invoice-item-shell/invoice-item-shell.component';
 import { InvoiceShellComponent } from './containers/invoice-shell/invoice-shell.component';
 import { InvoiceTableShellComponent } from './containers/invoice-table-shell/invoice-table-shell.component';
@@ -22,13 +21,12 @@ import { FEATURE_NAME, reducers } from './store/invoice.state';
     InvoiceUploadShellComponent,
     InvoiceTableListComponent,
     InvoiceItemShellComponent,
-    InvoiceTableDetailComponent,
     InvoiceTableShellComponent,
     InvoiceUploadShellComponent,
     InvoiceUploadBoxComponent,
     InvoiceShellComponent,
-    InvoiceItemInfoComponent,
-    InvoiceItemListComponent,
+    ItemNewCardComponent,
+    ItemCardComponent,
   ],
   imports: [
     SharedModule,

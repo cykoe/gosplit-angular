@@ -1,4 +1,10 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,23 +13,29 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { DeleteConfirmDialogComponent } from '../../../../shared/components/delete-confirm-dialog/delete-confirm-dialog.component';
-import { IPerson, IReceipt } from '../../../../constants/models';
+
+import { Config } from '../../../../constants/config';
+import { IPerson, IReceipt } from '../../store/models';
 
 @Component({
-  selector: 'app-receipt-table-list',
+  selector: 'app-invoice-table-list',
   templateUrl: './invoice-table-list.component.html',
   styleUrls: ['./invoice-table-list.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)'),
+      ),
     ]),
   ],
 })
 export class InvoiceTableListComponent implements OnInit {
   @Input() receipts$: Observable<IReceipt[]>;
   @Input() people: IPerson[];
+
   @Output() deleted = new EventEmitter<IReceipt>();
   @Output() selected = new EventEmitter<IReceipt>();
 
@@ -33,19 +45,21 @@ export class InvoiceTableListComponent implements OnInit {
   selection = new SelectionModel<IReceipt>(true, []);
   expandedElement;
 
-  constructor(
-    private dialog: MatDialog,
-  ) {
-  }
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit() {
     this.dataSource$ = this.receipts$.pipe(
       map((receipts: IReceipt[]) => {
         const defaultCols = ['Select', 'Date'];
         receipts.length
-          ? this.displayedColumns = [...defaultCols, ...receipts[0].people.map((p) => p.name)]
-          : this.displayedColumns = [...defaultCols];
-        this.footer = new Array(this.displayedColumns.length - defaultCols.length).fill(0);
+          ? (this.displayedColumns = [
+              ...defaultCols,
+              ...receipts[0].people.map((p) => p.name),
+            ])
+          : (this.displayedColumns = [...defaultCols]);
+        this.footer = new Array(
+          this.displayedColumns.length - defaultCols.length,
+        ).fill(0);
         return new MatTableDataSource<IReceipt>(receipts);
       }),
     );
@@ -57,21 +71,19 @@ export class InvoiceTableListComponent implements OnInit {
   }
 
   receiptSelected(receipt: IReceipt): void {
-    // this.router.navigate([`receipts/groups/groupId/${receipt.toUrlDate()}/${receipt.store}/${receipt.id}`]);
     this.selected.emit(receipt);
   }
 
   receiptDeleted(receipt: IReceipt) {
     const dialogRef = this.dialog.open(DeleteConfirmDialogComponent, {
-      width: '250px',
+      width: Config.DIALOG_WIDTH,
       data: receipt,
     });
-    dialogRef.afterClosed()
-      .subscribe((r: IReceipt) => {
-        if (r) {
-          this.deleted.emit(receipt);
-        }
-      });
+    dialogRef.afterClosed().subscribe((r: IReceipt) => {
+      if (r) {
+        this.deleted.emit(receipt);
+      }
+    });
   }
 
   private isAllSelected(dataSource: MatTableDataSource<IReceipt>): boolean {
@@ -82,15 +94,24 @@ export class InvoiceTableListComponent implements OnInit {
     this.isAllSelected(dataSource)
       ? this.selection.clear()
       : dataSource.data.forEach((row) => this.selection.select(row));
-    this.footer = this.calculateTotal(this.selection.selected, this.displayedColumns.length);
+    this.footer = this.calculateTotal(
+      this.selection.selected,
+      this.displayedColumns.length,
+    );
   }
 
   private rowToggle(row: IReceipt): void {
     this.selection.toggle(row);
-    this.footer = this.calculateTotal(this.selection.selected, this.displayedColumns.length);
+    this.footer = this.calculateTotal(
+      this.selection.selected,
+      this.displayedColumns.length,
+    );
   }
 
-  private calculateTotal(selectedArr: any[], displayedColLen: number): number[] {
+  private calculateTotal(
+    selectedArr: any[],
+    displayedColLen: number,
+  ): number[] {
     return selectedArr
       .map((t) => {
         const newSplit = t.people.map((person) => person.price);

@@ -9,10 +9,12 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import * as fromRoot from '../../../core/core.state';
-import * as fromInvoice from './invoice.state';
+import { v4 as uuid } from 'uuid';
 
 import { InvoiceService } from '../invoice.service';
+
+import * as fromRoot from '../../../core/core.state';
+import * as fromInvoice from './invoice.state';
 import * as ItemActions from './item.actions';
 import * as PersonActions from './person.actions';
 import * as ReceiptActions from './receipt.actions';
@@ -78,10 +80,7 @@ export class InvoiceEffects {
       ofType(ReceiptActions.deleteReceipt),
       mergeMap((action) =>
         this.receiptService.delete(action.receipt).pipe(
-          map((receipt) => {
-            console.log({ receipt });
-            return ReceiptActions.deleteReceiptSuccess({ id: 'no' });
-          }),
+          map((receipt) => ReceiptActions.deleteReceiptSuccess({ id: receipt.id })),
           catchError((error) => of(ReceiptActions.deleteReceiptFail({ error }))),
         ),
       ),
@@ -100,7 +99,9 @@ export class InvoiceEffects {
               receipt.list.forEach((item) => {
                 actions.push(
                   ItemActions.createItem({
-                    item: { ...item, receiptId: receipt.id },
+                    // TODO: change database please
+                    // item: { ...item, receiptId: receipt.id },
+                    item: { ...item, receiptId: receipt.id, id: uuid() },
                   }),
                 );
               });
@@ -153,15 +154,4 @@ export class InvoiceEffects {
       catchError((error) => of(ReceiptActions.uploadReceiptFail({ error }))),
     ),
   );
-
-  // TODO: remove to a shared module
-  // listGroups$ = createEffect(() => this.actions$.pipe(
-  //   ofType(ReceiptActions.listGroup.type),
-  //   mergeMap(() => this.groupService.listGroups()
-  //     .pipe(
-  //       map((groups) => ReceiptActions.listGroupSuccess({groups})),
-  //       catchError((error) => of(ReceiptActions.listGroupFail({error}))),
-  //     ),
-  //   ),
-  // ));
 }

@@ -19,7 +19,6 @@ const routes: Routes = [
         component: InvoiceTableShellComponent,
       },
       {
-        // path: 'groups/:groupId/:mm/:dd/:yy/:store/:id',
         path: 'receipt/:receiptId',
         component: InvoiceItemShellComponent,
         // canActivate: [AuthGuard],
@@ -28,7 +27,7 @@ const routes: Routes = [
         // },
       },
       {
-        path: 'upload',
+        path: 'upload/:groupId',
         component: InvoiceUploadShellComponent,
         pathMatch: 'full',
       },

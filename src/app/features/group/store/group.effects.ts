@@ -38,29 +38,17 @@ export class GroupEffects {
     ofType(GroupActions.deleteGroup),
     mergeMap((action) => this.groupService.deleteGroup(action.group)
       .pipe(
-        map((group) => {
-          // TODO: figure out the format of group, pass in id only
-          console.log({group});
-          return GroupActions.deleteGroupSuccess({id: 'no'});
-        }),
+        map((group) => GroupActions.deleteGroupSuccess({id: group.id})),
         catchError((error) => of(GroupActions.deleteGroupFail({error}))),
       ),
     ),
   ));
 
   listGroups$ = createEffect(() => this.actions$.pipe(
-    ofType(GroupActions.listGroup.type),
+    ofType(GroupActions.listGroup),
     mergeMap(() => this.groupService.listGroups()
       .pipe(
-        map((groups) => {
-          // TODO: move to receipt effect
-          // groups.forEach((g) => {
-          //   g.people.forEach((person) => {
-          //     actions.push(PersonActions.createPerson({person: {name: person, id: person, groupId: g.id}}));
-          //   });
-          // });
-          return GroupActions.listGroupSuccess({groups});
-        }),
+        map((groups) => GroupActions.listGroupSuccess({groups})),
         catchError((error) => of(GroupActions.listGroupFail({error}))),
       ),
     ),

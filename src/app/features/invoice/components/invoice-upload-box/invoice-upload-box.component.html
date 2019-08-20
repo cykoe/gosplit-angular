@@ -1,24 +1,12 @@
-<mat-card>
+<mat-card *ngIf="group">
   <mat-card-content>
     <form [formGroup]="form" autocomplete="off" class="example-container">
-      <mat-form-field>
-        <mat-label>Group</mat-label>
-        <mat-select formControlName="group">
-          <mat-option *ngFor="let group of groups" [value]="group">
-            {{ group.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="group.hasError('required')"
-          >Please choose a group
-        </mat-error>
-      </mat-form-field>
       <mat-form-field>
         <mat-label>Payer</mat-label>
         <mat-select
           formControlName="payer"
-          [disableControl]="group.hasError('required')"
         >
-          <mat-option *ngFor="let name of group.value.people" [value]="name">
+          <mat-option *ngFor="let name of group.people" [value]="name">
             {{ name }}
           </mat-option>
         </mat-select>
@@ -30,9 +18,6 @@
         <mat-label>Store</mat-label>
         <mat-select
           formControlName="store"
-          [disableControl]="
-            group.hasError('required') || payer.hasError('required')
-          "
         >
           <mat-option value="walmart">Walmart</mat-option>
           <mat-option value="county">County Market</mat-option>

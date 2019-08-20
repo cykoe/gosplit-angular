@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  // api_url: 'https://g76cvz4t6c.execute-api.us-east-2.amazonaws.com/dev',
-  // api_key: '75764835665f4bc280502176f4e0a193q',
-  api_url: 'http://localhost:8101',
-  api_key: 'd41d8cd98f00b204e9800998ecf8427e',
+  api_url: 'https://g76cvz4t6c.execute-api.us-east-2.amazonaws.com/dev',
+  api_key: '75764835665f4bc280502176f4e0a193q',
+  // api_url: 'http://localhost:8101',
+  // api_key: 'd41d8cd98f00b204e9800998ecf8427e',
 };
 
 /*

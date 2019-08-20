@@ -69,27 +69,31 @@
             <mat-card
               class="receipt-card row">
               <mat-card-actions>
-                <button mat-button class="verified-icon col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                <button mat-button matTooltip="Paid by {{element.payer}}" class="verified-person col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  <mat-icon>face</mat-icon>
                   {{ element.payer | titlecase }}
-                  <mat-icon>monetization_on</mat-icon>
                 </button>
-                <button mat-button class="verified-icon col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                <button mat-button matTooltip="Shopped at {{element.store}}" class="verified-store col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  <mat-icon>store</mat-icon>
                   {{ element.store | titlecase }}
-                  <mat-icon>verified_user</mat-icon>
                 </button>
                 <button
                   mat-button
                   color="primary"
+                  matTooltip="View All Items"
                   (click)="receiptSelected(element)"
                   class="col-lg-3 col-md-3 col-6 mr-auto ml-auto">
+                  <mat-icon>view_comfy</mat-icon>
                   View
                 </button>
                 <button
                   mat-button
+                  matTooltip="Delete This Receipt"
                   (click)="receiptDeleted(element)"
                   color="warn"
                   class="delete col-lg-3 col-md-3 col-6 mr-auto ml-auto"
                 >
+                  <mat-icon>delete_forever</mat-icon>
                   Delete
                 </button>
               </mat-card-actions>
@@ -104,13 +108,13 @@
         (click)="expandedElement = expandedElement === element ? null : element"
         *matRowDef="let element; columns: displayedColumns"
         [class.example-expanded-row]="expandedElement === element"
-        class="example-element-row"
+        class="element-row"
         mat-row
       ></tr>
       <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
       <tr
         *matRowDef="let row; columns: ['expandedDetail']"
-        class="example-detail-row"
+        class="detail-row"
         mat-row
       ></tr>
     </table>

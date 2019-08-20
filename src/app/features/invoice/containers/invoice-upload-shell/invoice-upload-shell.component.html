@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-lg-4 col-sm-6 mr-auto ml-auto">
     <app-receipt-upload-box
-      [groups]="groups$ | async"
+      [group]="group$ | async"
       (save)="submitReceipt($event)"
     ></app-receipt-upload-box>
   </div>

@@ -1,11 +1,12 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { IGroup, IReceipt } from '../../../../constants/models';
+import { IGroup } from '../../../group/store/group.model';
 import * as fromGroup from '../../../group/store/group.state';
 import * as fromInvoice from '../../store/invoice.state';
+import { IReceipt } from '../../store/models';
 import * as receiptActions from '../../store/receipt.actions';
 
 @Component({
@@ -14,7 +15,7 @@ import * as receiptActions from '../../store/receipt.actions';
   styleUrls: ['./invoice-upload-shell.component.scss'],
 })
 export class InvoiceUploadShellComponent implements OnInit {
-  groups$: Observable<any[]>;
+  group$: Observable<IGroup>;
 
   constructor(
     private store: Store<fromInvoice.State>,
@@ -23,9 +24,8 @@ export class InvoiceUploadShellComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // TODO: combine groups and invoices
-    // this.store.dispatch(receiptActions.listGroup());
-    this.groups$ = this.store.pipe(select(fromInvoice.selectAllReceipts));
+    this.store.dispatch(fromGroup.listGroup());
+    this.group$ = this.store.pipe(select(fromGroup.selectCurrentGroup));
   }
 
   submitReceipt(receipt: Partial<IReceipt>) {

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IGroup } from '../../../constants/models';
+import { IGroup } from './group.model';
 
 export const setCurrentGroupId = createAction('[Group] Set Current Group', props<{ group: IGroup }>());
 // create

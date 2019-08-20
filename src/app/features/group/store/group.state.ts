@@ -3,10 +3,11 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from '../../../core/core.state';
 import { GroupState } from './group.model';
 import * as fromGroups from './group.reducer';
+export * from './group.actions';
 
 export const FEATURE_NAME = 'groups';
 
-const getGroupFeatureState = createFeatureSelector<State, GroupState>(FEATURE_NAME);
+const getGroupFeatureState = createFeatureSelector<AppState, GroupState>(FEATURE_NAME);
 
 export const selectAllGroups = createSelector(
   getGroupFeatureState,
@@ -38,7 +39,3 @@ export const selectCurrentGroup = createSelector(
   selectCurrentGroupId,
   (userEntities, groupId) => userEntities[groupId],
 );
-
-export interface State extends AppState {
-  groups: GroupState;
-}

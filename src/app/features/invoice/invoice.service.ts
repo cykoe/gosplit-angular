@@ -2,21 +2,17 @@ import { HttpBackend, HttpClient, HttpErrorResponse  } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { Receipt } from './shared/receipt.model';
 
 import { environment } from '../../../environments/environment';
-import { Config } from '../../constants/config';
-import { IReceipt, UploadUrlInfo } from '../../constants/models';
+import { IReceipt } from './store/models';
 
-export interface EmptyReceipt {
-  id: string;
-  userId: string;
-  groupId: string;
-  store: string;
-  payer: string;
+export interface UploadUrlInfo {
+  uploadURL: string;
+  name: string;
 }
 
 @Injectable({
@@ -36,10 +32,7 @@ export class InvoiceService {
   }
 
   create(item: Partial<IReceipt>): Observable<IReceipt> {
-    return this.http.post<IReceipt>(`${this.url}/create`, item)
-      .pipe(
-        catchError(this.handleError<IReceipt>('create receipt')),
-      );
+    return this.http.post<IReceipt>(`${this.url}/create`, item);
   }
 
   read(itemId: string): Observable<Receipt> {
@@ -51,26 +44,18 @@ export class InvoiceService {
   }
 
   update(item: IReceipt): Observable<IReceipt> {
-    return this.http.post<IReceipt>(`${this.url}/update`, item)
-      .pipe(
-        catchError(this.handleError<IReceipt>('updateItem receipt')),
-      );
+    return this.http.post<IReceipt>(`${this.url}/update`, item);
   }
 
-  delete(item: IReceipt): Observable<{}> {
-    return this.http.post(`${this.url}/delete`, item)
-      .pipe(
-        catchError(this.handleError<{}>('receiptDeleted receipt')),
-      );
+  delete(item: IReceipt): Observable<IReceipt> {
+    return this.http.post<IReceipt>(`${this.url}/delete`, item);
   }
 
   list(groupId: string): Observable<IReceipt[]> {
-    return this.http.post<IReceipt[]>(`${this.url}/list`, {groupId})
-      .pipe(
-        catchError(this.handleError<IReceipt[]>('list receipts')),
-      );
+    return this.http.post<IReceipt[]>(`${this.url}/list`, {groupId});
   }
 
+  // TODO: AI stuffs
   // autoSelect(receipt: Receipt): Observable<Receipt> {
   //   return this.http.get<Receipt[]>(`${this.url}${this.receiptUrl}`)
   //     .pipe(
@@ -111,10 +96,6 @@ export class InvoiceService {
 
   getUploadUrl(): Observable<UploadUrlInfo> {
     return this.http.get<UploadUrlInfo>(`${this.url}/getUploadUrl`);
-  }
-
-  createReceiptNew(receipt: EmptyReceipt): Observable<Receipt> {
-    return this.http.post<any>(Config.createReceiptUrl, receipt);
   }
 
   upload(url: string, file): Observable<any> {

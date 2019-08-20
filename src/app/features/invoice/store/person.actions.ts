@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IPerson } from '../../../constants/models';
+import { IPerson } from './models';
 
 export const createPerson = createAction('[Person] Create Person', props<{ person: IPerson }>());
 export const updatePerson = createAction('[Person] Update Person', props<{ person: IPerson }>());

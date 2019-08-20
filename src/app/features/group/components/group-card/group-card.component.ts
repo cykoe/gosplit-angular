@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { IGroup } from '../../../../constants/models';
+import { IGroup } from '../../store/group.model';
 
 @Component({
   selector: 'app-group-card',
@@ -9,6 +9,7 @@ import { IGroup } from '../../../../constants/models';
 })
 export class GroupCardComponent implements OnInit {
   @Input() group: IGroup;
+
   @Output() selectCard = new EventEmitter<IGroup>();
   @Output() update = new EventEmitter<IGroup>();
   @Output() delete = new EventEmitter<IGroup>();

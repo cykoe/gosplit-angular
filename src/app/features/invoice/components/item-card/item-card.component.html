@@ -1,0 +1,71 @@
+<mat-card class="h-100" *ngIf="item">
+  <mat-card-header>
+    <mat-card-title class="text-center">
+      <button
+        mat-button
+        matTooltip="{{item.name}}"
+        class="card-title"
+        color="primary"
+      >
+        {{ item.name | titlecase | slice: 0:28 }}
+      </button>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <button
+        mat-button
+        matTooltip="Item Price"
+        color="primary"
+        class="col-lg-3 col-md-3 col-4 mr-auto ml-auto"
+      >
+        {{ item.price | currency: "USD":"symbol":"1.2-2" }}
+      </button>
+      <button
+        mat-button
+        matTooltip="Update Item"
+        (click)="updateItem(item)"
+        color="primary"
+        class="col-lg-3 col-md-3 col-4 mr-auto ml-auto"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-button
+        matTooltip="Delete Item"
+        (click)="deleteItem(item)"
+        color="warn"
+        class="col-lg-3 col-md-3 col-4 mr-auto ml-auto"
+      >
+        <mat-icon>delete_forever</mat-icon>
+      </button>
+      <button
+        mat-flat-button
+        (click)="toggleAllItems(item)"
+        matTooltip="Select All"
+        class="col-lg-3 col-md-3 col-12 mr-auto ml-auto"
+        color="primary"
+      >
+        <mat-icon>select_all</mat-icon>
+      </button>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="display: flex; justify-content: center">
+      <img
+        [src]="item.image"
+        matTooltip="{{item.name}}"
+        [alt]="item.name"
+        class="img-fluid"
+        style="height: 200px; max-width: 200px;"
+      />
+    </div>
+    <div>
+      <span *ngFor="let person of people" class="col-{{ width }}">
+        <mat-checkbox
+          (change)="toggleItem(person, item, $event)"
+          [checked]="getChecked(item, person.name)"
+          >{{ person.name }}
+        </mat-checkbox>
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>

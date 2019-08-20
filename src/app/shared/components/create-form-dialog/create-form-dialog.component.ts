@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { IItem, IReceipt } from '../../../constants/models';
+import { IItem} from '../../../features/invoice/store/models';
 
 @Component({
   selector: 'app-create-form-dialog',
@@ -9,8 +9,27 @@ import { IItem, IReceipt } from '../../../constants/models';
   styleUrls: ['./create-form-dialog.component.scss'],
 })
 export class CreateFormDialogComponent implements OnInit {
+
   form: FormGroup;
   formControlNames: string[];
+
+  get name() {
+    return this.form.get('name');
+  }
+
+  get price() {
+    return this.form.get('price');
+  }
+
+  get image() {
+    return this.form.get('image');
+  }
+
+  get returnValue() {
+    const {name, price, image} = this.form.value;
+    const newItem = {...this.data, name, price, image};
+    return newItem;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -20,11 +39,11 @@ export class CreateFormDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    const formData = {};
-    this.formControlNames = Object.keys(this.data).filter((d) => d !== 'id' && d !== 'people');
-    this.formControlNames.forEach((prop) => {
-      formData[prop] = [this.data[prop], Validators.required];
+    const data = this.data;
+    this.form = this.fb.group({
+      name: [data.name, Validators.required],
+      price: [data.price, [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]],
+      image: [data.image, [Validators.required]],
     });
-    this.form = this.fb.group(formData);
   }
 }

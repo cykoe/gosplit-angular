@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvoiceItemInfoComponent } from './invoice-item-info.component';
+import { ItemNewCardComponent } from './item-new-card.component';
 
-describe('ReceiptItemInfoComponent', () => {
-  let component: InvoiceItemInfoComponent;
-  let fixture: ComponentFixture<InvoiceItemInfoComponent>;
+describe('ItemNewCardComponent', () => {
+  let component: ItemNewCardComponent;
+  let fixture: ComponentFixture<ItemNewCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InvoiceItemInfoComponent ]
+      declarations: [ ItemNewCardComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InvoiceItemInfoComponent);
+    fixture = TestBed.createComponent(ItemNewCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

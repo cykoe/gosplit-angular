@@ -2,6 +2,8 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import * as fromRouter from '@ngrx/router-store';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 
+import { GroupState } from '../features/group/store/group.model';
+import * as fromGroup from '../features/group/store/group.reducer';
 import { AuthState } from './auth/auth.model';
 import { authReducer } from './auth/auth.reducer';
 import { RouterStateUrl } from './router/router.state';
@@ -9,6 +11,7 @@ import { RouterStateUrl } from './router/router.state';
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   router: fromRouter.routerReducer,
+  groups: fromGroup.reducer,
 };
 
 export const selectRouterState = createFeatureSelector<
@@ -34,4 +37,5 @@ export class CustomSerializer implements fromRouter.RouterStateSerializer<Router
 export interface AppState {
   router: fromRouter.RouterReducerState<RouterStateUrl>;
   auth: AuthState;
+  groups: GroupState;
 }

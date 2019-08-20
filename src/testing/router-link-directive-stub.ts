@@ -23,5 +23,8 @@ import { NgModule } from '@angular/core';
   declarations: [
     RouterLinkDirectiveStub,
   ],
+  exports: [
+    RouterLinkDirectiveStub
+  ]
 })
 export class RouterStubsModule {}

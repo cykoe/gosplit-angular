@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IItem } from '../../../constants/models';
+import { IItem } from './models';
 
 export const createItem = createAction('[Item] Create Item', props<{ item: IItem }>());
 export const updateItem = createAction('[Item] Update Item', props<{ item: IItem }>());

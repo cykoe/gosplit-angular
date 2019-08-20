@@ -9,12 +9,15 @@ import {
 } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { v4 as uuid } from 'uuid';
-import { IGroup } from '../../../../constants/models';
+
+import { IGroup } from '../../store/group.model';
 
 function duplicateNameValidator(people: string[]): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const duplicate = control.value ? people.includes(control.value.trim()) : false;
-    return duplicate ? {duplicateName: {value: control.value}} : null;
+    const duplicate = control.value
+      ? people.includes(control.value.trim())
+      : false;
+    return duplicate ? {duplicateName: {value: control.value, name: 'Duplicate Name'}} : null;
   };
 }
 
@@ -25,15 +28,11 @@ function duplicateNameValidator(people: string[]): ValidatorFn {
 })
 export class GroupNewCardComponent implements OnInit {
   form: FormGroup;
+
   @Output() create = new EventEmitter<IGroup>();
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   people: string[] = [];
-
-  constructor(
-    private fb: FormBuilder,
-  ) {
-  }
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   get person() {
     return this.form.get('person');
@@ -43,10 +42,19 @@ export class GroupNewCardComponent implements OnInit {
     return this.form.get('name');
   }
 
+  constructor(private fb: FormBuilder) {
+  }
+
   ngOnInit(): void {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      person: ['', [duplicateNameValidator(this.people), Validators.required]],
+      person: [
+        '',
+        [
+          Validators.required,
+          duplicateNameValidator(this.people),
+        ],
+      ],
     });
   }
 
@@ -66,10 +74,6 @@ export class GroupNewCardComponent implements OnInit {
     }
   }
 
-  /**
-   * Remove a person's name from people array
-   * @param name name of the person
-   */
   remove(name: string): void {
     const index = this.people.indexOf(name);
 
@@ -78,7 +82,7 @@ export class GroupNewCardComponent implements OnInit {
     }
   }
 
-  saveGroup(): void {
+  createGroup(): void {
     const name = this.form.get('name').value;
     const people = this.people;
     const group = {name, people, id: uuid()};
